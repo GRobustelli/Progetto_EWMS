@@ -1,0 +1,52 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+  <diagram name="Pagina-1" id="ByE3uNB1fS-Hp0nDOOnO">
+    <mxGraphModel dx="1281" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-1" value="Gestore degli account&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="190" y="270" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-3" value="Aggiunta nuovo account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="205" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-4" value="Annulla creazione account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="110" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-5" value="Validazione form account non superata" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-6" value="Dati duplicati" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="300" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-7" value="Apertura scheda profilo" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="460" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-8" value="Rimpiazza password" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="590" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-9" value="Annulla rimpiazzo password" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="590" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-10" value="Modifica ruolo account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="720" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-11" value="Annulla modifica ruolo" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="720" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-12" value="Assegnare/modificare supervisore" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="850" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-13" value="Annulla inserimento/modifica supervisore" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="850" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-14" value="Eliminazione account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="1020" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="wXXWdj2dcgPHQfilVM3Y-15" value="Annulla eliminazione account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1030" width="110" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

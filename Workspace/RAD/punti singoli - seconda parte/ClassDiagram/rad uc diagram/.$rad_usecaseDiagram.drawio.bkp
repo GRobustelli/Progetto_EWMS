@@ -1,0 +1,91 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+  <diagram name="Pagina-1" id="ipOQBeNFq6z0MoNlRvDN">
+    <mxGraphModel dx="868" dy="550" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-1" value="Supervisore&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="430" y="240" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-2" value="Dipendente&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="520" y="240" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-3" value="Gestore degli account&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="650" y="240" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-5" value="Autenticazione" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="110" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-6" value="Autenticazione fallita" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="40" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-7" value="Validazione autenticazione fallita" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="110" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-8" value="Logout" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="280" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-9" value="Annullamento logout" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="280" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-10" value="Visualizza profilo personale" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="390" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-11" value="Modifica password" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="560" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-12" value="&lt;span style=&quot;line-height: 107%;&quot;&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;Password attuale non corretta&lt;/font&gt;&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="390" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-13" value="Conferma password non coincide" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="480" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-14" value="Validazione form/sicurezza non superata" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="560" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-17" value="Visualizza notifiche" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="730" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-18" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-5" target="qzIoYZi1g3b4XHvA30KT-6">
+          <mxGeometry x="0.0663" y="11" width="160" relative="1" as="geometry">
+            <mxPoint x="690" y="130" as="sourcePoint" />
+            <mxPoint x="850" y="130" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-19" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-5" target="qzIoYZi1g3b4XHvA30KT-7">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="950" y="192" as="sourcePoint" />
+            <mxPoint x="1046" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-20" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-8" target="qzIoYZi1g3b4XHvA30KT-9">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="990" y="352" as="sourcePoint" />
+            <mxPoint x="1086" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-21" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-10" target="qzIoYZi1g3b4XHvA30KT-12">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1020" y="492" as="sourcePoint" />
+            <mxPoint x="1116" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-22" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-11" target="qzIoYZi1g3b4XHvA30KT-13">
+          <mxGeometry x="0.1653" y="16" width="160" relative="1" as="geometry">
+            <mxPoint x="1000" y="622" as="sourcePoint" />
+            <mxPoint x="1096" y="570" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-23" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="edgeStyle=none;html=1;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="qzIoYZi1g3b4XHvA30KT-11" target="qzIoYZi1g3b4XHvA30KT-14">
+          <mxGeometry x="0.2241" y="16" width="160" relative="1" as="geometry">
+            <mxPoint x="980" y="702" as="sourcePoint" />
+            <mxPoint x="1076" y="650" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
