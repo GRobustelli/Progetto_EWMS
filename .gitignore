@@ -1,0 +1,57 @@
+# --- Maven ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# Se usi il Maven Wrapper, non ignorare .mvn/wrapper/maven-wrapper.properties
+
+# --- IntelliJ IDEA ---
+# Ignora le configurazioni personali dell'utente, ma mantieni quelle del progetto
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries
+.idea/shelf
+.idea/httpRequests/
+
+# File generati da IntelliJ che non dovrebbero essere nel repository
+*.iml
+*.iws
+*.ipr
+
+# --- Java ---
+*.class
+*.log
+*.ctxt
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# --- Web / Application Server ---
+# Log specifici dei server (Tomcat, Jetty, etc) se presenti nella root
+*.log
+logs/
+log/
+
+# --- File di Sistema Operativo ---
+.DS_Store
+.DS_Store?
+._*
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# --- Sicurezza e Configurazioni Locali ---
+# File che potrebbero contenere password o chiavi API
+.env
+application-local.properties
+application-local.yaml
+secret.properties
