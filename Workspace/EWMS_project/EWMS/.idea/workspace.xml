@@ -9,10 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f29239c3-b49d-49f7-a90a-6543bd6ee023" name="Changes" comment="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f29239c3-b49d-49f7-a90a-6543bd6ee023" name="Changes" comment="Add: classe, prova del mio gitignore" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -209,7 +206,7 @@
       <workItem from="1767695350737" duration="42000" />
       <workItem from="1767695434875" duration="276000" />
       <workItem from="1767952045224" duration="820000" />
-      <workItem from="1767954734286" duration="963000" />
+      <workItem from="1767954734286" duration="1031000" />
     </task>
     <task id="LOCAL-00001" summary="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven">
       <option name="closed" value="true" />
@@ -219,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767954900317</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add: classe, prova del mio gitignore">
+      <option name="closed" value="true" />
+      <created>1767955730668</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1767955730668</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,6 +232,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven" />
+    <MESSAGE value="Add: classe, prova del mio gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add: classe, prova del mio gitignore" />
   </component>
 </project>
