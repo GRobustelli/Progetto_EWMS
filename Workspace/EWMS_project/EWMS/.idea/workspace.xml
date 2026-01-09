@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f29239c3-b49d-49f7-a90a-6543bd6ee023" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+    <list default="true" id="f29239c3-b49d-49f7-a90a-6543bd6ee023" name="Changes" comment="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -211,10 +209,24 @@
       <workItem from="1767695350737" duration="42000" />
       <workItem from="1767695434875" duration="276000" />
       <workItem from="1767952045224" duration="820000" />
+      <workItem from="1767954734286" duration="963000" />
     </task>
+    <task id="LOCAL-00001" summary="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven">
+      <option name="closed" value="true" />
+      <created>1767954900317</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1767954900317</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add: iniziallizzato progetto ewms, aggiunte diversi file di configurazione principalmente testing maven" />
   </component>
 </project>
