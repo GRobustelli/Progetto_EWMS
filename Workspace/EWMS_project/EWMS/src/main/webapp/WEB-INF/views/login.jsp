@@ -19,11 +19,11 @@
             <%String error = "Credenziali errate";%>
             <c:if test="${not empty error}">
                 <div class="error-banner">
-                    <p>${error}</p>
+                    <p><%= error%></p>
                 </div>
             </c:if>
-            <form name="form1" action="LoginControl" method="post">
-                <div class="form-group">
+            <form name="form1" action="LoginControl" method="post"> <!--anche qui nel campo action intendo quale controller utilizzare-->
+                <div class="form-group">                            <!--come prima, non hanno senso, sono dei placeholder-->
                     <label for="username">Email/Username</label>
                     <input type="text" id="username" name="username" required placeholder="Inserisci il tuo username">
                 </div>
