@@ -1,7 +1,7 @@
 <c:choose> <!--qui faccio la distinzione tra homepage di supervisore e dipendente (pressocché simili) da quella del gestore-->
     <c:when test="${sessionScope.utente.ruolo != 'Gestore'}">
         <div class="filtri_task">
-            <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist"><!--qui faccio i vari check per decidere cosa inserire nella navbar in base al tipo di utente che accede-->
                 <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
                     <li class="nav-item" role="presentation">
                         <a href="FilterControl?action=fetchTasks(done)">
@@ -31,68 +31,80 @@
                     </a>
                 </li>
             </ul>
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade" id="pills-done" role="tabpanel" aria-labelledby="pills-done-tab" tabindex="0">
-                    <ul class="list-group">
-                        <c:forEach var="task" items="${taskList}">
-                            <li class="list-group-item">
-                                <div class="badge text-bg-secondary">Task #${task.id}</div>
-                                <div class="task-description">${task.descrizione}</div>
-                                <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
-                                    <div class="badge rounded-pill text-bg-primary">Dettagli</div>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="pills-todo" role="tabpanel" aria-labelledby="pills-todo-tab" tabindex="0">
-                    <ul class="list-group">
-                        <c:forEach var="task" items="${taskList}">
-                            <li class="list-group-item">
-                                <div class="badge text-bg-secondary">Task #${task.id}</div>
-                                <div class="task-description">${task.descrizione}</div>
-                                <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
-                                    <div class="badge rounded-pill text-bg-primary">Dettagli</div>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-                <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab" tabindex="0">
-                    <ul class="list-group">
-                        <c:forEach var="task" items="${taskList}">
-                            <li class="list-group-item">
-                                <div class="badge text-bg-secondary">Task #${task.id}</div>
-                                <div class="task-description">${task.descrizione}</div>
-                                <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
-                                    <div class="badge rounded-pill text-bg-primary">Dettagli</div>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="pills-hold" role="tabpanel" aria-labelledby="pills-hold-tab" tabindex="0">
-                    <ul class="list-group">
-                        <c:forEach var="task" items="${taskList}">
-                            <li class="list-group-item">
-                                <div class="badge text-bg-secondary">Task #${task.id}</div>
-                                <div class="task-description">${task.descrizione}</div>
-                                <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
-                                    <div class="badge rounded-pill text-bg-primary">Dettagli</div>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade" id="pills-done" role="tabpanel" aria-labelledby="pills-done-tab" tabindex="0">
+                <ul class="list-group">
+                    <c:forEach var="task" items="${taskList}">
+                        <li class="list-group-item">
+                            <div class="badge text-bg-secondary">Task #${task.id}</div>
+                            <div class="task-description">${task.descrizione}</div>
+                            <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
+                                <div class="badge rounded-pill text-bg-primary">Dettagli</div>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="pills-todo" role="tabpanel" aria-labelledby="pills-todo-tab" tabindex="0">
+                <ul class="list-group">
+                    <c:forEach var="task" items="${taskList}">
+                        <c:if test="${empty taskList}">
+                            <tr><td colspan="6">Nessun task trovato.</td></tr>
+                        </c:if>
+                        <li class="list-group-item">
+                            <div class="badge text-bg-secondary">Task #${task.id}</div>
+                            <div class="task-description">${task.descrizione}</div>
+                            <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
+                                <div class="badge rounded-pill text-bg-primary">Dettagli</div>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <div class="tab-pane fade show active" id="pills-ongoing" role="tabpanel" aria-labelledby="pills-ongoing-tab" tabindex="0">
+                <ul class="list-group">
+                    <c:forEach var="task" items="${taskList}">
+                        <c:if test="${empty taskList}">
+                            <tr><td colspan="6">Nessun task trovato.</td></tr>
+                        </c:if>
+                        <li class="list-group-item">
+                            <div class="badge text-bg-secondary">Task #${task.id}</div>
+                            <div class="task-description">${task.descrizione}</div>
+                            <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
+                                <div class="badge rounded-pill text-bg-primary">Dettagli</div>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="pills-hold" role="tabpanel" aria-labelledby="pills-hold-tab" tabindex="0">
+                <ul class="list-group">
+                    <c:forEach var="task" items="${taskList}">
+                        <c:if test="${empty taskList}">
+                            <tr><td colspan="6">Nessun task trovato.</td></tr>
+                        </c:if>
+                        <li class="list-group-item">
+                            <div class="badge text-bg-secondary">Task #${task.id}</div>
+                            <div class="task-description">${task.descrizione}</div>
+                            <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
+                                <div class="badge rounded-pill text-bg-primary">Dettagli</div>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
         </div>
     </c:when>
     <c:otherwise>
         <ul class="list-group lista-utenti-gestore"><
             <c:forEach var="user" items="${userList}">
+                <c:if test="${empty userList}">
+                    <tr><td colspan="6">Nessun utente trovato.</td></tr>
+                </c:if>
                 <li class="list-group-item">
                     <div class="badge text-bg-secondary">${user.nome} ${user.cognome} - #${user.matricola} - ${user.ruolo}</div>
-                    <a href="ModProfileControl?action=ModProfile.jsp&id=${user.id}">
+                    <a href="ModProfileControl?action=modProfile.jsp&id=${user.matricola}">
                         <div class="badge rounded-pill text-bg-primary">Visualizza Profilo</div>
                     </a>
                 </li>

@@ -26,8 +26,8 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
             <c:if class="menu-links">
 
                 <c:if test="${viewPath != 'views/homepage.jsp'}">
-                <a href="LoginControl?action=home" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
-                    <img src="imgs/home.jpg" alt="home">                <!--non hanno senso logico definito, sono li giusto per aiutarti a capire cosa dovrebbe fare-->
+                <a href="LoginControl?action=homepage.jsp&id=${sessionScope.utente.matricola}" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
+                    <i class="bi bi-house-door"></i>                                                              <!--non hanno senso logico definito, sono li giusto per aiutarti a capire cosa dovrebbe fare-->
                 </a>
                 </c:if>
 
@@ -35,27 +35,27 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
                     <c:if test="${viewPath != 'views/crea_task.jsp'}"></c:if>
                     <a href="CreaTaskControl?action=viewCreate" class="btn-create" >
-                        <img src="imgs/create.jpg" alt="crea_task">
+                        <i class="bi bi-plus-circle"></i>
                     </a>
                 </c:if>
 
                 <c:if test="${sessionScope.utente.ruolo != 'Gestore'}"></c:if>
                     <a href="NotificationControl?action=notifications" class="btn-create">
-                        <img src="imgs/bell.jpg" alt="notifiche">
+                        <i class="bi bi-bell"></i>
                     </a>
                 </c:if>
 
                 <c:if test="${sessionScope.utente.ruolo == 'Gestore'}">
                     <c:if test="${viewPath != 'views/creaAccount.jsp'}">
                         <a href="AddUtenteControl?action=createNewAccount" class="btn-create">
-                            <img src="imgs/create.jpg" alt="crea_account">
+                            <i class="bi bi-plus-circle"></i>
                         </a>
                     </c:if>
                 </c:if>
 
                 <c:if test="${viewPath != 'views/profilo.jsp'}">
                     <a href="ViewProfileControl?action=profilo.jsp&id=${sessionScope.utente.matricola}">
-                        <img src="imgs/profile.jpg" alt="profilo">
+                        <i class="bi bi-person-square"></i>
                     </a>
                 </c:if>
 
