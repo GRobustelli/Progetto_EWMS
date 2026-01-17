@@ -15,7 +15,8 @@ public class DataSourceFactory {
     private static HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
 
-    static {
+    private static void initDataSource() {
+
         //Cerco il file database.properties
         Properties prop = new Properties();
 
@@ -28,9 +29,11 @@ public class DataSourceFactory {
         prop.load(in);
 
         // Configurazione JDBC
-        config.setJdbcUrl("db.url");
-        config.setUsername("db.username");
-        config.setPassword("db.password");
+
+
+        config.setJdbcUrl(prop.getProperty("db.url"));
+        config.setUsername(prop.getProperty("db.username"));
+        config.setPassword(prop.getProperty("db.password"));
 
         // Configurazione specifica del Connection Pool (opzionale ma consigliata)
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -50,6 +53,9 @@ public class DataSourceFactory {
     private DataSourceFactory() {}
 
     public static Connection getConnection() throws SQLException {
+        if (ds == null) {
+            initDataSource();
+        }
         return ds.getConnection();
     }
 }

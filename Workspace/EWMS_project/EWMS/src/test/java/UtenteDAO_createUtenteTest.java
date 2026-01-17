@@ -38,7 +38,6 @@ class UtenteDaoTest {
         utenteMock.setNome("Mario");
         utenteMock.setCognome("Rossi");
         utenteMock.setDataNasc(Date.valueOf(LocalDate.of(1990, 1, 1)));
-        utenteMock.setPassword("hashedPwd");
         utenteMock.setRuolo(Tipi.ruolo.DIPENDENTE);
     }
 
@@ -53,7 +52,7 @@ class UtenteDaoTest {
             when(preparedStatementMock.execute()).thenReturn(true);
 
             // 2. Eseguire il metodo da testare
-            utenteDao.createUtente(utenteMock);
+            utenteDao.createUtente(utenteMock, "1233456");
 
             // 3. Verificare (Verify) che i metodi SQL siano stati chiamati con i parametri corretti
             verify(connectionMock).prepareStatement(contains("INSERT INTO utente"));
@@ -63,8 +62,7 @@ class UtenteDaoTest {
             verify(preparedStatementMock).setString(3, utenteMock.getNome());
             verify(preparedStatementMock).setString(4, utenteMock.getCognome());
             verify(preparedStatementMock).setDate(5, utenteMock.getDataNasc());
-            verify(preparedStatementMock).setString(6, utenteMock.getPassword());
-            verify(preparedStatementMock).setString(7, utenteMock.getRuolo().toString());
+            verify(preparedStatementMock).setString(6, utenteMock.getRuolo().toString());
 
             verify(preparedStatementMock).execute();
             // Verifica che la connessione venga chiusa (grazie al try-with-resources nel codice originale)
@@ -75,7 +73,7 @@ class UtenteDaoTest {
     @Test
     void testCreateUtente_NullThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            utenteDao.createUtente(null);
+            utenteDao.createUtente(null, "12345");
         });
     }
 
@@ -87,7 +85,7 @@ class UtenteDaoTest {
             when(connectionMock.prepareStatement(anyString())).thenThrow(new SQLException("Database error"));
 
             assertThrows(RuntimeException.class, () -> {
-                utenteDao.createUtente(utenteMock);
+                utenteDao.createUtente(utenteMock, null);
             });
 
             // Verifica che la connessione venga chiusa anche in caso di errore
