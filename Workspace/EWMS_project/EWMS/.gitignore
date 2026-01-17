@@ -16,6 +16,10 @@ target/
 *.iml
 *.ipr
 .idea/dataSources/
+
+# --- IntelliJ Database & SQL Configs ---
+.idea/sqldialects.xml
+.idea/data_source_mapping.xml
 # Ignora credenziali database
 src/main/resources/database.properties
 ### Eclipse ###
