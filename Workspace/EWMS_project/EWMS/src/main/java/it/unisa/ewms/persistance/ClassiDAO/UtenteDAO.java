@@ -33,7 +33,7 @@ public class UtenteDAO implements IUtenteDAO {
                 System.out.println("Inserimento nuovo utente riuscito");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLException(e);
         }
     }
 

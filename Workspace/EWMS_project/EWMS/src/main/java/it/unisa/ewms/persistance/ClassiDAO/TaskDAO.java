@@ -106,7 +106,7 @@ public class TaskDAO implements ITaskDAO {
                     task.setDataDiScadenza(rs.getDate("data_scadenza"));
                     task.setIstruzioni(rs.getString("istruzioni"));
 
-                    // Conversione da String a Enum
+                    // Conversione da String ad Enum
                     String statoStr = rs.getString("stato");
                     if (statoStr != null) {
                         task.setStato(Tipi.stato.valueOf(statoStr));
