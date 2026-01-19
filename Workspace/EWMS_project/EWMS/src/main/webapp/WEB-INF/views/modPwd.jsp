@@ -3,7 +3,7 @@
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
 <div class="mod-pwd">
-    <form action="ChangePwdControl" method="post" name="form">
+    <form action="ChangePwdControl" method="post">
         <h2>Vecchia password</h2>
         <input type="text" placeholder="Inserisci la vecchia password" name="old">
 
