@@ -1,5 +1,7 @@
 CREATE SCHEMA ewmsDB;
+
 use ewmsDB;
+
 create table Utente (
 matricola char(13) primary key not null,
 email varchar(250) character set utf8mb4 unique not null,
@@ -55,10 +57,14 @@ foreign key (task_id) references Task(id) on update cascade on delete cascade
 create table Notifica(
 id bigint auto_increment not null primary key,
 task_id bigint not null,
--- messaggio varchar
+messaggio varchar(500),
 sender char(13) not null,
 receiver char(13) not null,
+vista boolean not null default false,
 foreign key (task_id) references Task(id) on update cascade on delete cascade,
 foreign key (sender) references Utente(matricola) on update cascade on delete cascade,
 foreign key (receiver) references Utente(matricola) on update cascade on delete cascade
 );
+
+
+drop schema ewmsdb;
