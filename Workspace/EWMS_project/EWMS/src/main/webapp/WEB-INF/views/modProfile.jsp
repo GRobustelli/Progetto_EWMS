@@ -24,8 +24,58 @@
             <button type="button" class="btn-warning">Cambia ruolo</button>
         </a>
 
-        <a href="DeleteAccountControl?action=delete&delID=${utenteTrovato.matricola}">
-            <button type="button" class="btn-info">Genera password</button>
-        </a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+            Cambia ruolo
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Conferma</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Confermi di voler modificare il ruolo di questo utente?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
+                        <a href="ChangeRoleControl?action=modifyRole">
+                            <button type="button" class="btn btn-outline-success">Conferma</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Elimina account
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Conferma</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Confermi di voler eliminare questo account?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
+                        <a href="DeleteAccountControl?action=delete&delID=${utenteTrovato.matricola}">
+                            <button type="button" class="btn btn-outline-success">Conferma</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

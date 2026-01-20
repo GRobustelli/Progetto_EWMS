@@ -31,10 +31,9 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 </a>
                 </c:if>
 
-                <!--dopo inserirò le immagini nella cartella imgs-->
                 <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
-                    <c:if test="${viewPath != 'views/crea_task.jsp'}"></c:if>
-                    <a href="CreaTaskControl?action=viewCreate" class="btn-create" >
+                    <c:if test="${viewPath != 'views/creaTask.jsp'}"></c:if>
+                    <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
                         <i class="bi bi-plus-circle"></i>
                     </a>
                 </c:if>
@@ -47,7 +46,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
 
                 <c:if test="${sessionScope.utente.ruolo == 'Gestore'}">
                     <c:if test="${viewPath != 'views/creaAccount.jsp'}">
-                        <a href="AddUtenteControl?action=createNewAccount" class="btn-create">
+                        <a href="AddUtenteControl?action=addAccount" class="btn-create">
                             <i class="bi bi-plus-circle"></i>
                         </a>
                     </c:if>

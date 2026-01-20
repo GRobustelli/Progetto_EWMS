@@ -54,6 +54,14 @@
       <scope>test</scope>
     </dependency>
 
+    <!--
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>5.3.8</version>
+      <scope>compile</scope>
+    </dependency>
+    qui poi ti devo chiedere perché non scarica le dependencies, dovremmo mettere il tag repositories per la repository di maven central-->
   </dependencies>
   <build>
     <finalName>EWMS</finalName>
