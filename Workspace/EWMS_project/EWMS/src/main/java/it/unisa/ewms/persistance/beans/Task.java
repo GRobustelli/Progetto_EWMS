@@ -11,11 +11,13 @@ public class Task {
     private Tipi.stato stato;
     private String supervisore;
     private String dipendente;
+    private Allegato allegato;
+    private Tipi.priorita priorita;
 
     public Task() {
     }
 
-    public Task(int id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, String supervisore, String dipendente) {
+    public Task(int id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, String supervisore, String dipendente, Tipi.priorita priorita) {
         this.id = id;
         this.titolo = titolo;
         this.dataDiScadenza = dataDiScadenza;
@@ -24,6 +26,8 @@ public class Task {
         this.stato = stato;
         this.supervisore = supervisore;
         this.dipendente = dipendente;
+        this.priorita = priorita;
+        allegato = null;
     }
 
     public int getId() {
@@ -90,4 +94,19 @@ public class Task {
         this.dipendente = dipendente;
     }
 
+    public Allegato getAllegato() {
+        return allegato;
+    }
+
+    public void setAllegato(Allegato allegato) {
+        this.allegato = allegato;
+    }
+
+    public Tipi.priorita getPriorita() {
+        return priorita;
+    }
+
+    public void setPriorita(Tipi.priorita priorita) {
+        this.priorita = priorita;
+    }
 }

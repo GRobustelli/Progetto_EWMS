@@ -5,15 +5,18 @@ public class Notifica {
     private int taskId;
     private String sender;
     private String receiver;
-
+    private boolean vista;
+    private String messaggio;
     public Notifica() {
     }
 
-    public Notifica(int id, int taskId, String sender, String receiver) {
+    public Notifica(int id, int taskId, String sender, String receiver, String messaggio) {
         this.id = id;
         this.taskId = taskId;
         this.sender = sender;
         this.receiver = receiver;
+        this.messaggio = messaggio;
+        this.vista = false;
     }
 
     public int getId() {
@@ -46,5 +49,21 @@ public class Notifica {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public boolean isVista() {
+        return vista;
+    }
+
+    public void setVista(boolean vista) {
+        this.vista = vista;
+    }
+
+    public String getMessaggio() {
+        return messaggio;
+    }
+
+    public void setMessaggio(String messaggio) {
+        this.messaggio = messaggio;
     }
 }

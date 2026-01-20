@@ -2,6 +2,7 @@ import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
 import it.unisa.ewms.persistance.DataSourceFactory;
 import it.unisa.ewms.persistance.beans.Tipi;
 import it.unisa.ewms.persistance.beans.Utente;
+import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -67,6 +68,8 @@ class UtenteDaoTest {
             verify(preparedStatementMock).execute();
             // Verifica che la connessione venga chiusa (grazie al try-with-resources nel codice originale)
             verify(connectionMock).close();
+        } catch (EmailGiaPresenteException e) {
+            throw new RuntimeException(e);
         }
     }
 

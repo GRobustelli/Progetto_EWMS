@@ -20,15 +20,16 @@ public class NotificaDAO implements INotificaDAO {
             throw new IllegalArgumentException("L'oggetto notifica non può essere null.");
         }
 
-        String insertSql = "INSERT INTO notifica (task_id, sender, receiver) VALUES (?, ?, ?)";
+        String insertSql = "INSERT INTO notifica (task_id,messaggio, sender, receiver) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DataSourceFactory.getConnection();
 
              PreparedStatement ps = connection.prepareStatement(insertSql)) {
 
             ps.setInt(1, notifica.getTaskId());
-            ps.setString(2, notifica.getSender());
-            ps.setString(3, notifica.getReceiver());
+            ps.setString(2,notifica.getMessaggio());
+            ps.setString(3, notifica.getSender());
+            ps.setString(4, notifica.getReceiver());
 
             ps.executeUpdate();
 
@@ -63,7 +64,7 @@ public class NotificaDAO implements INotificaDAO {
                     notifica.setTaskId(rs.getInt("task_id"));
                     notifica.setSender(rs.getString("sender"));
                     notifica.setReceiver(rs.getString("receiver"));
-
+                    notifica.setVista(rs.getBoolean("vista"));
                     notifiche.add(notifica);
                 }
             }

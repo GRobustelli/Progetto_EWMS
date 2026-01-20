@@ -1,30 +1,33 @@
 package it.unisa.ewms.persistance.beans;
 
+import javax.sound.sampled.Line;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Supervisore extends Utente{
 
-    private List<String> dipendetiMat;
+    private List<Informazioni> dipendetiInfo;
 
     public Supervisore() {
-        dipendetiMat = new ArrayList<>();
+        dipendetiInfo = new ArrayList<>();
     }
 
     public Supervisore(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
         super(ruolo,email,matricola,nome,cognome,dataNasc,newUtente);
+        dipendetiInfo = new ArrayList<>();
+
     }
 
-    public void addDipendetiMat(List<String> dipendetiMat) {
-        this.dipendetiMat = dipendetiMat;
+    public void addDipendetiInfo(List<Informazioni> dipendetiInfo) {
+        this.dipendetiInfo = dipendetiInfo;
     }
 
-    public void addDipendenteMat(String dipendenteMat) {
-        this.dipendetiMat.add(dipendenteMat);
+    public void addDipendenteInfo(Informazioni dipendenteInfo) {
+        this.dipendetiInfo.add(dipendenteInfo);
     }
 
-    public List<String> getDipendetiMat() {
-        return dipendetiMat;
+    public List<Informazioni> getDipendetiInfo() {
+        return dipendetiInfo;
     }
 }
