@@ -217,13 +217,174 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public void update(Utente utente) {
-
+    public void updateAnagrafica(String nome, String cognome, Date dataDiNascita, String matricola) throws SQLException {
 
     }
 
     @Override
-    public void delete(Utente utente) {
+    public void updateRuolo(String matricola, Tipi.ruolo nuovoRuolo, String matricolaNuovoSupervisore) throws Exception {
+        // Validazione preventiva: Se diventi Dipendente, DEVI avere un supervisore
+        if (nuovoRuolo == Tipi.ruolo.DIPENDENTE && (matricolaNuovoSupervisore == null || matricolaNuovoSupervisore.isEmpty())) {
+            throw new IllegalArgumentException("Impossibile passare al ruolo DIPENDENTE senza specificare un Supervisore.");
+        }
+
+        Connection con = null;
+
+        // Query per leggere il ruolo attuale
+        String selectRuoloSql = "SELECT ruolo FROM utente WHERE matricola = ?";
+        // Query per aggiornare la tabella padre
+        String updateUtenteSql = "UPDATE utente SET ruolo = ? WHERE matricola = ?";
+
+        try {
+            con = DataSourceFactory.getConnection();
+            con.setAutoCommit(false); // 1. INIZIO TRANSAZIONE
+
+            // 2. RECUPERO IL RUOLO ATTUALE
+            Tipi.ruolo ruoloAttuale = null;
+            try (PreparedStatement ps = con.prepareStatement(selectRuoloSql)) {
+                ps.setString(1, matricola);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        ruoloAttuale = Tipi.ruolo.valueOf(rs.getString("ruolo"));
+                    } else {
+                        throw new SQLException("Utente non trovato: " + matricola);
+                    }
+                }
+            }
+
+            // Se il ruolo è lo stesso, non faccio nulla ed esco
+            if (ruoloAttuale == nuovoRuolo) {
+                con.rollback(); // O commit, ininfluente qui
+                return;
+            }
+
+            // 3. CANCELLO DALLA VECCHIA TABELLA SPECIFICA (Pulizia)
+            // Se era Gestore, non faccio nulla perché non ha tabella specifica
+            if (ruoloAttuale == Tipi.ruolo.DIPENDENTE) {
+                deleteFromTable(con, "dipendente", matricola);
+            } else if (ruoloAttuale == Tipi.ruolo.SUPERVISORE) {
+                deleteFromTable(con, "supervisore", matricola);
+            }
+
+            // 4. AGGIORNO LA TABELLA PADRE (UTENTE)
+            try (PreparedStatement ps = con.prepareStatement(updateUtenteSql)) {
+                ps.setString(1, nuovoRuolo.name());
+                ps.setString(2, matricola);
+                ps.executeUpdate();
+            }
+
+            // 5. INSERISCO NELLA NUOVA TABELLA SPECIFICA (Migrazione)
+            // Se diventa Gestore, non faccio nulla
+            if (nuovoRuolo == Tipi.ruolo.DIPENDENTE) {
+                insertIntoDipendente(con, matricola, matricolaNuovoSupervisore);
+            } else if (nuovoRuolo == Tipi.ruolo.SUPERVISORE) {
+                insertIntoSupervisore(con, matricola);
+            }
+
+            con.commit(); // 6. CONFERMO TUTTO
+
+        } catch (Exception e) {
+            if (con != null) {
+                try {
+                    con.rollback(); // ROLLBACK IN CASO DI ERRORE
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw new Exception("Errore durante il cambio ruolo per " + matricola, e);
+        } finally {
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
+        }
+    }
+
+    //Non so se inserirli nei documenti
+    private void deleteFromTable(Connection con, String tabella, String matricola){
+        String sql  = "DELETE FROM "+ tabella +  "WHERE matricola = ?";
+
+        try(PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, matricola);
+            ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
+
+    //Non so se inserirli nei documenti
+    private void insertIntoSupervisore(Connection con, String matricola) throws SQLException {
+        String sql = "INSERT INTO supervisore (matricola) VALUES (?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, matricola);
+            ps.executeUpdate();
+        }
+    }
+
+    //Non so se inserirli nei documenti
+    private void insertIntoDipendente(Connection con, String matricola, String supMatricola) throws SQLException {
+        String sql = "INSERT INTO dipendente (matricola, supMatricola) VALUES (?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, matricola);
+            ps.setString(2, supMatricola);
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public void updateSupervisore(String matricola, String matricolaSup) throws SQLException {
+        String sql = "UPDATE dipendente SET supMatricola  = ? WHERE matricola = ? ";
+
+        try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+
+            ps.setString(1, matricolaSup);
+            ps.setString(2, matricola);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void updatePassword(String matricola, String hashPassword) throws SQLException {
+        String sql = "UPDATE utente SET hashPassword = ? WHERE matricola = ? ";
+        try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, hashPassword);
+            ps.setString(2, matricola);
+            ps.executeUpdate();
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void updateAnagrafica(Utente utente) {
+    }
+
+    @Override
+    public void delete(Utente utente) {
+        // Grazie al CASCADE sul DB, basta cancellare dalla tabella padre.
+        String sql = "DELETE FROM utente WHERE matricola = ?";
+
+        try (Connection con = DataSourceFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, utente.getMatricola());
+
+            int rows = ps.executeUpdate();
+
+            if (rows == 0) {
+                // Opzionale: lanciare eccezione se l'utente non esisteva
+                throw new SQLException("Impossibile cancellare: nessun utente trovato con matricola " + utente.getMatricola());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

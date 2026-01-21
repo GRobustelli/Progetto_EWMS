@@ -221,6 +221,21 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
+    public void updateStatus(long id, Tipi.stato nuovoStato) throws Exception {
+        String sql = "UPDATE task SET stato = ? where  id = ?";
+
+        try (Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nuovoStato.toString());
+            ps.setLong(2, id);
+            ps.executeUpdate();
+
+        }catch (SQLException e){
+            throw new Exception("Errore durante il update per task: " + id, e);
+        }
+    }
+
+    @Override
+
     public void update(Task task) throws Exception {
         String updateSql = "UPDATE task SET titolo = ?, dataDiCreazione = ?, dataDiScadenza = ?, istruzioni = ?, stato = ?, supervisore = ?, dipendente = ?, priorita = ? WHERE id = ?";
 
@@ -249,6 +264,8 @@ public class TaskDAO implements ITaskDAO {
             throw new Exception("Errore durante l'aggiornamento del task con ID: " + task.getId(), e);
         }
     }
+
+
 
     @Override
     public void delete(int id) throws Exception {

@@ -1,11 +1,9 @@
 package it.unisa.ewms.persistance.interfaces;
 
-import it.unisa.ewms.persistance.beans.Dipendente;
-import it.unisa.ewms.persistance.beans.Informazioni;
-import it.unisa.ewms.persistance.beans.Supervisore;
-import it.unisa.ewms.persistance.beans.Utente;
+import it.unisa.ewms.persistance.beans.*;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,6 +16,14 @@ public interface IUtenteDAO {
     List<Informazioni> getAllDipendentiInfo(String matricola) throws SQLException; // oppure con utente direttamente
     Informazioni getSupervisoreInfo(String matricola)  throws SQLException;
 
-    void  update(Utente utente)  throws SQLException;
+
+
+    void updateAnagrafica(String nome, String cognome, Date dataDiNascita, String matricola)  throws SQLException;
+    void updateRuolo(String matricola, Tipi.ruolo nuovoRuolo, String matricolaNuovoSupervisore) throws Exception;
+    void updateSupervisore(String matricola, String matricolaSup) throws SQLException;
+    void updatePassword(String matricola, String hashPassword) throws SQLException;
+
+
     void delete(Utente utente)  throws SQLException;
+
 }
