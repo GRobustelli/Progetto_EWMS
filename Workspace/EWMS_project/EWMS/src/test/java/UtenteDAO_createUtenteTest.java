@@ -1,7 +1,7 @@
 import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
 import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.beans.Tipi;
-import it.unisa.ewms.persistance.beans.Utente;
+import it.unisa.ewms.model.beans.Tipi;
+import it.unisa.ewms.model.beans.Utente;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

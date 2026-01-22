@@ -1,7 +1,7 @@
 package it.unisa.ewms.persistance.ClassiDAO;
 
+import it.unisa.ewms.model.beans.*;
 import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.beans.*;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
 
@@ -199,7 +199,7 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public Informazioni getSupervisoreInfo(String matricola) throws SQLException {
-        String sqlSupInfo = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.matricola WHERE d.matricola = ?";
+        String sqlSupInfo = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.supMatricola WHERE d.matricola = ?";
 
         Informazioni informazioni = null;
         try(Connection conn = DataSourceFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sqlSupInfo)){
@@ -362,8 +362,6 @@ public class UtenteDAO implements IUtenteDAO {
         }
     }
 
-    public void updateAnagrafica(Utente utente) {
-    }
 
     @Override
     public void delete(Utente utente) {

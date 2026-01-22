@@ -1,8 +1,8 @@
 package it.unisa.ewms.persistance.ClassiDAO;
 
 import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.beans.Notifica;
-import it.unisa.ewms.persistance.beans.Utente;
+import it.unisa.ewms.model.beans.Notifica;
+import it.unisa.ewms.model.beans.Utente;
 import it.unisa.ewms.persistance.interfaces.INotificaDAO;
 
 import java.sql.Connection;

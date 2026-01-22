@@ -1,9 +1,9 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
 import java.sql.Date;
 
 public class Task {
-    private int id;
+    private long id;
     private String titolo;
     private Date dataCreazione;
     private Date dataDiScadenza;
@@ -17,7 +17,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(int id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, String supervisore, String dipendente, Tipi.priorita priorita) {
+    public Task(long id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, String supervisore, String dipendente, Tipi.priorita priorita) {
         this.id = id;
         this.titolo = titolo;
         this.dataDiScadenza = dataDiScadenza;
@@ -30,11 +30,11 @@ public class Task {
         allegato = null;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

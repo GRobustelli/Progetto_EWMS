@@ -1,10 +1,10 @@
 package it.unisa.ewms.persistance.ClassiDAO;
 
 import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.beans.Allegato;
-import it.unisa.ewms.persistance.beans.Task;
-import it.unisa.ewms.persistance.beans.Tipi;
-import it.unisa.ewms.persistance.beans.Utente;
+import it.unisa.ewms.model.beans.Allegato;
+import it.unisa.ewms.model.beans.Task;
+import it.unisa.ewms.model.beans.Tipi;
+import it.unisa.ewms.model.beans.Utente;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
 
 
@@ -60,7 +60,7 @@ public class TaskDAO implements ITaskDAO {
                 psAllegato = connection.prepareStatement(insertAllegatoSql);
 
                 psAllegato.setString(1, task.getAllegato().getFilename()); // Primary Key allegato
-                psAllegato.setInt(2, task.getId()); // Foreign Key che collega al Task
+                psAllegato.setLong(2, task.getId()); // Foreign Key che collega al Task
                 psAllegato.setString(3, task.getAllegato().getFilePath());
                 psAllegato.setString(4, task.getAllegato().getContentType());
 
@@ -94,7 +94,7 @@ public class TaskDAO implements ITaskDAO {
 
 
     @Override
-    public Task findById(int id) throws Exception {
+    public Task findById(long id) throws Exception {
         /* Uso una LEFT JOIN per collegare la tabella Task (t) con Allegato (a).
            Se l'allegato non esiste, le colonne che iniziano con 'a.' saranno NULL,
            ma il Task verrà comunque recuperato.
@@ -109,7 +109,7 @@ public class TaskDAO implements ITaskDAO {
         try (Connection connection = DataSourceFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectSql)) {
 
-            ps.setInt(1, id);
+            ps.setLong(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -235,7 +235,6 @@ public class TaskDAO implements ITaskDAO {
     }
 
     @Override
-
     public void update(Task task) throws Exception {
         String updateSql = "UPDATE task SET titolo = ?, dataDiCreazione = ?, dataDiScadenza = ?, istruzioni = ?, stato = ?, supervisore = ?, dipendente = ?, priorita = ? WHERE id = ?";
 
@@ -256,7 +255,7 @@ public class TaskDAO implements ITaskDAO {
             ps.setString(8, task.getPriorita().name());
 
             // L'ID viene usato nella clausola WHERE come ultimo parametro
-            ps.setInt(9, task.getId());
+            ps.setLong(9, task.getId());
 
             ps.executeUpdate();
 
@@ -265,17 +264,15 @@ public class TaskDAO implements ITaskDAO {
         }
     }
 
-
-
     @Override
-    public void delete(int id) throws Exception {
+    public void delete(long id) throws Exception {
 
         String deleteSql = "DELETE FROM task WHERE id = ?";
 
         try (Connection connection = DataSourceFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(deleteSql)) {
 
-            ps.setInt(1, id);
+            ps.setLong(1, id);
 
             ps.executeUpdate();
 

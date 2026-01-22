@@ -1,6 +1,5 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
-import javax.sound.sampled.Line;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;

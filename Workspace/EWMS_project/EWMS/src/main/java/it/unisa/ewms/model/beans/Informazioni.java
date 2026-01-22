@@ -1,4 +1,4 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
 public class Informazioni {
     private String matricola;

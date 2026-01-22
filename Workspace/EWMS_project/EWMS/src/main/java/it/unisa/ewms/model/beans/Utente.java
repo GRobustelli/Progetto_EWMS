@@ -1,7 +1,6 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
 import java.sql.Date;
-import java.util.Set;
 
 public class Utente {
     private String email;
