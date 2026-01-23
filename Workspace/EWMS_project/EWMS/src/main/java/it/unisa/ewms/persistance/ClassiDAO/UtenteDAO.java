@@ -12,7 +12,7 @@ import java.util.List;
 public class UtenteDAO implements IUtenteDAO {
 
     private void insertUtenteGenerico(Connection conn, Utente utente, String password) throws SQLException, EmailGiaPresenteException {
-        if (utente == null) {
+        if (utente == null || password == null || password.isEmpty()) {
             throw new IllegalArgumentException();
         }
 
@@ -142,8 +142,8 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public Utente findByMatricola(String matricola) {
-        if (matricola == null) {
-            throw new IllegalArgumentException();
+        if (matricola == null || matricola.isEmpty()) {
+            throw new IllegalArgumentException("La matricola non può essere nulla");
         }
 
         String sql = "SELECT * FROM utente WHERE matricola = ?";
@@ -176,8 +176,8 @@ public class UtenteDAO implements IUtenteDAO {
     @Override
     public List<Informazioni> getAllDipendentiInfo(String matricola) throws SQLException {
         List<Informazioni> dipendentiInfo = new ArrayList<>();
-        if (matricola == null) {
-            throw new IllegalArgumentException();
+        if (matricola == null || matricola.isEmpty()) {
+            throw new IllegalArgumentException("La matricola non può essere nulla");
         }
         String sql = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.matricola WHERE d.supMatricola = ?";
 
@@ -199,6 +199,10 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public Informazioni getSupervisoreInfo(String matricola) throws SQLException {
+        if (matricola == null || matricola.isEmpty()) {
+            throw new IllegalArgumentException("La matricola non può essere nulla");
+        }
+
         String sqlSupInfo = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.supMatricola WHERE d.matricola = ?";
 
         Informazioni informazioni = null;
@@ -223,10 +227,23 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void updateRuolo(String matricola, Tipi.ruolo nuovoRuolo, String matricolaNuovoSupervisore) throws Exception {
+
+        //Controlliamo le precondizioni
+        if (matricola == null || matricola.isEmpty()) {
+            throw new IllegalArgumentException("La matricola non può essere nulla");
+        }
+
+        if (nuovoRuolo == null) {
+            throw new IllegalArgumentException("Il ruolo non può essere nullo");
+        }
+
         // Validazione preventiva: Se diventi Dipendente, DEVI avere un supervisore
+
         if (nuovoRuolo == Tipi.ruolo.DIPENDENTE && (matricolaNuovoSupervisore == null || matricolaNuovoSupervisore.isEmpty())) {
             throw new IllegalArgumentException("Impossibile passare al ruolo DIPENDENTE senza specificare un Supervisore.");
         }
+
+
 
         Connection con = null;
 
@@ -336,6 +353,10 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void updateSupervisore(String matricola, String matricolaSup) throws SQLException {
+        if (matricola == null || matricola.isEmpty() || matricolaSup == null || matricolaSup.isEmpty() ) {
+            throw new IllegalArgumentException();
+        }
+
         String sql = "UPDATE dipendente SET supMatricola  = ? WHERE matricola = ? ";
 
         try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
@@ -352,6 +373,10 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void updatePassword(String matricola, String hashPassword) throws SQLException {
+        if (matricola == null ||  matricola.isEmpty() || hashPassword == null || hashPassword.isEmpty() ) {
+            throw new IllegalArgumentException();
+        }
+
         String sql = "UPDATE utente SET hashPassword = ? WHERE matricola = ? ";
         try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
             ps.setString(1, hashPassword);
@@ -366,6 +391,9 @@ public class UtenteDAO implements IUtenteDAO {
     @Override
     public void delete(Utente utente) {
         // Grazie al CASCADE sul DB, basta cancellare dalla tabella padre.
+        if (utente == null) {
+            throw new IllegalArgumentException();
+        }
         String sql = "DELETE FROM utente WHERE matricola = ?";
 
         try (Connection con = DataSourceFactory.getConnection();
