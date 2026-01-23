@@ -15,6 +15,10 @@ import java.util.List;
 public class TaskDAO implements ITaskDAO {
     @Override
     public void create(Task task) throws Exception {
+    if (task == null) {
+        throw new IllegalArgumentException("Il task non può essere null");
+    }
+
         // Definisco le query SQL
         String insertTaskSql = "INSERT INTO Task (titolo, dataDiCreazione, dataDiScadenza, istruzioni, stato, supervisore, dipendente, priorita) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         // Assumo che la tabella Allegato abbia queste colonne come da tua precedente indicazione
@@ -95,6 +99,12 @@ public class TaskDAO implements ITaskDAO {
 
     @Override
     public Task findById(long id) throws Exception {
+
+        //Controllo se l'id è valido
+        if (id <= 0) {
+            throw new IllegalArgumentException("L'ID deve essere un numero positivo");
+        }
+
         /* Uso una LEFT JOIN per collegare la tabella Task (t) con Allegato (a).
            Se l'allegato non esiste, le colonne che iniziano con 'a.' saranno NULL,
            ma il Task verrà comunque recuperato.
@@ -161,7 +171,6 @@ public class TaskDAO implements ITaskDAO {
         return task;
     }
 
-
     //Serve per la pagina principale, qui è inutile caricarsi gli allegati
     @Override
     public List<Task> findByUtente(Utente utente) throws Exception {
@@ -177,9 +186,14 @@ public class TaskDAO implements ITaskDAO {
         if (utente.getRuolo() == Tipi.ruolo.DIPENDENTE){
             selectSql = "SELECT * FROM task WHERE dipendente = ?";
         }
-        else{
+        else if (utente.getRuolo() == Tipi.ruolo.SUPERVISORE){
+
             selectSql = "SELECT * FROM task WHERE supervisore = ?";
         }
+        else{
+            throw new IllegalArgumentException("Utente non supportato");
+        }
+
         List<Task> tasks = new ArrayList<>();
 
         try (Connection connection = DataSourceFactory.getConnection();
@@ -222,12 +236,21 @@ public class TaskDAO implements ITaskDAO {
 
     @Override
     public void updateStatus(long id, Tipi.stato nuovoStato) throws Exception {
+
+        if (id <= 0 || nuovoStato == null){
+            throw new IllegalArgumentException("Parametri non validi");
+        }
+
         String sql = "UPDATE task SET stato = ? where  id = ?";
 
         try (Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nuovoStato.toString());
             ps.setLong(2, id);
-            ps.executeUpdate();
+            int righe = ps.executeUpdate();
+
+            if (righe == 0){
+                throw new Exception("Errore durante l'update");
+            }
 
         }catch (SQLException e){
             throw new Exception("Errore durante il update per task: " + id, e);
@@ -236,6 +259,10 @@ public class TaskDAO implements ITaskDAO {
 
     @Override
     public void update(Task task) throws Exception {
+
+        if (task == null){
+            throw new IllegalArgumentException("Task non può essere null");
+        }
         String updateSql = "UPDATE task SET titolo = ?, dataDiCreazione = ?, dataDiScadenza = ?, istruzioni = ?, stato = ?, supervisore = ?, dipendente = ?, priorita = ? WHERE id = ?";
 
         try (Connection connection = DataSourceFactory.getConnection();
@@ -266,6 +293,10 @@ public class TaskDAO implements ITaskDAO {
 
     @Override
     public void delete(long id) throws Exception {
+
+        if (id <= 0){
+            throw new IllegalArgumentException("Id non può essere negativo o uguale a 0");
+        }
 
         String deleteSql = "DELETE FROM task WHERE id = ?";
 
