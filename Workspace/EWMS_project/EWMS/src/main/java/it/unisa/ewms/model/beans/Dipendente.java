@@ -12,7 +12,7 @@ public class Dipendente extends  Utente {
         supervisoreInfo = null;
     }
 
-    public void setSupervisoreMat(Informazioni supervisoreInfo) {
+    public void setSupervisoreInfo(Informazioni supervisoreInfo) {
         this.supervisoreInfo = supervisoreInfo;
     }
 

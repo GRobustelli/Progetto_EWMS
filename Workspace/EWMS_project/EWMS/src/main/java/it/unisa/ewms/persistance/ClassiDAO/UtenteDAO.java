@@ -50,6 +50,10 @@ public class UtenteDAO implements IUtenteDAO {
                 throw (EmailGiaPresenteException) e;
             }
 
+            if (e instanceof IllegalArgumentException ) {
+                throw (IllegalArgumentException) e;
+            }
+
             throw new SQLException("Inserimento utente Generico non riuscito",e);
         }
     }
@@ -138,8 +142,6 @@ public class UtenteDAO implements IUtenteDAO {
         }
     }
 
-
-
     @Override
     public Utente findByMatricola(String matricola) {
         if (matricola == null || matricola.isEmpty()) {
@@ -148,13 +150,14 @@ public class UtenteDAO implements IUtenteDAO {
 
         String sql = "SELECT * FROM utente WHERE matricola = ?";
 
-        Utente utente = new Utente();
+        Utente utente = null;
 
         try(Connection conn = DataSourceFactory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,matricola);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                utente = new Utente();
                 utente.setMatricola(rs.getString("matricola"));
                 utente.setEmail(rs.getString("email"));
                 utente.setNome(rs.getString("nome"));
@@ -173,6 +176,59 @@ public class UtenteDAO implements IUtenteDAO {
         return utente;
     }
 
+    //Questo metodo viene chiamato dopo aver fatto il check con recuperaPassword, quindi siamo sicuri della presenza
+    //dell'email
+
+
+    public Utente findByEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("L'email non può essere nulla o vuota");
+        }
+
+        String sql = "SELECT * FROM utente WHERE email = ?";
+
+        Utente utente = null;
+
+        try (Connection conn = DataSourceFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // 1. Leggo il ruolo per decidere quale sottoclasse istanziare
+                    // (Fondamentale per far funzionare instanceof e casting successivi)
+                    String ruoloStr = rs.getString("ruolo");
+                    Tipi.ruolo ruolo = Tipi.ruolo.valueOf(ruoloStr);
+
+                    if (ruolo == Tipi.ruolo.DIPENDENTE) {
+                        utente = new Dipendente();
+                    } else if (ruolo == Tipi.ruolo.SUPERVISORE) {
+                        utente = new Supervisore();
+                    } else {
+                        utente = new Utente();
+                    }
+
+                    // 2. Popolo i dati comuni presenti nella tabella Utente
+                    utente.setMatricola(rs.getString("matricola"));
+                    utente.setEmail(rs.getString("email"));
+                    utente.setNome(rs.getString("nome"));
+                    utente.setCognome(rs.getString("cognome"));
+                    utente.setDataNasc(rs.getDate("dataDiNascita"));
+                    utente.setRuolo(ruolo);
+                    utente.setNewUtente(rs.getBoolean("newUtente"));
+
+                    // Nota: hashPassword non viene settato per sicurezza, come da tua preferenza
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore ricerca utente per email", e);
+        }
+
+        return utente;
+    }
+
+    //Questo metodo se non trova supervisore con la matricola specificata ritorna una lista vuota
     @Override
     public List<Informazioni> getAllDipendentiInfo(String matricola) throws SQLException {
         List<Informazioni> dipendentiInfo = new ArrayList<>();
@@ -363,7 +419,13 @@ public class UtenteDAO implements IUtenteDAO {
 
             ps.setString(1, matricolaSup);
             ps.setString(2, matricola);
-            ps.executeUpdate();
+
+
+            int result = ps.executeUpdate();
+
+            if (result == 0){
+                throw new SQLException("Dipendente non trovato: " + matricola);
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -412,5 +474,24 @@ public class UtenteDAO implements IUtenteDAO {
         }
 
     }
+
+    @Override
+    public String recuperaPassword(String email) throws SQLException {
+
+        String sql = "SELECT hashPassword FROM utente WHERE email = ?";
+
+        try (Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("hashPassword");
+            }
+            else {
+                throw new SQLException("Email inesistente: " + email);
+            }
+        }
+
+    }
+
 
 }

@@ -13,6 +13,7 @@ public interface IUtenteDAO {
     void createSupervisore(Supervisore supervisore, String password) throws SQLException, EmailGiaPresenteException;
 
     Utente findByMatricola(String matricola)  throws SQLException;
+    Utente findByEmail(String email)  throws SQLException;
     List<Informazioni> getAllDipendentiInfo(String matricola) throws SQLException; // oppure con utente direttamente
     Informazioni getSupervisoreInfo(String matricola)  throws SQLException;
 
@@ -25,5 +26,7 @@ public interface IUtenteDAO {
 
 
     void delete(Utente utente)  throws SQLException;
+
+    String recuperaPassword(String email) throws SQLException;
 
 }
