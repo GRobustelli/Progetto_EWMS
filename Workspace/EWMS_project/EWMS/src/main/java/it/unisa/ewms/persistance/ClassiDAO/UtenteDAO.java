@@ -218,7 +218,7 @@ public class UtenteDAO implements IUtenteDAO {
                     utente.setRuolo(ruolo);
                     utente.setNewUtente(rs.getBoolean("newUtente"));
 
-                    // Nota: hashPassword non viene settato per sicurezza, come da tua preferenza
+                    // Nota: hashPassword non viene settato per sicurezza
                 }
             }
         } catch (SQLException e) {
