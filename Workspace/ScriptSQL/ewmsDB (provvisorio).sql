@@ -25,18 +25,12 @@ foreign key (matricola) references Utente(matricola) on update cascade on delete
 foreign key (supMatricola) references Utente(matricola) on update cascade
 );
 
-create table GestoreAccount(
-matricola char(13) primary key not null,
-foreign key (matricola) references Utente(matricola) on update cascade on delete cascade
-);
-
-
 create table Task(
 id bigint auto_increment primary key not null,
 titolo varchar(50) not null,
 dataDiScadenza date not null,
 dataDiCreazione date not null,
--- Priorita varchar(20) not null,
+priorita varchar(20) not null,
 istruzioni varchar(2000) not null,
 stato varchar(20) not null,
 supervisore char(13) not null,

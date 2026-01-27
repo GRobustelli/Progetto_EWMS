@@ -1132,7 +1132,7 @@ class UtenteDAOTest {
     class UpdateSupervisoreTest {
 
         @Test
-        void testUpdateSupervisore_Successo() throws SQLException {
+        void testUpdateSupervisore_Successo() throws Exception {
             // 1. ARRANGE
             String matricolaDipendente = "DIP0001";
             String nuovoSupervisore = "SUP0001";
@@ -1204,7 +1204,7 @@ class UtenteDAOTest {
         }
 
         @Test
-        void testUpdateSupervisore_DipendenteNonTrovato() throws SQLException {
+        void testUpdateSupervisore_DipendenteNonTrovato() throws Exception {
             // Come per gli altri metodi update/delete, il codice non controlla il valore di ritorno
             // Questo test documenta che se aggiorno un dipendente inesistente, non succede nulla.
 

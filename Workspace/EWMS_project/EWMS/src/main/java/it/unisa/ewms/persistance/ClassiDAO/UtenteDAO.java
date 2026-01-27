@@ -35,6 +35,9 @@ public class UtenteDAO implements IUtenteDAO {
             if (icv.getMessage().contains(utente.getEmail())){
                 throw new EmailGiaPresenteException("L'email inserita è già presente nel db");
             }
+            else {
+                throw new SQLException(icv.getMessage());
+            }
 
         } catch (SQLException e) {
             throw new SQLException(e);
@@ -54,7 +57,7 @@ public class UtenteDAO implements IUtenteDAO {
                 throw (IllegalArgumentException) e;
             }
 
-            throw new SQLException("Inserimento utente Generico non riuscito",e);
+            throw new SQLException("Inserimento utente Generico non riuscito\n",e);
         }
     }
 
@@ -143,7 +146,7 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public Utente findByMatricola(String matricola) {
+    public Utente findByMatricola(String matricola) throws SQLException {
         if (matricola == null || matricola.isEmpty()) {
             throw new IllegalArgumentException("La matricola non può essere nulla");
         }
@@ -170,7 +173,7 @@ public class UtenteDAO implements IUtenteDAO {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw (SQLException) e;
         }
 
         return utente;
@@ -178,8 +181,6 @@ public class UtenteDAO implements IUtenteDAO {
 
     //Questo metodo viene chiamato dopo aver fatto il check con recuperaPassword, quindi siamo sicuri della presenza
     //dell'email
-
-
     public Utente findByEmail(String email) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("L'email non può essere nulla o vuota");
@@ -362,6 +363,7 @@ public class UtenteDAO implements IUtenteDAO {
                     con.rollback(); // ROLLBACK IN CASO DI ERRORE
                 } catch (SQLException ex) {
                     ex.printStackTrace();
+                    throw ex;
                 }
             }
             throw new Exception("Errore durante il cambio ruolo per " + matricola, e);
@@ -408,9 +410,9 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public void updateSupervisore(String matricola, String matricolaSup) throws SQLException {
+    public void updateSupervisore(String matricola, String matricolaSup) throws Exception, SQLException {
         if (matricola == null || matricola.isEmpty() || matricolaSup == null || matricolaSup.isEmpty() ) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Dati inviati non validi");
         }
 
         String sql = "UPDATE dipendente SET supMatricola  = ? WHERE matricola = ? ";
@@ -428,7 +430,7 @@ public class UtenteDAO implements IUtenteDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Errore durante il cambio di ruolo"+e);
         }
 
     }
@@ -436,14 +438,18 @@ public class UtenteDAO implements IUtenteDAO {
     @Override
     public void updatePassword(String matricola, String hashPassword) throws SQLException {
         if (matricola == null ||  matricola.isEmpty() || hashPassword == null || hashPassword.isEmpty() ) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Dati non validi");
         }
 
         String sql = "UPDATE utente SET hashPassword = ? WHERE matricola = ? ";
         try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
             ps.setString(1, hashPassword);
             ps.setString(2, matricola);
-            ps.executeUpdate();
+            int righe = ps.executeUpdate();
+
+            if (righe == 0){
+                throw new SQLException("Utente non trovato: " + matricola);
+            }
         }catch (SQLException ex){
             throw new RuntimeException(ex);
         }
@@ -451,7 +457,7 @@ public class UtenteDAO implements IUtenteDAO {
 
 
     @Override
-    public void delete(Utente utente) {
+    public void delete(Utente utente) throws SQLException {
         // Grazie al CASCADE sul DB, basta cancellare dalla tabella padre.
         if (utente == null) {
             throw new IllegalArgumentException();
@@ -469,8 +475,8 @@ public class UtenteDAO implements IUtenteDAO {
                 // Opzionale: lanciare eccezione se l'utente non esisteva
                 throw new SQLException("Impossibile cancellare: nessun utente trovato con matricola " + utente.getMatricola());
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new SQLIntegrityConstraintViolationException("Impossibile cancellare l'utente: è un Supervisore con dipendenti assegnati. Riassegna prima i dipendenti." + e);
         }
 
     }

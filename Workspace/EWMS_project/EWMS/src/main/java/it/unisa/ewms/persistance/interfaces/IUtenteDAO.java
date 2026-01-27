@@ -21,7 +21,7 @@ public interface IUtenteDAO {
 
     void updateAnagrafica(String nome, String cognome, Date dataDiNascita, String matricola)  throws SQLException;
     void updateRuolo(String matricola, Tipi.ruolo nuovoRuolo, String matricolaNuovoSupervisore) throws Exception;
-    void updateSupervisore(String matricola, String matricolaSup) throws SQLException;
+    void updateSupervisore(String matricola, String matricolaSup) throws SQLException, Exception;
     void updatePassword(String matricola, String hashPassword) throws SQLException;
 
 
