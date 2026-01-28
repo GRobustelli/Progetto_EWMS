@@ -54,13 +54,12 @@ class UtenteDAOTest {
                 // Intercettiamo la query SQL
                 when(connection.prepareStatement(contains("INSERT INTO utente"))).thenReturn(ps);
 
-                // Il tuo codice usa ps.execute() e stampa un messaggio se true
+
                 when(ps.execute()).thenReturn(true);
 
-                // 2. ACT
                 utenteDao.createUtente(utente, password);
 
-                // 3. ASSERT & VERIFY
+
                 // Verifichiamo l'ordine esatto dei parametri definito nel metodo insertUtenteGenerico
 
                 verify(ps).setString(1, "0512103361001"); // Matricola
