@@ -2,19 +2,38 @@ package it.unisa.ewms.persistance;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DataSourceFactory {
 
     private static HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
 
-    static {
+    private static void initDataSource() {
+
+        //Cerco il file database.properties
+        Properties prop = new Properties();
+
+        try (InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream("database.properties")) {
+
+        if (in == null) {
+            throw new FileNotFoundException("property file 'database.properties' not found in the classpath");
+        }
+
+        prop.load(in);
+
         // Configurazione JDBC
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/nome_tuo_db");
-        config.setUsername("tuo_username");
-        config.setPassword("tua_password");
+
+
+        config.setJdbcUrl(prop.getProperty("db.url"));
+        config.setUsername(prop.getProperty("db.username"));
+        config.setPassword(prop.getProperty("db.password"));
 
         // Configurazione specifica del Connection Pool (opzionale ma consigliata)
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -23,12 +42,20 @@ public class DataSourceFactory {
 
         // Inizializzazione del DataSource
         ds = new HikariDataSource(config);
+    } catch (IOException e) {
+            throw new RuntimeException("Errore durante il caricamento della configurazione", e);
+        }
+
+
     }
 
     // Costruttore privato per prevenire istanziazioni
     private DataSourceFactory() {}
 
     public static Connection getConnection() throws SQLException {
+        if (ds == null) {
+            initDataSource();
+        }
         return ds.getConnection();
     }
 }

@@ -1,4 +1,4 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
 import java.sql.Date;
 
@@ -8,21 +8,19 @@ public class Utente {
     private String nome;
     private String cognome;
     private Date dataNasc;
-    private String password;
     private boolean newUtente;
     private Tipi.ruolo ruolo;
 
     public Utente() {
     }
 
-    public Utente(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, String password, boolean newUtente) {
+    public Utente(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
         this.ruolo = ruolo;
         this.email = email;
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
         this.dataNasc = dataNasc;
-        this.password = password;
         this.newUtente = newUtente;
     }
 
@@ -66,14 +64,6 @@ public class Utente {
         this.dataNasc = dataNasc;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isNewUtente() {
         return newUtente;
     }
@@ -89,4 +79,5 @@ public class Utente {
     public void setRuolo(Tipi.ruolo ruolo) {
         this.ruolo = ruolo;
     }
+
 }

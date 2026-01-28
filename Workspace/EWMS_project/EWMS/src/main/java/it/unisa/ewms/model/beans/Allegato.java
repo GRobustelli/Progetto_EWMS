@@ -1,8 +1,8 @@
-package it.unisa.ewms.persistance.beans;
+package it.unisa.ewms.model.beans;
 
 public class Allegato {
     private String filename;
-    private int taskId;
+    private long taskId;
     private String filePath;
     private String contentType;
 
@@ -23,11 +23,11 @@ public class Allegato {
         this.filename = filename;
     }
 
-    public int getTaskId() {
+    public long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(int taskId) {
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 
