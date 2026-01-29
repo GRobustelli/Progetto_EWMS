@@ -8,5 +8,5 @@ import java.time.LocalDate;
 public interface TaskSupervisoreService {
     Task createTask(long taskId, String descrizione, LocalDate dataScadenza, String priorita, String dipendenteId) throws SQLException;
     boolean deleteTask(long taskId) throws SQLException;
-    boolean sendWarning(long taskId, String msg);
+    //boolean sendWarning(long taskId, String msg) throws Exception;
 }

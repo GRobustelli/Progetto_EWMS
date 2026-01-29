@@ -8,6 +8,6 @@ import java.sql.SQLException;
 public interface TaskCommonService {
     Task getTask(long taskId) throws SQLException;
     //List<Task> filterTask(String filtro) throws SQLException;
-    boolean holdTask(long taskId) throws Exception;
+    //boolean holdTask(long taskId) throws Exception;
     FileOutputStream downloadAllegato(long taskId) throws Exception;
 }
