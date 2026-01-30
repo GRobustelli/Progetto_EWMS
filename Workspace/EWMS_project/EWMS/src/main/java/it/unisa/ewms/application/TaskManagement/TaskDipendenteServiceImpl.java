@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class TaskDipendenteServiceImpl implements TaskDipendenteService {
     @Override
     public boolean inizializzaTask(long taskId) throws SQLException {
-        if(taskId < 0 || taskId == -1L){
+        if(taskId < 0){
             throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
         }else{
             PersistenceService service = PersistenceServiceImpl.getInstance();
@@ -27,7 +27,7 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
 
     @Override
     public boolean completeTask(long taskId) throws SQLException {
-        if(taskId < 0 || taskId == -1L){
+        if(taskId < 0){
             throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
         }else{
             PersistenceService service = PersistenceServiceImpl.getInstance();
