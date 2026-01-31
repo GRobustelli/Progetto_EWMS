@@ -13,24 +13,38 @@ public class UtenteDAO implements IUtenteDAO {
 
     private void insertUtenteGenerico(Connection conn, Utente utente, String password) throws SQLException, EmailGiaPresenteException {
         if (utente == null || password == null || password.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Dati inseriti non possono essere null");
         }
 
-        String sql = "INSERT INTO utente (matricola, email, nome, cognome, dataDiNascita, hashPassword, ruolo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try(PreparedStatement ps = conn.prepareStatement(sql)){
+        String sql = "INSERT INTO utente (email, nome, cognome, dataDiNascita, hashPassword, ruolo) VALUES (?, ?, ?, ?, ?, ?) ";
 
-            ps.setString(1,utente.getMatricola());
-            ps.setString(2,utente.getEmail());
-            ps.setString(3,utente.getNome());
-            ps.setString(4,utente.getCognome());
-            ps.setDate(5,utente.getDataNasc());
-            ps.setString(6, password);
-            ps.setString(7,utente.getRuolo().toString());
+        if (conn != null) {
+        try(PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1,utente.getEmail());
+            ps.setString(2,utente.getNome());
+            ps.setString(3,utente.getCognome());
+            ps.setDate(4,utente.getDataNasc());
+            ps.setString(5, password);
+            ps.setString(6,utente.getRuolo().toString());
 
             if (ps.execute()){
                 System.out.println("Inserimento nuovo utente riuscito");
             }
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    // Prendo il primo campo generato (l'ID)
+                    int idGenerato = generatedKeys.getInt(1);
+
+                    // AGGIORNO L'OGGETTO JAVA
+                    // Fondamentale: ora l'oggetto 'utente' ha la matricola vera
+                    utente.setMatricola(idGenerato);
+                } else {
+                    throw new SQLException("Creazione utente fallita, nessun ID ottenuto.");
+                }
+            }
+
         } catch(SQLIntegrityConstraintViolationException icv){
             if (icv.getMessage().contains(utente.getEmail())){
                 throw new EmailGiaPresenteException("L'email inserita è già presente nel db");
@@ -42,6 +56,10 @@ public class UtenteDAO implements IUtenteDAO {
         } catch (SQLException e) {
             throw new SQLException(e);
         }
+    } else  {
+        throw new SQLException("Connessione non riuscita");
+    }
+
     }
 
     @Override
@@ -75,7 +93,7 @@ public class UtenteDAO implements IUtenteDAO {
 
             // B. Inserisco nella tabella specifica (Dipendente)
             try (PreparedStatement ps = con.prepareStatement(sqlDipendente)) {
-                ps.setString(1, dipendente.getMatricola());
+                ps.setInt(1, dipendente.getMatricola());
                 ps.setString(2, dipendente.getSupervisoreInfo().getMatricola());
                 ps.executeUpdate();
             }
@@ -116,7 +134,7 @@ public class UtenteDAO implements IUtenteDAO {
 
             // B. Tabella Figlia
             try (PreparedStatement ps = con.prepareStatement(sqlSupervisore)) {
-                ps.setString(1, supervisore.getMatricola());
+                ps.setInt(1, supervisore.getMatricola());
                 ps.executeUpdate();
             }
 
@@ -146,9 +164,9 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public Utente findByMatricola(String matricola) throws SQLException {
-        if (matricola == null || matricola.isEmpty()) {
-            throw new IllegalArgumentException("La matricola non può essere nulla");
+    public Utente findByMatricola(int matricola) throws SQLException {
+        if (matricola <= 0) {
+            throw new IllegalArgumentException("Matricola non esistente");
         }
 
         String sql = "SELECT * FROM utente WHERE matricola = ?";
@@ -157,11 +175,11 @@ public class UtenteDAO implements IUtenteDAO {
 
         try(Connection conn = DataSourceFactory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1,matricola);
+            ps.setInt(1,matricola);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 utente = new Utente();
-                utente.setMatricola(rs.getString("matricola"));
+                utente.setMatricola(rs.getInt("matricola"));
                 utente.setEmail(rs.getString("email"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
@@ -211,7 +229,7 @@ public class UtenteDAO implements IUtenteDAO {
                     }
 
                     // 2. Popolo i dati comuni presenti nella tabella Utente
-                    utente.setMatricola(rs.getString("matricola"));
+                    utente.setMatricola(rs.getInt("matricola"));
                     utente.setEmail(rs.getString("email"));
                     utente.setNome(rs.getString("nome"));
                     utente.setCognome(rs.getString("cognome"));
@@ -231,16 +249,16 @@ public class UtenteDAO implements IUtenteDAO {
 
     //Questo metodo se non trova supervisore con la matricola specificata ritorna una lista vuota
     @Override
-    public List<Informazioni> getAllDipendentiInfo(String matricola) throws SQLException {
+    public List<Informazioni> getAllDipendentiInfo(int matricola) throws SQLException {
         List<Informazioni> dipendentiInfo = new ArrayList<>();
-        if (matricola == null || matricola.isEmpty()) {
-            throw new IllegalArgumentException("La matricola non può essere nulla");
+        if (matricola < 0) {
+            throw new IllegalArgumentException("La matricola non esistente");
         }
         String sql = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.matricola WHERE d.supMatricola = ?";
 
         try(Connection conn = DataSourceFactory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, matricola);
+            ps.setInt(1, matricola);
             try(ResultSet rs = ps.executeQuery()){
                 while (rs.next()) {
                     Informazioni informazioni = new Informazioni(rs.getString("matricola"),rs.getString("nome"),rs.getString("cognome"));
@@ -255,8 +273,8 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public Informazioni getSupervisoreInfo(String matricola) throws SQLException {
-        if (matricola == null || matricola.isEmpty()) {
+    public Informazioni getSupervisoreInfo(int matricola) throws SQLException {
+        if (matricola <= 0) {
             throw new IllegalArgumentException("La matricola non può essere nulla");
         }
 
@@ -264,29 +282,106 @@ public class UtenteDAO implements IUtenteDAO {
 
         Informazioni informazioni = null;
         try(Connection conn = DataSourceFactory.getConnection(); PreparedStatement ps = conn.prepareStatement(sqlSupInfo)){
-            ps.setString(1, matricola);
+            ps.setInt(1, matricola);
             try(ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                      informazioni = new Informazioni(rs.getString("matricola"),rs.getString("nome"),rs.getString("cognome"));
                 }
             }
         }catch (SQLException ex){
-            ex.printStackTrace();
+            throw ex;
         }
 
         return informazioni;
     }
 
     @Override
-    public void updateAnagrafica(String nome, String cognome, Date dataDiNascita, String matricola) throws SQLException {
+    public List<Informazioni> getAllSupervisori() throws SQLException {
+        // Uso una JOIN per assicurarmi di prendere solo gli utenti
+        // che sono effettivamente registrati nella tabella 'supervisore'.
+        String sql = "SELECT u.matricola, u.nome, u.cognome " +
+                "FROM utente u " +
+                "JOIN supervisore s ON u.matricola = s.matricola";
 
+        List<Informazioni> lista = new ArrayList<>();
+
+        try (Connection con = DataSourceFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                // NOTA: Se hai cambiato la matricola in INT sul DB,
+                // qui fai la conversione se il tuo DTO 'Informazioni' si aspetta Stringhe.
+                String matricolaStr = String.valueOf(rs.getInt("matricola"));
+
+                Informazioni info = new Informazioni(
+                        matricolaStr,
+                        rs.getString("nome"),
+                        rs.getString("cognome")
+                );
+                lista.add(info);
+            }
+        }
+        return lista;
     }
 
     @Override
-    public void updateRuolo(String matricola, Tipi.ruolo nuovoRuolo, String matricolaNuovoSupervisore) throws Exception {
+    public List<Utente> getAllUtente() throws SQLException {
+
+        // Interrogo solo la tabella padre. Molto più veloce e leggero.
+        String sql = "SELECT * FROM utente";
+
+        List<Utente> listaUtenti = new ArrayList<>();
+
+        try (Connection con = DataSourceFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Utente utente = null;
+
+                // 1. Leggo il ruolo per decidere quale "guscio" vuoto creare
+                String ruoloStr = rs.getString("ruolo");
+                Tipi.ruolo ruolo = Tipi.ruolo.valueOf(ruoloStr);
+
+                if (ruolo == Tipi.ruolo.DIPENDENTE) {
+                    utente = new Dipendente();
+                    // Il campo supervisoreInfo rimane null per ora (Lazy Loading)
+                } else if (ruolo == Tipi.ruolo.SUPERVISORE) {
+                    utente = new Supervisore();
+                } else {
+                    utente = new Utente();
+                }
+
+                // 2. Popolo i dati comuni
+                // Nota: Converto l'int del DB in String se il tuo Bean usa ancora String
+                utente.setMatricola(rs.getInt("matricola"));
+                utente.setNome(rs.getString("nome"));
+                utente.setCognome(rs.getString("cognome"));
+                utente.setEmail(rs.getString("email"));
+                utente.setDataNasc(rs.getDate("dataDiNascita"));
+                utente.setRuolo(ruolo);
+                utente.setNewUtente(rs.getBoolean("newUtente"));
+
+                // Non settiamo la password per sicurezza nelle liste pubbliche
+
+                listaUtenti.add(utente);
+            }
+        }
+        return listaUtenti;
+    }
+/*
+    @Override
+    public void updateAnagrafica(String nome, String cognome, Date dataDiNascita, int matricola) throws SQLException {
+
+    }
+
+
+    @Override
+    public void updateRuolo(int matricola, Tipi.ruolo nuovoRuolo, int matricolaNuovoSupervisore) throws Exception {
 
         //Controlliamo le precondizioni
-        if (matricola == null || matricola.isEmpty()) {
+        if (matricola <= 0) {
             throw new IllegalArgumentException("La matricola non può essere nulla");
         }
 
@@ -296,7 +391,7 @@ public class UtenteDAO implements IUtenteDAO {
 
         // Validazione preventiva: Se diventi Dipendente, DEVI avere un supervisore
 
-        if (nuovoRuolo == Tipi.ruolo.DIPENDENTE && (matricolaNuovoSupervisore == null || matricolaNuovoSupervisore.isEmpty())) {
+        if (nuovoRuolo == Tipi.ruolo.DIPENDENTE && (matricolaNuovoSupervisore <= 0)) {
             throw new IllegalArgumentException("Impossibile passare al ruolo DIPENDENTE senza specificare un Supervisore.");
         }
 
@@ -343,7 +438,7 @@ public class UtenteDAO implements IUtenteDAO {
             // 4. AGGIORNO LA TABELLA PADRE (UTENTE)
             try (PreparedStatement ps = con.prepareStatement(updateUtenteSql)) {
                 ps.setString(1, nuovoRuolo.name());
-                ps.setString(2, matricola);
+                ps.setInt(2, matricola);
                 ps.executeUpdate();
             }
 
@@ -376,11 +471,11 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     //Non so se inserirli nei documenti
-    private void deleteFromTable(Connection con, String tabella, String matricola){
+    private void deleteFromTable(Connection con, String tabella, int matricola){
         String sql  = "DELETE FROM "+ tabella +  "WHERE matricola = ?";
 
         try(PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, matricola);
+            ps.setInt(1, matricola);
             ps.executeUpdate();
 
 
@@ -391,27 +486,27 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     //Non so se inserirli nei documenti
-    private void insertIntoSupervisore(Connection con, String matricola) throws SQLException {
+    private void insertIntoSupervisore(Connection con, int matricola) throws SQLException {
         String sql = "INSERT INTO supervisore (matricola) VALUES (?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, matricola);
+            ps.setInt(1, matricola);
             ps.executeUpdate();
         }
     }
 
     //Non so se inserirli nei documenti
-    private void insertIntoDipendente(Connection con, String matricola, String supMatricola) throws SQLException {
+    private void insertIntoDipendente(Connection con, int matricola, int supMatricola) throws SQLException {
         String sql = "INSERT INTO dipendente (matricola, supMatricola) VALUES (?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, matricola);
-            ps.setString(2, supMatricola);
+            ps.setInt(1, matricola);
+            ps.setInt(2, supMatricola);
             ps.executeUpdate();
         }
     }
 
     @Override
-    public void updateSupervisore(String matricola, String matricolaSup) throws Exception, SQLException {
-        if (matricola == null || matricola.isEmpty() || matricolaSup == null || matricolaSup.isEmpty() ) {
+    public void updateSupervisore(int matricola, int matricolaSup) throws Exception, SQLException {
+        if (matricola <= 0 || matricolaSup <= 0) {
             throw new IllegalArgumentException("Dati inviati non validi");
         }
 
@@ -419,8 +514,8 @@ public class UtenteDAO implements IUtenteDAO {
 
         try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
 
-            ps.setString(1, matricolaSup);
-            ps.setString(2, matricola);
+            ps.setInt(1, matricolaSup);
+            ps.setInt(2, matricola);
 
 
             int result = ps.executeUpdate();
@@ -436,15 +531,15 @@ public class UtenteDAO implements IUtenteDAO {
     }
 
     @Override
-    public void updatePassword(String matricola, String hashPassword) throws SQLException {
-        if (matricola == null ||  matricola.isEmpty() || hashPassword == null || hashPassword.isEmpty() ) {
+    public void updatePassword(int matricola, String hashPassword) throws SQLException {
+        if (matricola <= 0 || hashPassword == null || hashPassword.isEmpty() ) {
             throw new IllegalArgumentException("Dati non validi");
         }
 
         String sql = "UPDATE utente SET hashPassword = ? WHERE matricola = ? ";
         try(Connection con = DataSourceFactory.getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
             ps.setString(1, hashPassword);
-            ps.setString(2, matricola);
+            ps.setInt(2, matricola);
             int righe = ps.executeUpdate();
 
             if (righe == 0){
@@ -454,6 +549,8 @@ public class UtenteDAO implements IUtenteDAO {
             throw new RuntimeException(ex);
         }
     }
+
+*/
 
 
     @Override
@@ -467,7 +564,7 @@ public class UtenteDAO implements IUtenteDAO {
         try (Connection con = DataSourceFactory.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, utente.getMatricola());
+            ps.setInt(1, utente.getMatricola());
 
             int rows = ps.executeUpdate();
 
@@ -493,7 +590,7 @@ public class UtenteDAO implements IUtenteDAO {
                 return rs.getString("hashPassword");
             }
             else {
-                throw new SQLException("Email inesistente: " + email);
+                return null;
             }
         }
 

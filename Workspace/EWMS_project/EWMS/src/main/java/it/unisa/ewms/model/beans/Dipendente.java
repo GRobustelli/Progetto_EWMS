@@ -7,7 +7,7 @@ public class Dipendente extends  Utente {
 
     public Dipendente() {}
 
-    public Dipendente(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, boolean newUtente){
+    public Dipendente(Tipi.ruolo ruolo, String email, int matricola, String nome, String cognome, Date dataNasc, boolean newUtente){
         super(ruolo,email,matricola,nome,cognome,dataNasc,newUtente);
         supervisoreInfo = null;
     }

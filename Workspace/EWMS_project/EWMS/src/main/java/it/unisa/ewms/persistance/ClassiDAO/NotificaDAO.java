@@ -54,7 +54,7 @@ public class NotificaDAO implements INotificaDAO {
         try (Connection connection = DataSourceFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectSql)) {
 
-            ps.setString(1, utente.getMatricola());
+            ps.setInt(1, utente.getMatricola());
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Utente {
     private String email;
-    private String matricola;
+    private int matricola;
     private String nome;
     private String cognome;
     private Date dataNasc;
@@ -14,7 +14,7 @@ public class Utente {
     public Utente() {
     }
 
-    public Utente(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
+    public Utente(Tipi.ruolo ruolo, String email, int matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
         this.ruolo = ruolo;
         this.email = email;
         this.matricola = matricola;
@@ -32,11 +32,18 @@ public class Utente {
         this.email = email;
     }
 
-    public String getMatricola() {
+    public int getMatricola() {
         return matricola;
     }
 
-    public void setMatricola(String matricola) {
+    public String getMatricolaFormattata(){
+
+            // %08d assicura che la parte variabile sia sempre di 8 cifre
+            return "2002-" + String.format("%08d", this.matricola);
+
+    }
+
+    public void setMatricola(int matricola) {
         this.matricola = matricola;
     }
 

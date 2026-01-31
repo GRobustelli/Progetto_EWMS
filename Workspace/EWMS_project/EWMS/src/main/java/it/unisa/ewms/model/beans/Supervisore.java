@@ -12,7 +12,7 @@ public class Supervisore extends Utente{
         dipendetiInfo = new ArrayList<>();
     }
 
-    public Supervisore(Tipi.ruolo ruolo, String email, String matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
+    public Supervisore(Tipi.ruolo ruolo, String email, int matricola, String nome, String cognome, Date dataNasc, boolean newUtente) {
         super(ruolo,email,matricola,nome,cognome,dataNasc,newUtente);
         dipendetiInfo = new ArrayList<>();
 

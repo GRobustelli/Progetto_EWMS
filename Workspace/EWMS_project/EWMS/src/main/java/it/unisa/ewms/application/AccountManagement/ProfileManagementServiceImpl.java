@@ -14,6 +14,8 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     private final PersistenceService persistenceService;
     private final String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$";
+
+
     public ProfileManagementServiceImpl() {
         persistenceService = PersistenceServiceImpl.getInstance();
     }
@@ -70,8 +72,8 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
     }
 
     @Override
-    public Utente getAccount(String matricola) throws SQLException {
-        if (matricola == null || matricola.length() != 13) {
+    public Utente getAccount(int matricola) throws SQLException {
+        if (matricola <= 0) {
             throw new IllegalArgumentException("Matricola non valida");
         }
 
@@ -105,6 +107,25 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
     }
 
     @Override
+    public List<Utente> getAllAccount() throws SQLException {
+        IUtenteDAO udao =  persistenceService.getUtenteDAO();
+        if (udao == null) {
+            throw new RuntimeException("Impossibile recuperare utenti");
+        }
+
+        return udao.getAllUtente();
+    }
+
+    @Override
+    public List<Informazioni> getAllSupervisori() throws SQLException {
+        IUtenteDAO udao =  persistenceService.getUtenteDAO();
+        if (udao == null) {
+            throw new RuntimeException("Impossibile recuperare informazioni dal db");
+        }
+        return udao.getAllSupervisori();
+    }
+
+/*
     //Conviene implementarla client side con javascript probabilmente
     public String generateNewPwd() throws SQLException {
 
@@ -113,14 +134,14 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
 
 
     @Override
-    public void modifyRole(Utente utente, Tipi.ruolo ruolo, String supMatricola) throws Exception {
+    public void modifyRole(Utente utente, Tipi.ruolo ruolo, int supMatricola) throws Exception {
         if (utente == null || ruolo == null) {
             throw new IllegalArgumentException("Utente e ruolo non validi");
         }
-        if (ruolo == Tipi.ruolo.DIPENDENTE && (supMatricola == null || supMatricola.length() != 13) ) {
+        if (ruolo == Tipi.ruolo.DIPENDENTE && supMatricola <= 0 ) {
             throw new IllegalArgumentException("Impossibile cambiare ruolo in dipendente senza matricola supervisore");
         }
-        if (utente.getMatricola().equals(supMatricola)) {
+        if (utente.getMatricola()== supMatricola) {
             throw new IllegalArgumentException("Un utente non può supervisionarsi da solo");
         }
 
@@ -135,14 +156,14 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
     }
 
     @Override
-    public void modifySupervisor(Utente utente, String supMatricola) throws Exception {
-        if (utente == null || supMatricola == null ||  supMatricola.length() != 13) {
+    public void modifySupervisor(Utente utente, int supMatricola) throws Exception {
+        if (utente == null || supMatricola <= 0) {
             throw new IllegalArgumentException("Dati inseriti non validi");
         }
         if (utente.getRuolo() != Tipi.ruolo.DIPENDENTE) {
             throw new IllegalArgumentException("Solo i dipendenti possono avere supervisori");
         }
-        if (utente.getMatricola().equals(supMatricola)) {
+        if (utente.getMatricola() == supMatricola) {
             throw new IllegalArgumentException("Un utente non può supervisionarsi da solo");
         }
 
@@ -155,8 +176,8 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
     }
 
     @Override
-    public void replacePassword(String matricola, String newPassword) throws SQLException {
-        if (matricola == null || newPassword == null || matricola.length() != 13 || !newPassword.matches(regex)) {
+    public void replacePassword(int matricola, String newPassword) throws SQLException {
+        if (newPassword == null || matricola <= 0 || !newPassword.matches(regex)) {
             throw new IllegalArgumentException("Matricola e Password non validi");
         }
         IUtenteDAO udao  = persistenceService.getUtenteDAO();
@@ -165,10 +186,11 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
         udao.updatePassword(matricola,newPassword);
 
     }
+*/
 
     @Override
     public void deleteAccount(Utente utente) throws SQLException, RuntimeException, IllegalArgumentException {
-        if (utente == null || utente.getMatricola() == null || utente.getMatricola().length() != 13) {
+        if (utente == null || utente.getMatricola() <= 0) {
             throw new IllegalArgumentException("Dati inseriti non validi");
         }
 

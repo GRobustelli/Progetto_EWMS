@@ -39,7 +39,7 @@ class UtenteDAOTest {
         void testCreateUtente_Successo() throws Exception {
             // 1. ARRANGE
             Utente utente = new Utente();
-            utente.setMatricola("0512103361001");
+
             utente.setEmail("mario.rossi@test.it");
             utente.setNome("Mario");
             utente.setCognome("Rossi");
