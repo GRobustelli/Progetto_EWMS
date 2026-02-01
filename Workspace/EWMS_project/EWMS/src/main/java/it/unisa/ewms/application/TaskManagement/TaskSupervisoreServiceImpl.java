@@ -60,6 +60,7 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
         }catch(Exception e){throw new SQLException(e);}
     }
 
+
     @Override
     public List<Informazioni> getAllDipendentiInfo(String supervisoreId) throws SQLException {
         PersistenceService service = PersistenceServiceImpl.getInstance();
