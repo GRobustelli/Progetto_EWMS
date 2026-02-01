@@ -1,15 +1,18 @@
 package it.unisa.ewms.application.TaskManagement;
 
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
+import it.unisa.ewms.model.beans.Informazioni;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
+import it.unisa.ewms.model.beans.Utente;
 import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
+import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
 import it.unisa.ewms.persistance.interfaces.PersistenceService;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.List;
 
 public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
     @Override
@@ -43,5 +46,28 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
                 return true;
             }catch(Exception e){throw new SQLException(e);}
         }
+    }
+
+    @Override
+    public List<Task> getAllTaskSup(String supervisoreId) throws SQLException {
+        PersistenceService service = PersistenceServiceImpl.getInstance();
+        ITaskDAO taskDAO = service.getTaskDAO();
+        IUtenteDAO utenteDAO = service.getUtenteDAO();
+
+        try{
+            Utente user = utenteDAO.findByMatricola(supervisoreId);
+            return taskDAO.findByUtente(user);
+        }catch(Exception e){throw new SQLException(e);}
+    }
+
+
+    @Override
+    public List<Informazioni> getAllDipendentiInfo(String supervisoreId) throws SQLException {
+        PersistenceService service = PersistenceServiceImpl.getInstance();
+        IUtenteDAO utenteDAO = service.getUtenteDAO();
+
+        try{
+            return utenteDAO.getAllDipendentiInfo(supervisoreId);
+        }catch(Exception e){throw new SQLException(e);}
     }
 }
