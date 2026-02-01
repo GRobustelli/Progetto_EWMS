@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class PersonalProfileServiceImpl implements PersonalProfileService {
 
-
+/*
     @Override
     public boolean changePwd(Utente utente, String oldPwd, String newPwd) throws SQLException {
 
@@ -35,4 +35,6 @@ public class PersonalProfileServiceImpl implements PersonalProfileService {
 
         return false;
     }
+
+ */
 }

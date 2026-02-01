@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 public interface PersonalProfileService {
 
-    boolean changePwd(Utente utente, String oldPwd, String newPwd) throws SQLException;
+ //   boolean changePwd(Utente utente, String oldPwd, String newPwd) throws SQLException;
 
 }
