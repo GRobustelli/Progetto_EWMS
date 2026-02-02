@@ -9,19 +9,31 @@ public class Task {
     private Date dataDiScadenza;
     private String istruzioni;
     private Tipi.stato stato;
-    private String supervisore;
-    private String dipendente;
+    private int supervisore;
+    private int dipendente;
     private Allegato allegato;
     private Tipi.priorita priorita;
 
     public Task() {
     }
 
-    public Task(long id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, String supervisore, String dipendente, Tipi.priorita priorita) {
+    public Task(long id, String titolo, Date dataDiScadenza, Date dataCreazione, String istruzioni, Tipi.stato stato, int supervisore, int dipendente, Tipi.priorita priorita) {
         this.id = id;
         this.titolo = titolo;
         this.dataDiScadenza = dataDiScadenza;
         this.dataCreazione = dataCreazione;
+        this.istruzioni = istruzioni;
+        this.stato = stato;
+        this.supervisore = supervisore;
+        this.dipendente = dipendente;
+        this.priorita = priorita;
+        allegato = null;
+    }
+
+    public Task(String titolo, Date dataCreazione, Date dataDiScadenza, String istruzioni, Tipi.stato stato, int supervisore, int dipendente, Tipi.priorita priorita) {
+        this.titolo = titolo;
+        this.dataCreazione = dataCreazione;
+        this.dataDiScadenza = dataDiScadenza;
         this.istruzioni = istruzioni;
         this.stato = stato;
         this.supervisore = supervisore;
@@ -78,19 +90,19 @@ public class Task {
         this.stato = stato;
     }
 
-    public String getSupervisore() {
+    public int getSupervisore() {
         return supervisore;
     }
 
-    public void setSupervisore(String supervisore) {
+    public void setSupervisore(int supervisore) {
         this.supervisore = supervisore;
     }
 
-    public String getDipendente() {
+    public int getDipendente() {
         return dipendente;
     }
 
-    public void setDipendente(String dipendente) {
+    public void setDipendente(int dipendente) {
         this.dipendente = dipendente;
     }
 

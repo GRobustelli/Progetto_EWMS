@@ -6,6 +6,7 @@ import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
 import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
 public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     private final PersistenceService persistenceService;
-    private final String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$";
-
+    private final String formPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$";
+    private final String formEmail = "^[a-zA-Z0-9]{1,50}\\.[a-zA-Z0-9]{1,50}@azienda\\.it$ ";
 
     public ProfileManagementServiceImpl() {
         persistenceService = PersistenceServiceImpl.getInstance();
@@ -28,27 +29,23 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
             throw new IllegalArgumentException("utente o password non possono essere null");
         }
         //Controllo se i campi di utente siano stati correttamente inseriti
-        if (utente.getEmail() == null || utente.getEmail().isEmpty()) {
-            throw new  IllegalArgumentException("Email non valido");
+        if (utente.getEmail() == null || utente.getNome()== null || utente.getCognome()== null || utente.getRuolo() == null
+            || utente.getDataNasc() == null) {
+            throw new  IllegalArgumentException("I campi di Utente non possono essere null");
         }
-        if (utente.getNome()== null || utente.getNome().isEmpty()) {
-            throw new  IllegalArgumentException("Nome non valido");
+        if (utente.getNome().length()> 50 || utente.getCognome().length() > 50 || utente.getNome().isEmpty() || utente.getCognome().isEmpty()){
+            throw new IllegalArgumentException("Campi nome e cognome non validi");
         }
-        if (utente.getCognome()== null || utente.getCognome().isEmpty()) {
-            throw new  IllegalArgumentException("Cognome non valido");
+        if (utente.getEmail().matches(formEmail)) {
+            throw new IllegalArgumentException("Email non valida");
         }
-        if (utente.getRuolo() == null || utente.getRuolo().toString().isEmpty()){
-            throw new  IllegalArgumentException("Ruolo non valido");
-        }
-        if (utente.getDataNasc() == null || utente.getDataNasc().toString().isEmpty()){
-            throw new  IllegalArgumentException("Data di nascita non valido");
-        }
-        if (password.isEmpty() || !password.matches(regex)) {
+        if (password.isEmpty() || !password.matches(formPassword)) {
             throw new  IllegalArgumentException("Password non valida");
         }
 
         //Prima di questo devo fare l'hash della password
 
+        String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         IUtenteDAO udao  = persistenceService.getUtenteDAO();
 
@@ -57,13 +54,13 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
         }
 
         if (utente instanceof Dipendente) {
-            udao.createDipendente((Dipendente)utente,password);
+            udao.createDipendente((Dipendente)utente,hashPassword);
         }
         else if (utente instanceof Supervisore) {
-            udao.createSupervisore((Supervisore)utente,password);
+            udao.createSupervisore((Supervisore)utente,hashPassword);
         }
         else if (utente.getRuolo() == Tipi.ruolo.GESTORE) {
-            udao.createUtente(utente,password);
+            udao.createUtente(utente,hashPassword);
         }
         else{
             throw new IllegalArgumentException("Ruolo specificato non valido");
@@ -190,8 +187,11 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     @Override
     public void deleteAccount(Utente utente) throws SQLException, RuntimeException, IllegalArgumentException {
-        if (utente == null || utente.getMatricola() <= 0) {
+        if (utente == null ) {
             throw new IllegalArgumentException("Dati inseriti non validi");
+        }
+        if (utente.getMatricola() <= 0){
+            throw new IllegalArgumentException("Matricola non valida");
         }
 
         IUtenteDAO udao  = persistenceService.getUtenteDAO();

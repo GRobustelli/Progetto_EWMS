@@ -12,22 +12,31 @@ import it.unisa.ewms.model.beans.Utente;
 import java.sql.SQLException;
 
 public class SessionServiceImpl implements SessionService {
+    private final PersistenceService serv;
+
+    public SessionServiceImpl(PersistenceService serv) {
+        this.serv = PersistenceServiceImpl.getInstance();
+    }
+
 
     @Override
     public boolean login(String email, String password) {
+        if (password == null || email == null){
+            throw new IllegalArgumentException("Password or Email address is null");
+        }
+
 
         //Recupero un istanza di PersistanceService e mi faccio restituire un UtenteDAO
-
-        PersistenceService serv = PersistenceServiceImpl.getInstance();
-
         IUtenteDAO utenteDAO = serv.getUtenteDAO();
 
         //Controllo se la password corrisponde a quella salvata nel database (già fatto l'hash: metodo hash in AccountManagement)
         try {
 
             String actualPassword = utenteDAO.recuperaPassword(email);
-            return  (actualPassword.equals(password));
-
+            if (actualPassword != null) {
+                return (actualPassword.equals(password));
+            }
+            else  return false;
         } catch (SQLException e) {
             return false;
         }
@@ -38,8 +47,9 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Utente getUtente(String email) {
 
-        //Recupero un istanza di PersistanceService e mi faccio restituire un UtenteDAO
-        PersistenceService serv = PersistenceServiceImpl.getInstance();
+        if (email == null) {
+            throw new IllegalArgumentException("Email non può essere null");
+        }
         IUtenteDAO utenteDAO = serv.getUtenteDAO();
 
         //Inizializzato come null, nella servlet controllo e se ci sono errori reindirizzo sulla login page

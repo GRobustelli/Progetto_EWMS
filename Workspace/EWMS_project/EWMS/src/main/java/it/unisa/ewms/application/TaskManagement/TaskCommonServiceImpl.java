@@ -10,12 +10,18 @@ import it.unisa.ewms.persistance.interfaces.PersistenceService;
 import java.sql.SQLException;
 
 public class TaskCommonServiceImpl implements TaskCommonService {
+    private final  PersistenceService service;
+
+    public TaskCommonServiceImpl() {
+        this.service = PersistenceServiceImpl.getInstance();
+    }
+
     @Override
     public Task getTask(long taskId) throws SQLException {
-        if(taskId < 0 || taskId == -1L){
+        if(taskId <= 0){
             throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
         }else{
-            PersistenceService service = PersistenceServiceImpl.getInstance();
+
             ITaskDAO taskDAO = service.getTaskDAO();
 
             try{

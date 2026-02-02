@@ -35,8 +35,8 @@ istruzioni varchar(2000) not null,
 stato varchar(20) not null,
 supervisore int not null,
 dipendente int not null,
-foreign key (supervisore) references Utente(matricola) on update cascade on delete cascade,
-foreign key (dipendente) references Utente(matricola) on update cascade on delete cascade
+foreign key (supervisore) references Supervisore(matricola) on update cascade on delete cascade,
+foreign key (dipendente) references Dipendente(matricola) on update cascade on delete cascade
 );
 
 

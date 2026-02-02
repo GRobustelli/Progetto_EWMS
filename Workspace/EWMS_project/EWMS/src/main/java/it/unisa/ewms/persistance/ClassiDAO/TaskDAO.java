@@ -18,10 +18,18 @@ public class TaskDAO implements ITaskDAO {
     if (task == null) {
         throw new IllegalArgumentException("Il task non può essere null");
     }
+    if (task.getTitolo() == null || task.getDataCreazione() == null || task.getDataDiScadenza() == null
+        || task.getPriorita() == null || task.getIstruzioni() == null || task.getStato() == null || task.getSupervisore() <= 0 || task.getDipendente()<= 0) {
+        throw new IllegalArgumentException("I dati dell'oggetto task non possono essere null");
+    }
 
+    if (task.getTitolo().length() > 50 || task.getIstruzioni().length() > 2000){
+        throw new IllegalArgumentException("Dati inseriti troppo lunghi");
+    }
         // Definisco le query SQL
+
         String insertTaskSql = "INSERT INTO Task (titolo, dataDiCreazione, dataDiScadenza, istruzioni, stato, supervisore, dipendente, priorita) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        // Assumo che la tabella Allegato abbia queste colonne come da tua precedente indicazione
+
         String insertAllegatoSql = "INSERT INTO Allegato (filename, task_id, filepath, contentType) VALUES (?, ?, ?, ?)";
 
         Connection connection = null;
@@ -43,8 +51,8 @@ public class TaskDAO implements ITaskDAO {
             psTask.setDate(3, task.getDataDiScadenza());
             psTask.setString(4, task.getIstruzioni());
             psTask.setString(5, task.getStato().name()); // Enum -> String
-            psTask.setString(6, task.getSupervisore());
-            psTask.setString(7, task.getDipendente());
+            psTask.setInt(6, task.getSupervisore());
+            psTask.setInt(7, task.getDipendente());
             psTask.setString(8,task.getPriorita().name());
 
             psTask.executeUpdate();
@@ -141,8 +149,8 @@ public class TaskDAO implements ITaskDAO {
                         task.setPriorita(Tipi.priorita.valueOf(prioritaStr));
                     }
 
-                    task.setSupervisore(rs.getString("supervisore"));
-                    task.setDipendente(rs.getString("dipendente"));
+                    task.setSupervisore(rs.getInt("supervisore"));
+                    task.setDipendente(rs.getInt("dipendente"));
 
                     // --- Mappatura dati Allegato ---
                     /* Controllo se esiste un allegato verificando se la sua chiave primaria
@@ -174,14 +182,15 @@ public class TaskDAO implements ITaskDAO {
     //Serve per la pagina principale, qui è inutile caricarsi gli allegati
     @Override
     public List<Task> findByUtente(Utente utente) throws Exception {
-        // Query per trovare i task assegnati al dipendente specifico
+
         if (utente == null){
             throw new IllegalArgumentException("Utente non valido");
         }
-        if (utente.getRuolo() == Tipi.ruolo.GESTORE){
-            throw new IllegalArgumentException("Privilegi utente non validi");
+        if (utente.getRuolo() == null){
+            throw new IllegalArgumentException("Ruolo non può essere null");
         }
 
+        // Query per trovare i task assegnati al dipendente specifico
         String selectSql;
         if (utente.getRuolo() == Tipi.ruolo.DIPENDENTE){
             selectSql = "SELECT * FROM task WHERE dipendente = ?";
@@ -200,7 +209,7 @@ public class TaskDAO implements ITaskDAO {
              PreparedStatement ps = connection.prepareStatement(selectSql)) {
 
             // Imposto la matricola dell'utente come parametro della query
-            ps.setString(1, utente.getMatricola());
+            ps.setInt(1, utente.getMatricola());
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -220,8 +229,8 @@ public class TaskDAO implements ITaskDAO {
                         task.setPriorita(Tipi.priorita.valueOf(prioritaStr));
                     }
 
-                    task.setSupervisore(rs.getString("supervisore"));
-                    task.setDipendente(rs.getString("dipendente"));
+                    task.setSupervisore(rs.getInt("supervisore"));
+                    task.setDipendente(rs.getInt("dipendente"));
 
                     tasks.add(task);
                 }
@@ -249,14 +258,14 @@ public class TaskDAO implements ITaskDAO {
             int righe = ps.executeUpdate();
 
             if (righe == 0){
-                throw new Exception("Errore durante l'update");
+                throw new SQLException("Nessun task con questo id");
             }
 
         }catch (SQLException e){
             throw new Exception("Errore durante il update per task: " + id, e);
         }
     }
-
+/*
     @Override
     public void update(Task task) throws Exception {
 
@@ -290,6 +299,7 @@ public class TaskDAO implements ITaskDAO {
             throw new Exception("Errore durante l'aggiornamento del task con ID: " + task.getId(), e);
         }
     }
+*/
 
     @Override
     public void delete(long id) throws Exception {
@@ -312,4 +322,5 @@ public class TaskDAO implements ITaskDAO {
         }
 
     }
+
 }
