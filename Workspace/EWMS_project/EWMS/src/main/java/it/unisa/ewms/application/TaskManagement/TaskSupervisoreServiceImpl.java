@@ -60,7 +60,7 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
             try{
                 taskDAO.delete(taskId);
                 return true;
-            }catch(Exception e){throw new SQLException(e);}
+            }catch(Exception e){return false;}
         }
     }
 

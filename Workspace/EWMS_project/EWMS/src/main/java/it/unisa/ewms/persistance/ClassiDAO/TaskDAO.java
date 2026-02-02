@@ -106,7 +106,7 @@ public class TaskDAO implements ITaskDAO {
 
 
     @Override
-    public Task findById(long id) throws Exception {
+    public Task findById(long id) throws SQLException {
 
         //Controllo se l'id è valido
         if (id <= 0) {
@@ -173,7 +173,7 @@ public class TaskDAO implements ITaskDAO {
             }
 
         } catch (SQLException e) {
-            throw new Exception("Errore durante il recupero del task con ID: " + id, e);
+            throw new SQLException("Errore durante il recupero del task con ID: " + id, e);
         }
 
         return task;
@@ -315,7 +315,11 @@ public class TaskDAO implements ITaskDAO {
 
             ps.setLong(1, id);
 
-            ps.executeUpdate();
+            int righe = ps.executeUpdate();
+
+            if (righe == 0){
+                throw new SQLException("Nessun task con questo id");
+            }
 
         } catch (SQLException e) {
             throw new Exception("Errore durante l'eliminazione del task con ID: " + id, e);

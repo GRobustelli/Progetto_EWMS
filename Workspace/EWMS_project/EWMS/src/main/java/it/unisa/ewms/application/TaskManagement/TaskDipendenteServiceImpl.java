@@ -29,12 +29,25 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
         }else{
 
             ITaskDAO taskDAO = service.getTaskDAO();
+            try {
+                Task task=  taskDAO.findById(taskId);
+                if(task != null){
+                    if (task.getStato() == Tipi.stato.COMPLETATO) {
+                        throw new IllegalStateException("Impossibile sospendere un task nello stato completato o da completare");
+                    }
+                } else{
+                    return false;
+                }
+            } catch (Exception e) {
+                throw new  SQLException(e.getMessage());
+            }
+
 
             try{
                taskDAO.updateStatus(taskId, Tipi.stato.IN_ESECUZIONE);
                return true;
             }catch(Exception e){
-                return false;
+                throw new SQLException(e.getMessage());
 
             }
         }
@@ -48,11 +61,24 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
 
             ITaskDAO taskDAO = service.getTaskDAO();
 
+            try {
+                Task task=  taskDAO.findById(taskId);
+                if(task != null){
+                    if (task.getStato() !=  Tipi.stato.IN_ESECUZIONE ) {
+                        throw new IllegalStateException("Impossibile completare un task nello stato completato o in sospensione");
+                    }
+                } else{
+                    return false;
+                }
+            } catch (Exception e) {
+                throw new  SQLException(e.getMessage());
+            }
+
             try{
                 taskDAO.updateStatus(taskId, Tipi.stato.COMPLETATO);
                 return true;
             }catch(Exception e){
-                return false;
+                throw new SQLException(e.getMessage());
             }
         }
     }

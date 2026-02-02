@@ -4,14 +4,13 @@ import it.unisa.ewms.model.beans.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public interface TaskSupervisoreService {
     void createTask(String titolo, Date dataCreazione, Date dataScadenza, String istruzioni, Tipi.stato stato, int supervisoreId, int dipendenteId, Tipi.priorita priorita, Allegato allegato) throws SQLException;
     boolean deleteTask(long taskId) throws SQLException;
     //boolean sendWarning(long taskId, String msg) throws Exception;
-    List<Task> getAllTaskSup(Supervisore supervisoreId) throws SQLException;
+    List<Task> getAllTaskSup(Supervisore supervisore) throws SQLException;
     List<Informazioni> getAllDipendentiInfo(int supervisoreId) throws SQLException;
 
 }
