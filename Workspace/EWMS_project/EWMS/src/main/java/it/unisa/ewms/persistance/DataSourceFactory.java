@@ -12,15 +12,24 @@ import java.util.Properties;
 
 public class DataSourceFactory {
 
-    private static HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
+    private static String propertiesFile = "database.properties";
+
+
+    public static void setPropertiesFile(String newFileName) {
+        propertiesFile = newFileName;
+        if (ds != null) {
+            ds.close(); // Chiude il pool attuale
+            ds = null;  // Forza la ricarica alla prossima chiamata
+        }
+    }
 
     private static void initDataSource() {
 
         //Cerco il file database.properties
         Properties prop = new Properties();
 
-        try (InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream("database.properties")) {
+        try (InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream(propertiesFile)) {
 
         if (in == null) {
             throw new FileNotFoundException("property file 'database.properties' not found in the classpath");
@@ -30,7 +39,7 @@ public class DataSourceFactory {
 
         // Configurazione JDBC
 
-
+        HikariConfig config = new HikariConfig();
         config.setJdbcUrl(prop.getProperty("db.url"));
         config.setUsername(prop.getProperty("db.username"));
         config.setPassword(prop.getProperty("db.password"));

@@ -17,7 +17,7 @@ public class UtenteDAO implements IUtenteDAO {
 
     private void insertUtenteGenerico(Connection conn, Utente utente, String password) throws SQLException, EmailGiaPresenteException {
         if (utente.getEmail() == null || utente.getRuolo() == null || utente.getNome() == null
-            || utente.getCognome() == null || utente.getDataNasc() == null || utente.getMatricola() <= 0) {
+            || utente.getCognome() == null || utente.getDataNasc() == null) {
             throw new IllegalArgumentException("Dati inseriti non validi");
         }
         if (utente.getEmail().length() > 250 || utente.getNome().length() > 50 || utente.getCognome().length() > 50 || password.length() > 255){

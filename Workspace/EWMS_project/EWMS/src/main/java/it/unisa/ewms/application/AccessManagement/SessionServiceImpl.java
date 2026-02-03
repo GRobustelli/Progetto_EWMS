@@ -8,6 +8,7 @@ import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
 import it.unisa.ewms.persistance.interfaces.PersistenceService;
 import it.unisa.ewms.model.beans.Utente;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 
@@ -34,9 +35,11 @@ public class SessionServiceImpl implements SessionService {
 
             String actualPassword = utenteDAO.recuperaPassword(email);
             if (actualPassword != null) {
-                return (actualPassword.equals(password));
+                return (BCrypt.checkpw(password, actualPassword));
             }
-            else  return false;
+            else {
+                return false;
+            }
         } catch (SQLException e) {
             return false;
         }

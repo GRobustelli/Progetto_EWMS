@@ -1,15 +1,18 @@
 package it.unisa.ewms.application.TaskManagement;
 
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
+import it.unisa.ewms.model.beans.Allegato;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
 import it.unisa.ewms.persistance.interfaces.PersistenceService;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-public class TaskCommonServiceImpl implements TaskCommonService {
+ public class TaskCommonServiceImpl implements TaskCommonService {
     private final  PersistenceService service;
 
     public TaskCommonServiceImpl() {
@@ -66,5 +69,34 @@ public class TaskCommonServiceImpl implements TaskCommonService {
         }
 
         }
-    }
+
+     @Override
+     public Allegato downloadAllegato(long taskId) throws Exception {
+
+         if (taskId <= 0) {
+             throw new IllegalArgumentException("Id non valido");
+         }
+
+         Task task = getTask(taskId);
+
+         if (task == null) {
+             return null;
+         } else {
+             Allegato allegato = task.getAllegato();
+
+             if (allegato != null) {
+                 File file = new File(allegato.getFilePath());
+                 if (!file.exists()) {
+                     throw new FileNotFoundException("Il file non è presente sul disco: " + allegato.getFilename());
+                 }
+
+             }
+
+             return allegato;
+         }
+     }
+
+
+ }
+
 

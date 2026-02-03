@@ -30,7 +30,7 @@ public class TaskDAO implements ITaskDAO {
 
         String insertTaskSql = "INSERT INTO Task (titolo, dataDiCreazione, dataDiScadenza, istruzioni, stato, supervisore, dipendente, priorita) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String insertAllegatoSql = "INSERT INTO Allegato (filename, task_id, filepath, contentType) VALUES (?, ?, ?, ?)";
+        String insertAllegatoSql = "INSERT INTO Allegato (filename, filename_dir, task_id, filepath, contentType) VALUES (?, ? , ?, ?, ?)";
 
         Connection connection = null;
         PreparedStatement psTask = null;
@@ -71,10 +71,11 @@ public class TaskDAO implements ITaskDAO {
             if (task.getAllegato() != null) {
                 psAllegato = connection.prepareStatement(insertAllegatoSql);
 
-                psAllegato.setString(1, task.getAllegato().getFilename()); // Primary Key allegato
-                psAllegato.setLong(2, task.getId()); // Foreign Key che collega al Task
-                psAllegato.setString(3, task.getAllegato().getFilePath());
-                psAllegato.setString(4, task.getAllegato().getContentType());
+                psAllegato.setString(1, task.getAllegato().getFilename());
+                psAllegato.setString(2,task.getAllegato().getDirectoryFilename());// Primary Key allegato
+                psAllegato.setLong(3, task.getId()); // Foreign Key che collega al Task
+                psAllegato.setString(4, task.getAllegato().getFilePath());
+                psAllegato.setString(5, task.getAllegato().getContentType());
 
                 psAllegato.executeUpdate();
             }
@@ -161,6 +162,7 @@ public class TaskDAO implements ITaskDAO {
                     if (filename != null) {
                         Allegato allegato = new Allegato();
                         allegato.setFilename(filename);
+                        allegato.setDirectoryFilename("filename_dir");
                         allegato.setFilePath(rs.getString("filepath"));
                         allegato.setContentType(rs.getString("contentType"));
                         // Imposto il task_id (che è uguale all'id del task che ho già)

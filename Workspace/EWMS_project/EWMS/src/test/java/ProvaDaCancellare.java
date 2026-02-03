@@ -22,7 +22,7 @@ public class ProvaDaCancellare {
         utente.setEmail("juoanitobros@azienda.it");
         utente.setRuolo(Tipi.ruolo.SUPERVISORE);
         utente.setNewUtente(true);
-/*
+
         try {
 
             utenteDAO.createSupervisore(utente, "CicciaAlCulo");
@@ -32,10 +32,8 @@ public class ProvaDaCancellare {
             throw new RuntimeException(e);
         } catch (EmailGiaPresenteException e) {
             System.out.println("Email già presente");
-            throw new RuntimeException(e);
-
         }
-*/
+/*
         try {
             Utente dipendente = utenteDAO.findByMatricola(3);
             if (dipendente == null) {
@@ -47,7 +45,7 @@ public class ProvaDaCancellare {
             throw new RuntimeException(e);
         }
 
-
+*/
         System.out.println("Non entro nel catch");
     }
 }

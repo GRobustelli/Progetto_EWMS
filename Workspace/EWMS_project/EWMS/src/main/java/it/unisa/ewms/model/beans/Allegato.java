@@ -2,6 +2,7 @@ package it.unisa.ewms.model.beans;
 
 public class Allegato {
     private String filename;
+    private String directoryFilename;
     private long taskId;
     private String filePath;
     private String contentType;
@@ -13,6 +14,22 @@ public class Allegato {
         this.taskId = taskId;
         this.filePath = filePath;
         this.contentType = contentType;
+    }
+
+    public Allegato(String filename, String directoryFilename, String filePath, String contentType) {
+        this.filename = filename;
+        this.directoryFilename = directoryFilename;
+        taskId = -1;
+        this.filePath = filePath;
+        this.contentType = contentType;
+    }
+
+    public String getDirectoryFilename() {
+        return directoryFilename;
+    }
+
+    public void setDirectoryFilename(String directoryFilename) {
+        this.directoryFilename = directoryFilename;
     }
 
     public String getFilename() {

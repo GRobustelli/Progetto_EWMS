@@ -6,10 +6,14 @@ import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
 import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
 
+import java.io.File;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
     private final PersistenceService service;
@@ -93,4 +97,52 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
             return utenteDAO.getAllDipendentiInfo(supervisoreId);
         }catch(Exception e){throw new SQLException(e);}
     }
+
+    @Override
+    public Allegato uploadAllegato(FileItem fileItem, String uploadDir) {
+        //Validazione base: se il file è vuoto o non esiste, ritorna null
+        if (fileItem == null || fileItem.getName() == null || uploadDir == null) return null;
+
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            // Tenta di creare la cartella se non esiste
+            boolean created = dir.mkdirs();
+            if (!created) {
+                throw new RuntimeException("Impossibile creare la directory di upload: " + uploadDir);
+            }
+        }
+
+        // 3. Controllo Permessi (Opzionale ma utile per fail-fast)
+        if (!dir.canWrite()) {
+            throw new RuntimeException("Permessi di scrittura negati nella cartella: " + uploadDir);
+        }
+
+        // Recupera il nome originale pulito
+        String originalFilename = FilenameUtils.getName(fileItem.getName());
+
+        // Recupera l'estensione (es. "pdf", "jpg")
+        String extension = FilenameUtils.getExtension(originalFilename);
+
+        // Genera un nome univoco (UUID) + estensione
+        String storedFilename = UUID.randomUUID().toString();
+        if (!extension.isEmpty()) {
+            storedFilename += "." + extension;
+        }
+
+        //Costruisci il path completo con il nome univoco
+        String fullPath = uploadDir + File.separator + storedFilename;
+        File fileOnDisk = new File(fullPath);
+
+        //Scrivi il file
+        try {
+            fileItem.write(fileOnDisk);
+        } catch (Exception e) {
+            throw new RuntimeException("Impossibile salvare file su disco");
+        }
+
+        //Ritorna l'oggetto per la persistenza su db
+        return new Allegato(originalFilename, storedFilename, fullPath, fileItem.getContentType());
+    }
+
+
 }
