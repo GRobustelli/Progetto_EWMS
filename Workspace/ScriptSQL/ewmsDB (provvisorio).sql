@@ -41,7 +41,9 @@ foreign key (dipendente) references Dipendente(matricola) on update cascade on d
 
 
 create table Allegato(
-filename varchar(100) primary key not null,
+id int auto_increment primary key,
+filename varchar(100) not null,
+filename_dir varchar(100) not null,
 task_id bigint not null,
 filepath varchar(200) not null,
 contentType varchar(20) not null,
