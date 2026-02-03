@@ -1,14 +1,14 @@
 package it.unisa.ewms.model.beans;
 
 public class Informazioni {
-    private String matricola;
+    private int matricola;
     private String nome;
     private String cognome;
 
     public Informazioni() {
     }
 
-    public Informazioni(String matricola, String nome, String cognome) {
+    public Informazioni(int matricola, String nome, String cognome) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
@@ -30,11 +30,17 @@ public class Informazioni {
         this.cognome = cognome;
     }
 
-    public String getMatricola() {
+    public int getMatricola() {
         return matricola;
     }
 
-    public void setMatricola(String matricola) {
+    public void setMatricola(int matricola) {
         this.matricola = matricola;
     }
+
+    public String getMatricolaFormattata(){
+        return "2002-" + String.format("%08d", this.matricola);
+    }
+
+
 }

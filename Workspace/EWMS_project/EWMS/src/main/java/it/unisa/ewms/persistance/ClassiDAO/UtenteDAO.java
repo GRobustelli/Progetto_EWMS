@@ -4,6 +4,8 @@ import it.unisa.ewms.model.beans.*;
 import it.unisa.ewms.persistance.DataSourceFactory;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,11 +13,16 @@ import java.util.List;
 
 public class UtenteDAO implements IUtenteDAO {
 
-    private void insertUtenteGenerico(Connection conn, Utente utente, String password) throws SQLException, EmailGiaPresenteException {
-        if (utente == null || password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Dati inseriti non possono essere null");
-        }
+    private static final Logger log = LoggerFactory.getLogger(UtenteDAO.class);
 
+    private void insertUtenteGenerico(Connection conn, Utente utente, String password) throws SQLException, EmailGiaPresenteException {
+        if (utente.getEmail() == null || utente.getRuolo() == null || utente.getNome() == null
+            || utente.getCognome() == null || utente.getDataNasc() == null || utente.getMatricola() <= 0) {
+            throw new IllegalArgumentException("Dati inseriti non validi");
+        }
+        if (utente.getEmail().length() > 250 || utente.getNome().length() > 50 || utente.getCognome().length() > 50 || password.length() > 255){
+            throw new IllegalArgumentException("Dati inseriti non validi: troppo lunghi");
+        }
 
         String sql = "INSERT INTO utente (email, nome, cognome, dataDiNascita, hashPassword, ruolo) VALUES (?, ?, ?, ?, ?, ?) ";
 
@@ -64,6 +71,13 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void createUtente(Utente utente, String password) throws SQLException, EmailGiaPresenteException {
+       if (utente ==null || password == null){
+           throw new IllegalArgumentException("Dati inseriti non possono essere null");
+       }
+       if (utente.getRuolo() != Tipi.ruolo.GESTORE){
+           throw new IllegalArgumentException("Questa funzione non supporta ruoli diversi da gestore");
+       }
+
         try(Connection conn = DataSourceFactory.getConnection()){
             insertUtenteGenerico(conn, utente, password);
         } catch (Exception e) {
@@ -81,6 +95,20 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void createDipendente(Dipendente dipendente, String password) throws SQLException, EmailGiaPresenteException {
+        if (dipendente ==null || password == null){
+            throw new IllegalArgumentException("Dati inseriti non possono essere null");
+        }
+        if (dipendente.getRuolo() != Tipi.ruolo.DIPENDENTE){
+            throw new IllegalArgumentException("Ruolo non valido per questo metodo");
+        }
+        if (dipendente.getSupervisoreInfo() == null){
+            throw new  IllegalArgumentException("Supervisoreinfo non può essere null");
+        }
+        //Controllo per evitare di aprire la connessione
+        if (dipendente.getSupervisoreInfo().getMatricola() <= 0){
+            throw new  IllegalArgumentException("Supervisoreinfo.matricola non può essere negativo");
+        }
+
         String sqlDipendente = "INSERT INTO dipendente (matricola, supMatricola) VALUES (?,?)";
 
         Connection con = null;
@@ -94,7 +122,7 @@ public class UtenteDAO implements IUtenteDAO {
             // B. Inserisco nella tabella specifica (Dipendente)
             try (PreparedStatement ps = con.prepareStatement(sqlDipendente)) {
                 ps.setInt(1, dipendente.getMatricola());
-                ps.setString(2, dipendente.getSupervisoreInfo().getMatricola());
+                ps.setInt(2, dipendente.getSupervisoreInfo().getMatricola());
                 ps.executeUpdate();
             }
 
@@ -123,6 +151,13 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public void createSupervisore(Supervisore supervisore, String password) throws SQLException, EmailGiaPresenteException {
+        if (supervisore ==null || password == null){
+            throw new IllegalArgumentException("Dati inseriti non possono essere null");
+        }
+        if (supervisore.getRuolo() != Tipi.ruolo.SUPERVISORE){
+            throw new IllegalArgumentException("Ruolo non valido per questo metodo");
+        }
+
         String sqlSupervisore = "INSERT INTO supervisore (matricola) values (?) ";
         Connection con = null;
         try {
@@ -200,7 +235,7 @@ public class UtenteDAO implements IUtenteDAO {
     //Questo metodo viene chiamato dopo aver fatto il check con recuperaPassword, quindi siamo sicuri della presenza
     //dell'email
     public Utente findByEmail(String email) {
-        if (email == null || email.isEmpty()) {
+        if (email == null) {
             throw new IllegalArgumentException("L'email non può essere nulla o vuota");
         }
 
@@ -250,10 +285,12 @@ public class UtenteDAO implements IUtenteDAO {
     //Questo metodo se non trova supervisore con la matricola specificata ritorna una lista vuota
     @Override
     public List<Informazioni> getAllDipendentiInfo(int matricola) throws SQLException {
-        List<Informazioni> dipendentiInfo = new ArrayList<>();
-        if (matricola < 0) {
+
+        if (matricola <= 0) {
             throw new IllegalArgumentException("La matricola non esistente");
         }
+
+        List<Informazioni> dipendentiInfo = new ArrayList<>();
         String sql = "SELECT u.matricola,u.nome,u.cognome FROM utente u JOIN dipendente d ON u.matricola = d.matricola WHERE d.supMatricola = ?";
 
         try(Connection conn = DataSourceFactory.getConnection()){
@@ -261,7 +298,7 @@ public class UtenteDAO implements IUtenteDAO {
             ps.setInt(1, matricola);
             try(ResultSet rs = ps.executeQuery()){
                 while (rs.next()) {
-                    Informazioni informazioni = new Informazioni(rs.getString("matricola"),rs.getString("nome"),rs.getString("cognome"));
+                    Informazioni informazioni = new Informazioni(rs.getInt("matricola"),rs.getString("nome"),rs.getString("cognome"));
                     dipendentiInfo.add(informazioni);
                 }
             }
@@ -285,7 +322,7 @@ public class UtenteDAO implements IUtenteDAO {
             ps.setInt(1, matricola);
             try(ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
-                     informazioni = new Informazioni(rs.getString("matricola"),rs.getString("nome"),rs.getString("cognome"));
+                     informazioni = new Informazioni(rs.getInt("matricola"),rs.getString("nome"),rs.getString("cognome"));
                 }
             }
         }catch (SQLException ex){
@@ -310,12 +347,9 @@ public class UtenteDAO implements IUtenteDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                // NOTA: Se hai cambiato la matricola in INT sul DB,
-                // qui fai la conversione se il tuo DTO 'Informazioni' si aspetta Stringhe.
-                String matricolaStr = String.valueOf(rs.getInt("matricola"));
 
                 Informazioni info = new Informazioni(
-                        matricolaStr,
+                        rs.getInt("matricola"),
                         rs.getString("nome"),
                         rs.getString("cognome")
                 );
@@ -370,6 +404,8 @@ public class UtenteDAO implements IUtenteDAO {
         }
         return listaUtenti;
     }
+
+
 /*
     @Override
     public void updateAnagrafica(String nome, String cognome, Date dataDiNascita, int matricola) throws SQLException {
@@ -557,7 +593,11 @@ public class UtenteDAO implements IUtenteDAO {
     public void delete(Utente utente) throws SQLException {
         // Grazie al CASCADE sul DB, basta cancellare dalla tabella padre.
         if (utente == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("I dati non possono essere null");
+        }
+
+        if (utente.getMatricola() <= 0){
+            throw new IllegalArgumentException("Matricola inserita non valida");
         }
         String sql = "DELETE FROM utente WHERE matricola = ?";
 
@@ -580,6 +620,10 @@ public class UtenteDAO implements IUtenteDAO {
 
     @Override
     public String recuperaPassword(String email) throws SQLException {
+
+        if (email == null) {
+            throw new IllegalArgumentException("Email non può essere null");
+        }
 
         String sql = "SELECT hashPassword FROM utente WHERE email = ?";
 

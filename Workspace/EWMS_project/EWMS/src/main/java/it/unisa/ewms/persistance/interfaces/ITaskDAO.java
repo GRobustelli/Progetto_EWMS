@@ -10,7 +10,9 @@ public interface ITaskDAO {
     void create(Task task) throws Exception;
     Task findById(long id) throws Exception;
     List<Task> findByUtente(Utente utente) throws Exception;
-    void update(Task task) throws Exception;
+
+   // void update(Task task) throws Exception;
+
     void updateStatus(long id, Tipi.stato nuovoStato) throws Exception;
     void delete(long id) throws Exception;
 

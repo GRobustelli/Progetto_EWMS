@@ -1,10 +1,7 @@
 package it.unisa.ewms.application.TaskManagement;
 
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
-import it.unisa.ewms.model.beans.Informazioni;
-import it.unisa.ewms.model.beans.Task;
-import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.model.beans.Utente;
+import it.unisa.ewms.model.beans.*;
 import it.unisa.ewms.persistance.PersistenceServiceImpl;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
@@ -15,22 +12,41 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
-    @Override
-    public Task createTask(long taskId, String titolo, Date dataCreazione, Date dataScadenza, String istruzioni, Tipi.stato stato, String supervisoreId, String dipendenteId, Tipi.priorita priorita) throws SQLException {
-        if(taskId < 0){
-            throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
-        }else{
-            Task tmp = new Task(taskId, titolo, dataCreazione,dataScadenza, istruzioni, stato, supervisoreId, dipendenteId, priorita);
+    private final PersistenceService service;
 
-            PersistenceService service = PersistenceServiceImpl.getInstance();
+    public TaskSupervisoreServiceImpl() {
+        service =  PersistenceServiceImpl.getInstance();;
+    }
+
+    @Override
+    public void createTask(String titolo, Date dataCreazione, Date dataScadenza, String istruzioni, Tipi.stato stato, int supervisoreId, int dipendenteId, Tipi.priorita priorita, Allegato allegato) throws SQLException {
+            if (titolo == null || dataCreazione == null || dataScadenza == null ||
+            istruzioni == null || priorita == null || stato == null) {
+                throw new IllegalArgumentException("Patametri non possono essere null");
+            }
+            if (supervisoreId <= 0 || dipendenteId <= 0) {
+                throw new IllegalArgumentException("Matricole non valide");
+            }
+
+            if (istruzioni.length() < 10){
+                throw new IllegalArgumentException("Business rule: istruzioni non più piccole di 10 carattteri");
+            }
+            if (dataScadenza.before(dataCreazione)) {
+                throw new IllegalArgumentException("Scadenza non può essere prima impostata prima della data di creazione");
+            }
+
+
+            Task tmp = new Task(titolo, dataCreazione,dataScadenza, istruzioni, stato, supervisoreId, dipendenteId, priorita);
+            tmp.setAllegato(allegato);
+
             ITaskDAO taskDAO = service.getTaskDAO();
 
             try{
                 taskDAO.create(tmp);
-                return tmp;
             }catch(Exception e){throw new SQLException(e);}
-        }
     }
+
+
 
     @Override
     public boolean deleteTask(long taskId) throws SQLException {
@@ -44,26 +60,33 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
             try{
                 taskDAO.delete(taskId);
                 return true;
-            }catch(Exception e){throw new SQLException(e);}
+            }catch(Exception e){return false;}
         }
     }
 
     @Override
-    public List<Task> getAllTaskSup(String supervisoreId) throws SQLException {
-        PersistenceService service = PersistenceServiceImpl.getInstance();
+    public List<Task> getAllTaskSup(Supervisore supervisore) throws SQLException {
+        if (supervisore == null){
+            throw new IllegalArgumentException("Parametro non può essere null");
+        }
+        if (supervisore.getRuolo() != Tipi.ruolo.SUPERVISORE){
+            throw new IllegalArgumentException("Accesso non autorizzato");
+        }
+
         ITaskDAO taskDAO = service.getTaskDAO();
-        IUtenteDAO utenteDAO = service.getUtenteDAO();
 
         try{
-            Utente user = utenteDAO.findByMatricola(supervisoreId);
-            return taskDAO.findByUtente(user);
+            return taskDAO.findByUtente(supervisore);
         }catch(Exception e){throw new SQLException(e);}
     }
 
 
     @Override
-    public List<Informazioni> getAllDipendentiInfo(String supervisoreId) throws SQLException {
-        PersistenceService service = PersistenceServiceImpl.getInstance();
+    public List<Informazioni> getAllDipendentiInfo(int supervisoreId) throws SQLException {
+        if  (supervisoreId <= 0){
+            throw new IllegalArgumentException("Matricola non valida");
+        }
+
         IUtenteDAO utenteDAO = service.getUtenteDAO();
 
         try{
