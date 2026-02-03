@@ -1,0 +1,66 @@
+CREATE SCHEMA ewmsDB;
+
+use ewmsDB;
+
+create table Utente (
+matricola int auto_increment primary key not null,
+email varchar(250) character set utf8mb4 unique not null,
+nome varchar (50) not null,
+cognome varchar(50) not null,
+dataDiNascita date not null,
+hashPassword varchar(255) not null,
+newUtente boolean not null default true,
+ruolo varchar(20) not null
+);
+
+create table Supervisore(
+matricola int primary key not null,
+foreign key (matricola) references Utente(matricola) on update cascade on delete cascade
+);
+
+create table Dipendente(
+matricola int primary key not null,
+supMatricola int not null,
+foreign key (matricola) references Utente(matricola) on update cascade on delete cascade,
+foreign key (supMatricola) references Supervisore(matricola) on update cascade
+);
+
+create table Task(
+id bigint auto_increment primary key not null,
+titolo varchar(50) not null,
+dataDiScadenza date not null,
+dataDiCreazione date not null,
+priorita varchar(20) not null,
+istruzioni varchar(2000) not null,
+stato varchar(20) not null,
+supervisore int not null,
+dipendente int not null,
+foreign key (supervisore) references Supervisore(matricola) on update cascade on delete cascade,
+foreign key (dipendente) references Dipendente(matricola) on update cascade on delete cascade
+);
+
+
+create table Allegato(
+id int auto_increment primary key,
+filename varchar(100) not null,
+filename_dir varchar(100) not null,
+task_id bigint not null,
+filepath varchar(200) not null,
+contentType varchar(20) not null,
+foreign key (task_id) references Task(id) on update cascade on delete cascade
+);
+
+create table Notifica(
+id bigint auto_increment not null primary key,
+task_id bigint not null,
+messaggio varchar(500),
+sender int not null,
+receiver int not null,
+vista boolean not null default false,
+foreign key (task_id) references Task(id) on update cascade on delete cascade,
+foreign key (sender) references Utente(matricola) on update cascade on delete cascade,
+foreign key (receiver) references Utente(matricola) on update cascade on delete cascade
+);
+
+
+drop schema ewmsdb;
