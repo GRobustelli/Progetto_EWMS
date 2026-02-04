@@ -15,8 +15,15 @@ import java.sql.SQLException;
 public class SessionServiceImpl implements SessionService {
     private final PersistenceService serv;
 
-    public SessionServiceImpl(PersistenceService serv) {
+    public SessionServiceImpl(){
         this.serv = PersistenceServiceImpl.getInstance();
+    }
+
+
+    //utilizzato per unit testing
+    public SessionServiceImpl(PersistenceService serv) {
+        if (serv == null) { throw new IllegalArgumentException();}
+        this.serv = serv;
     }
 
 

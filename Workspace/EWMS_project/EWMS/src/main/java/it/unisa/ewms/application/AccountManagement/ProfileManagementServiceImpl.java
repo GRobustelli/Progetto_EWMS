@@ -15,10 +15,16 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     private final PersistenceService persistenceService;
     private final String formPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$";
-    private final String formEmail = "^[a-zA-Z0-9]{1,50}\\.[a-zA-Z0-9]{1,50}@azienda\\.it$ ";
+    private final String formEmail = "^[a-zA-Z0-9]{1,50}\\.[a-zA-Z0-9]{1,50}@azienda\\.it$";
 
     public ProfileManagementServiceImpl() {
         persistenceService = PersistenceServiceImpl.getInstance();
+    }
+
+
+    //utilizzato per mockito
+    public ProfileManagementServiceImpl(PersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
         if (utente.getNome().length()> 50 || utente.getCognome().length() > 50 || utente.getNome().isEmpty() || utente.getCognome().isEmpty()){
             throw new IllegalArgumentException("Campi nome e cognome non validi");
         }
-        if (utente.getEmail().matches(formEmail)) {
+        if (!utente.getEmail().trim().matches(formEmail)) {
             throw new IllegalArgumentException("Email non valida");
         }
         if (password.isEmpty() || !password.matches(formPassword)) {
@@ -54,7 +60,11 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
         }
 
         if (utente instanceof Dipendente) {
-            udao.createDipendente((Dipendente)utente,hashPassword);
+
+            Dipendente dipendente = (Dipendente) utente;
+            if (dipendente.getSupervisoreInfo() == null) {throw new IllegalArgumentException("Dipendente deve possedere informazioni supervisore");}
+
+            udao.createDipendente(dipendente,hashPassword);
         }
         else if (utente instanceof Supervisore) {
             udao.createSupervisore((Supervisore)utente,hashPassword);
