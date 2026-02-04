@@ -2,14 +2,17 @@ import it.unisa.ewms.model.beans.*;
 import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
 import it.unisa.ewms.persistance.DataSourceFactory;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -1228,6 +1231,579 @@ public class UnitTesting_UtenteDAO {
         }
 
 
+    }
+
+    @Nested
+    @DisplayName("Classe di test per metodo findByEmail")
+    class FindByEmail{
+
+        private Utente baseUtente;
+
+        @BeforeEach
+        void clearData() throws Exception {
+            try (Connection conn = DataSourceFactory.getConnection();
+                 Statement stmt = conn.createStatement()) {
+
+                // 1. IMPORTANTE: Sposta la connessione corrente sullo schema di default (PUBLIC).
+                // Se rimani dentro 'ewmsDB', H2 non ti permetterà mai di cancellarlo.
+                stmt.execute("SET SCHEMA PUBLIC");
+
+                // 2. Cancella TUTTO (Tabelle, Viste, Vincoli)
+                stmt.execute("DROP ALL OBJECTS");
+
+                // 3. (Opzionale ma consigliato) Forza la cancellazione dello schema per evitare residui
+                stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
+
+                // 4. Ora puoi ricreare tutto da zero in sicurezza
+                stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
+            }
+        }
+
+        @BeforeEach
+        void setUp() throws SQLException, EmailGiaPresenteException {
+            baseUtente = new Utente();
+            baseUtente.setNome("Mario");
+            baseUtente.setCognome("Rossi");
+            baseUtente.setEmail("mario.rossi@azienda.it");
+            baseUtente.setDataNasc(Date.valueOf("1985-05-20"));
+            baseUtente.setRuolo(Tipi.ruolo.GESTORE);
+
+            // Persistenza dell'utente nel database per il test
+            utenteDAO.createUtente(baseUtente, "goodPsw12!");
+        }
+
+
+        @Test
+        @DisplayName("TF_1: Email valida e presente nel database -> Successo")
+        void testFindByEmail_Presente() {
+            // --- ARRANGE ---
+            // Email: size() > 0 e presente nel db
+            String emailRicerca = "mario.rossi@azienda.it";
+
+            // --- ACT ---
+            Utente risultato = utenteDAO.findByEmail(emailRicerca);
+
+            // --- ASSERT ---
+            // Oracolo: restituisce l'utente
+            Assertions.assertNotNull(risultato, "L'utente dovrebbe essere recuperato correttamente");
+
+            Assertions.assertEquals(baseUtente.getEmail(), risultato.getEmail(),
+                    "L'email dell'utente restituito deve coincidere con quella cercata");
+
+            Assertions.assertEquals(baseUtente.getNome(), risultato.getNome(),
+                    "Il nome dell'utente restituito deve corrispondere a quello nel database");
+
+            Assertions.assertEquals(baseUtente.getCognome(), risultato.getCognome(),
+                    "Il cognome dell'utente restituito deve corrispondere a quello nel database");
+        }
+
+        @Test
+        @DisplayName("TestFrame2: Email valida ma NON presente nel database -> Restituisce null")
+        void testFindByEmail_Assente() {
+            // --- ARRANGE ---
+            // Email: size() > 0 ma assente nel db (usiamo un'email diversa da quella del setup)
+            String emailNonPresente = "fantasma@azienda.it";
+
+            // --- ACT ---
+            Utente risultato = utenteDAO.findByEmail(emailNonPresente);
+
+            // --- ASSERT ---
+            // Oracolo: restituisce null
+            Assertions.assertNull(risultato,
+                    "Il metodo deve restituire null se l'email cercata non esiste nel database");
+        }
+
+        @Test
+        @DisplayName("TestFrame3: Email null -> IllegalArgumentException")
+        void testFindByEmail_EmailNull() {
+            // --- ARRANGE ---
+            String emailNull = null;
+
+            // --- ACT & ASSERT ---
+            // Oracolo: illegalArgumentException
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                utenteDAO.findByEmail(emailNull);
+            }, "Dovrebbe lanciare IllegalArgumentException se l'email passata è null");
+        }
+    }
+
+    @Nested
+    @DisplayName("Test per il metodo getAllDipendentiInfo")
+    class GetAllDipendentiInfo {
+
+        private int matricolaSupervisore;
+        private Dipendente dipendente1;
+        private Dipendente dipendente2;
+
+        @BeforeEach
+        void clearData() throws Exception {
+            try (Connection conn = DataSourceFactory.getConnection();
+                 Statement stmt = conn.createStatement()) {
+                stmt.execute("SET SCHEMA PUBLIC");
+                stmt.execute("DROP ALL OBJECTS");
+                stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
+                stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
+            }
+        }
+
+        @BeforeEach
+        void setUp() throws SQLException, EmailGiaPresenteException {
+            // 1. Creiamo il SUPERVISORE
+            Supervisore sup = new Supervisore();
+            sup.setNome("Capo");
+            sup.setCognome("Supremo");
+            sup.setEmail("capo@azienda.it"); // Email univoca
+            sup.setDataNasc(Date.valueOf("1980-01-01"));
+            sup.setRuolo(Tipi.ruolo.SUPERVISORE);
+            utenteDAO.createSupervisore(sup, "PassSup1!");
+
+            // 2. Recuperiamo la sua MATRICOLA (generata dal DB)
+            matricolaSupervisore = -1;
+            try (Connection conn = DataSourceFactory.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT matricola FROM ewmsDB.utente WHERE email = ?")) {
+                stmt.setString(1, sup.getEmail());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) matricolaSupervisore = rs.getInt("matricola");
+                }
+            }
+
+            // Prepariamo l'oggetto Informazioni per il collegamento
+            Informazioni infoSup = new Informazioni(matricolaSupervisore, sup.getNome(), sup.getCognome());
+
+            // 3. Creiamo il DIPENDENTE 1 collegato al supervisore
+            dipendente1 = new Dipendente();
+            dipendente1.setNome("Luigi");
+            dipendente1.setCognome("Verdi");
+            dipendente1.setEmail("luigi.verdi@azienda.it"); // Email univoca
+            dipendente1.setDataNasc(Date.valueOf("1990-01-01"));
+            dipendente1.setRuolo(Tipi.ruolo.DIPENDENTE);
+            dipendente1.setSupervisoreInfo(infoSup);
+            utenteDAO.createDipendente(dipendente1, "PassDip1!");
+
+            // 4. Creiamo il DIPENDENTE 2 collegato allo STESSO supervisore
+            dipendente2 = new Dipendente();
+            dipendente2.setNome("Anna");
+            dipendente2.setCognome("Bianchi");
+            dipendente2.setEmail("anna.bianchi@azienda.it"); // Email univoca
+            dipendente2.setDataNasc(Date.valueOf("1992-05-05"));
+            dipendente2.setRuolo(Tipi.ruolo.DIPENDENTE);
+            dipendente2.setSupervisoreInfo(infoSup);
+            utenteDAO.createDipendente(dipendente2, "PassDip2!");
+        }
+
+        @Test
+        @DisplayName("TF_1: Matricola valida e dipendenti presenti -> Restituisce lista popolata")
+        void testGetAllDipendentiInfo_Successo() throws SQLException {
+            // --- ARRANGE ---
+            // Il setup ha già creato 2 dipendenti sotto 'matricolaSupervisore'
+
+            // --- ACT ---
+            List<Informazioni> risultati = utenteDAO.getAllDipendentiInfo(matricolaSupervisore);
+
+            // --- ASSERT ---
+            Assertions.assertNotNull(risultati, "La lista restituita non deve essere null");
+            Assertions.assertEquals(2, risultati.size(), "Dovrebbero esserci esattamente 2 dipendenti associati");
+
+            boolean trovatoLuigi = risultati.stream()
+                    .anyMatch(info -> info.getNome().equals("Luigi") && info.getCognome().equals("Verdi"));
+
+            boolean trovatoAnna = risultati.stream()
+                    .anyMatch(info -> info.getNome().equals("Anna") && info.getCognome().equals("Bianchi"));
+
+            Assertions.assertTrue(trovatoLuigi, "La lista deve contenere Luigi Verdi");
+            Assertions.assertTrue(trovatoAnna, "La lista deve contenere Anna Bianchi");
+
+        }
+
+        @Test
+        @DisplayName("TF_2: Matricola valida e dipendenti assenti -> Restituisce lista vuota")
+        void testGetAllDipendentiInfo_Successo_MatricolaInesistenteoNessunDipAssociato() throws SQLException {
+           // --- ARRANGE ---
+            matricolaSupervisore = 999;
+           //  --- ACT ---
+            List<Informazioni> risultati = utenteDAO.getAllDipendentiInfo(matricolaSupervisore);
+
+            // --- ASSERT ---
+            Assertions.assertNotNull(risultati, "La lista restituita non deve essere null");
+            Assertions.assertEquals(0, risultati.size(), "Dovrebbero esserci esattamente 0 dipendenti associati");
+        }
+
+        @Test
+        @DisplayName("TF_3: Matricola non valida -> Restituisce IllegalArgumentException")
+        void testGetAllDipendentiInfo_Successo_MatricolanonValida() throws SQLException {
+            // --- ARRANGE ---
+
+            matricolaSupervisore = -1;
+
+            // --- ACT, ASSERT ---
+
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                utenteDAO.getAllDipendentiInfo(matricolaSupervisore);
+            }, "Dovrebbe lanciare IllegalArgumentException se l'email passata è null");
+        }
+    }
+
+    @Nested
+    @DisplayName("Test per metodo getSupervisoreInfo")
+    class GetSupervisoreInfo{
+        private Informazioni SupervisoreInfo;
+        private Dipendente dipendente1;
+        private int matricolaDipendente;
+
+        @BeforeEach
+        void clearData() throws Exception {
+            try (Connection conn = DataSourceFactory.getConnection();
+                 Statement stmt = conn.createStatement()) {
+                stmt.execute("SET SCHEMA PUBLIC");
+                stmt.execute("DROP ALL OBJECTS");
+                stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
+                stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
+            }
+        }
+
+        @BeforeEach
+        void setUp() throws SQLException, EmailGiaPresenteException {
+            // 1. Creiamo il SUPERVISORE
+            Supervisore sup = new Supervisore();
+            sup.setNome("Capo");
+            sup.setCognome("Supremo");
+            sup.setEmail("capo@azienda.it"); // Email univoca
+            sup.setDataNasc(Date.valueOf("1980-01-01"));
+            sup.setRuolo(Tipi.ruolo.SUPERVISORE);
+            utenteDAO.createSupervisore(sup, "PassSup1!");
+
+            // 2. Recuperiamo la sua MATRICOLA (generata dal DB)
+            int matricolaSupervisore = -1;
+            try (Connection conn = DataSourceFactory.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT matricola FROM ewmsDB.utente WHERE email = ?")) {
+                stmt.setString(1, sup.getEmail());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) matricolaSupervisore = rs.getInt("matricola");
+                }
+            }
+
+            // Prepariamo l'oggetto Informazioni per il collegamento
+            SupervisoreInfo = new Informazioni(matricolaSupervisore, sup.getNome(), sup.getCognome());
+
+            // 3. Creiamo il DIPENDENTE 1 collegato al supervisore
+            dipendente1 = new Dipendente();
+            dipendente1.setNome("Luigi");
+            dipendente1.setCognome("Verdi");
+            dipendente1.setEmail("luigi.verdi@azienda.it"); // Email univoca
+            dipendente1.setDataNasc(Date.valueOf("1990-01-01"));
+            dipendente1.setRuolo(Tipi.ruolo.DIPENDENTE);
+            dipendente1.setSupervisoreInfo(SupervisoreInfo);
+            utenteDAO.createDipendente(dipendente1, "PassDip1!");
+
+            matricolaDipendente = -1;
+            try (Connection conn = DataSourceFactory.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("SELECT matricola FROM ewmsDB.utente WHERE email = ?")) {
+                stmt.setString(1, dipendente1.getEmail());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) matricolaDipendente = rs.getInt("matricola");
+                }
+            }
+        }
+
+        @Test
+        @DisplayName("TF_1: Matricola valida e dipendente presente -> Restituisce Informazioni supervisore")
+        void testSupervisoreInfo_Successo() throws SQLException {
+            // --- ARRANGE --- già fatto nel setup
+
+            Informazioni infoFromDB = utenteDAO.getSupervisoreInfo(matricolaDipendente);
+
+            assertNotNull(infoFromDB, "Informazioni non dovrebbe essere null");
+            assertEquals(infoFromDB.getNome(), SupervisoreInfo.getNome(), "Il nome dovrebbe coincidere");
+            assertEquals(infoFromDB.getCognome(), SupervisoreInfo.getCognome(), "Il cognome dovrebbe coincidere");
+            assertEquals(infoFromDB.getMatricola(), SupervisoreInfo.getMatricola(), "La matricola coincidere");
+
+        }
+
+        @Test
+        @DisplayName("TF_2: Matricola valida e dipendente non presente -> Restituisce null")
+        void testSupervisoreInfo_Successo_DipedentenonPresente() throws SQLException {
+            // --- ARRANGE ---
+            matricolaDipendente = 999;
+
+            // // --- ACT, ASSERT ---
+            assertNull(utenteDAO.getSupervisoreInfo(matricolaDipendente), "Il metodo dovrebbe restituire valore null");
+
+        }
+
+        @Test
+        @DisplayName("TF_3: Matricola non valida -> IllegalArgumentException")
+        void testSupervisoreInfo(){
+            // --- ARRANGE ---
+            matricolaDipendente = -1;
+
+            // --- ACT, ASSERT ---
+
+            assertThrows(IllegalArgumentException.class, () -> {
+                utenteDAO.getSupervisoreInfo(matricolaDipendente);
+            }, "Il metodo dovrebbe bloccare l'esecuzione e lanciare l'eccezione");
+
+        }
+
+
+        }
+
+    @Nested
+    @DisplayName("Test per metodo delete")
+    class Delete{
+            private Supervisore sup;
+            private Dipendente dipendente1;
+            private Dipendente dipendente2;
+            private int matricolaDip1;
+            private int matricolaDip2;
+            private int matricolaSup;
+
+            @BeforeEach
+            void clearData() throws Exception {
+                try (Connection conn = DataSourceFactory.getConnection();
+                     Statement stmt = conn.createStatement()) {
+                    stmt.execute("SET SCHEMA PUBLIC");
+                    stmt.execute("DROP ALL OBJECTS");
+                    stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
+                    stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
+                }
+            }
+
+            @BeforeEach
+            void setUp() throws SQLException, EmailGiaPresenteException {
+                // 1. Creiamo il SUPERVISORE
+                sup = new Supervisore();
+                sup.setNome("Capo");
+                sup.setCognome("Supremo");
+                sup.setEmail("capo.supremo@azienda.it"); // Email univoca
+                sup.setDataNasc(Date.valueOf("1980-01-01"));
+                sup.setRuolo(Tipi.ruolo.SUPERVISORE);
+                utenteDAO.createSupervisore(sup, "PassSup1!");
+
+                // 2. Recuperiamo la sua MATRICOLA (generata dal DB)
+                matricolaSup = -1;
+                try (Connection conn = DataSourceFactory.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement("SELECT matricola FROM ewmsDB.utente WHERE email = ?")) {
+                    stmt.setString(1, sup.getEmail());
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) matricolaSup = rs.getInt("matricola");
+                    }
+                }
+                sup.setMatricola(matricolaSup);
+
+                // Prepariamo l'oggetto Informazioni per il collegamento
+                Informazioni infoSup = new Informazioni(matricolaSup, sup.getNome(), sup.getCognome());
+
+                // 3. Creiamo il DIPENDENTE 1 collegato al supervisore
+                dipendente1 = new Dipendente();
+                dipendente1.setNome("Luigi");
+                dipendente1.setCognome("Verdi");
+                dipendente1.setEmail("luigi.verdi@azienda.it"); // Email univoca
+                dipendente1.setDataNasc(Date.valueOf("1990-01-01"));
+                dipendente1.setRuolo(Tipi.ruolo.DIPENDENTE);
+                dipendente1.setSupervisoreInfo(infoSup);
+                utenteDAO.createDipendente(dipendente1, "PassDip1!");
+
+                matricolaDip1 = -1;
+                try (Connection conn = DataSourceFactory.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement("SELECT matricola FROM ewmsDB.utente WHERE email = ?")) {
+                    stmt.setString(1, dipendente1.getEmail());
+
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) matricolaDip1 = rs.getInt("matricola");
+                    }
+                }
+
+                dipendente1.setMatricola(matricolaDip1);
+
+            }
+
+            @Test
+            @DisplayName("TF_1: eliminazione utenti senza dipedenza")
+            void test_delete_successo() throws SQLException {
+                // --- ARRANGE ---
+
+                // --- ACT ---
+
+                utenteDAO.delete(dipendente1);
+
+                //--- ASSERT ---
+                try (Connection conn = DataSourceFactory.getConnection();
+                     Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM utente")) {
+                     rs.next();
+                     assertEquals(1, rs.getInt(1), "Il database dovrebbe avere solo 1 entry in Utente");
+
+
+
+                } catch (Exception e) {
+                    fail("Errore durante la verifica del DB: " + e.getMessage());
+                }
+
+                try (Connection conn = DataSourceFactory.getConnection();
+                     Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM dipendente")) {
+                    rs.next();
+                    assertEquals(0, rs.getInt(1), "Il database dovrebbe avere 0 entry nella tabella dipendente");
+
+                } catch (Exception e) {
+                    fail("Errore durante la verifica del DB: " + e.getMessage());
+                }
+            }
+
+            @Test
+            @DisplayName("TF_2: eliminazione utenti fallimento --> IllegalArgumentException")
+            void test_delete_Fallimento_throwsIllegalArgumentException() throws SQLException {
+                // --- ARRANGE ---
+
+                //--- ACT ---
+
+                // --- ASSERT ---
+                assertThrows(IllegalArgumentException.class, () -> {
+                    utenteDAO.delete(null);
+                }, "Il metodo dovrebbe bloccare tutto e lanciare IllegalArgumentException");
+
+            }
+
+            @Test
+            @DisplayName("TF_3: matricola non valida -->IllegalArgumentException")
+            void test_delete_MatricolaNonValida_throwsIllegalArgumentException() throws SQLException {
+                dipendente1.setMatricola(-1);
+
+                assertThrows(IllegalArgumentException.class, () -> {
+                    utenteDAO.delete(dipendente1);
+                }, "Il metodo dovrebbe bloccare tutto e lanciare IllegalArgumentException");
+
+                try (Connection conn = DataSourceFactory.getConnection();
+                     Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM utente")) {
+                    rs.next();
+                    assertEquals(2, rs.getInt(1), "Il database dovrebbe avere solo 2 entry in Utente");
+
+
+
+                } catch (Exception e) {
+                    fail("Errore durante la verifica del DB: " + e.getMessage());
+                }
+
+            }
+
+            @Test
+            @DisplayName("TF_4: supervisore con vincolo di dipendenti --> SQLIntegrityConstraintViolationException")
+            void test_delete_SupervisoreConVincolo_throwsSQLIntegrityConstraintViolationException() throws SQLException {
+                // --- ARRANGE ---
+                //--- ACT, ASSERT ---
+                assertThrows(SQLIntegrityConstraintViolationException.class, () -> {
+                    utenteDAO.delete(sup);
+                }, "Il metodo dovrebbe lanciare l'eccezione SQLIntegrityConstraintViolationException");
+
+                try (Connection conn = DataSourceFactory.getConnection();
+                     Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM utente")) {
+                    rs.next();
+                    assertEquals(2, rs.getInt(1), "Il database dovrebbe avere solo 2 entry in Utente");
+
+
+
+                } catch (Exception e) {
+                    fail("Errore durante la verifica del DB: " + e.getMessage());
+                }
+
+
+
+            }
+
+
+
+        }
+
+    @Nested
+    @DisplayName("Test per metodo recuperaPassword")
+    class RecuperaPassword{
+
+        private Utente baseUtente;
+
+        // Eseguito prima di OGNI test dentro questa Nested Class
+        @BeforeEach
+        void clearData() throws Exception {
+            try (Connection conn = DataSourceFactory.getConnection();
+                 Statement stmt = conn.createStatement()) {
+
+                // 1. IMPORTANTE: Sposta la connessione corrente sullo schema di default (PUBLIC).
+                // Se rimani dentro 'ewmsDB', H2 non ti permetterà mai di cancellarlo.
+                stmt.execute("SET SCHEMA PUBLIC");
+
+                // 2. Cancella TUTTO (Tabelle, Viste, Vincoli)
+                stmt.execute("DROP ALL OBJECTS");
+
+                // 3. (Opzionale ma consigliato) Forza la cancellazione dello schema per evitare residui
+                stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
+
+                // 4. Ora puoi ricreare tutto da zero in sicurezza
+                stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
+            }
+        }
+
+        @BeforeEach
+        void setUp() {
+            baseUtente = new Utente();
+            baseUtente.setNome("Mario");
+            baseUtente.setCognome("Rossi");
+            baseUtente.setEmail("mario.rossi@azienda.it");
+            baseUtente.setDataNasc(Date.valueOf("1985-05-20"));
+            baseUtente.setRuolo(Tipi.ruolo.GESTORE);
+
+            try {
+                utenteDAO.createUtente(baseUtente, "goodPwd12!");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (EmailGiaPresenteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Test
+        @DisplayName("TF_1: recupera password --> successo")
+        void test_recuperPassword_successo() throws SQLException {
+            //--- ARRANGE ---
+
+            // --- ACT ---
+            String passwordHash = utenteDAO.recuperaPassword(baseUtente.getEmail());
+
+
+            // --- ASSERT ----
+            assertNotNull(passwordHash, "La password recuperata non dovrebbe essere null");
+            assertTrue(passwordHash.equals("goodPwd12!"), "Il metodo dovrebbe restituire true");
+        }
+
+        @Test
+        @DisplayName("TF_1: recuper password --> successo - nessuna corrispondenza email")
+        void test_recuperPassword_successo_returnNull() throws SQLException{
+            //--- ARRANGE ---
+                baseUtente.setEmail("different.email@azienda.it");
+
+            // --- ACT ---
+
+            String passwordHash = utenteDAO.recuperaPassword(baseUtente.getEmail());
+
+            // --- ASSERT
+
+            assertNull(passwordHash, "Il metodo dovrebbe restituire null");
+        }
+
+        @Test
+        @DisplayName("TF_1: recuper password --> successo - nessuna corrispondenza email")
+        void test_recuperPassword_fallimento_throwIllegalArgumentException() throws SQLException{
+            //--- ARRANGE ---
+
+            // --- ACT ---
+
+            // --- ASSERT
+
+            assertThrows(IllegalArgumentException.class, () -> {
+                utenteDAO.recuperaPassword(null);
+            }, "Il metodo dovrebbe lanciare una IllegalArgumentException");
+
+        }
     }
 
 
