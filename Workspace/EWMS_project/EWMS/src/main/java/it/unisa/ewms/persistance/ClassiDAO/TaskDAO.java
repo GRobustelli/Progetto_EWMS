@@ -92,7 +92,7 @@ public class TaskDAO implements ITaskDAO {
                     ex.printStackTrace(); // Log dell'errore di rollback
                 }
             }
-            throw new Exception("Errore durante l'inserimento del task e dell'eventuale allegato", e);
+            throw new SQLException("Errore durante l'inserimento del task e dell'eventuale allegato", e);
         } finally {
             // 7. Chiusura manuale delle risorse (ordine inverso di apertura)
             if (psAllegato != null) psAllegato.close();
@@ -137,8 +137,8 @@ public class TaskDAO implements ITaskDAO {
                     // --- Mappatura dati Task ---
                     task.setId(rs.getInt("id"));
                     task.setTitolo(rs.getString("titolo"));
-                    task.setDataCreazione(rs.getDate("data_creazione"));
-                    task.setDataDiScadenza(rs.getDate("data_scadenza"));
+                    task.setDataCreazione(rs.getDate("dataDiCreazione"));
+                    task.setDataDiScadenza(rs.getDate("dataDiScadenza"));
                     task.setIstruzioni(rs.getString("istruzioni"));
 
 
@@ -190,6 +190,9 @@ public class TaskDAO implements ITaskDAO {
         }
         if (utente.getRuolo() == null){
             throw new IllegalArgumentException("Ruolo non può essere null");
+        }
+        if (utente.getMatricola() <= 0){
+            throw new IllegalArgumentException("Matricola non valida");
         }
 
         // Query per trovare i task assegnati al dipendente specifico
@@ -264,7 +267,7 @@ public class TaskDAO implements ITaskDAO {
             }
 
         }catch (SQLException e){
-            throw new Exception("Errore durante il update per task: " + id, e);
+            throw new SQLException("Errore durante il update per task: " + id, e);
         }
     }
 /*
@@ -324,7 +327,7 @@ public class TaskDAO implements ITaskDAO {
             }
 
         } catch (SQLException e) {
-            throw new Exception("Errore durante l'eliminazione del task con ID: " + id, e);
+            throw new SQLException("Errore durante l'eliminazione del task con ID: " + id, e);
         }
 
     }
