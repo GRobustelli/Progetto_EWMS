@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!Doctype html>
 <html lang="it">
     <head>
@@ -22,7 +22,7 @@
                     <p><%= error%></p>
                 </div>
             </c:if>
-            <form name="form1" action="LoginControl" method="post"> <!--anche qui nel campo action intendo quale controller utilizzare-->
+            <form name="form1" action="LoginServlet" method="post"> <!--anche qui nel campo action intendo quale controller utilizzare-->
                 <div class="form-group">                            <!--come prima, non hanno senso, sono dei placeholder-->
                     <label for="username">Email/Username</label>
                     <input type="text" id="username" name="username" required placeholder="Inserisci il tuo username">

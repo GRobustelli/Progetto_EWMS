@@ -13,7 +13,7 @@
         <a href="ChangePwdControl?action=modPwd.jsp&id=${sessionScope.utente.matricola}">
             <button type="button" class="btn btn-info">Modifica password</button>
         </a>
-        <a href="LogoutControl?action=login.jsp&logout=true">
+        <a href="LogoutServlet?action=login.jsp&logout=true"> <!--da vedere un attimo-->
             <button type="button" class="btn btn-danger">Logout</button>
             <i class="bi bi-box-arrow-right"></i>
         </a>
