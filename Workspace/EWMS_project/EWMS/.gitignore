@@ -46,3 +46,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/main/resources/test.properties
+/src/main/resources/ewmsDB.sql
