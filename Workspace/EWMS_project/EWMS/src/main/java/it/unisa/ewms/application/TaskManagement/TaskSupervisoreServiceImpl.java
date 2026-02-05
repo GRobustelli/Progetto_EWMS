@@ -53,12 +53,12 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
         if (dipendente == null) {
             throw new IllegalArgumentException("Il dipendente con matricola " + dipendenteId + " non esiste.");
         }
-        // (Opzionale: controllo extra se è davvero un dipendente)
+
         if (dipendente.getRuolo() != Tipi.ruolo.DIPENDENTE) {
             throw new IllegalArgumentException("La matricola inserita non appartiene ad un dipendente.");
         }
 
-        // Verifichiamo il Supervisore
+
         Utente supervisore = utenteDAO.findByMatricola(supervisoreId);
         if (supervisore == null) {
             throw new IllegalArgumentException("Il supervisore con matricola " + supervisoreId + " non esiste.");
