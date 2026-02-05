@@ -39,7 +39,20 @@ public class DataSourceFactory {
 
         // Configurazione JDBC
 
+
+
         HikariConfig config = new HikariConfig();
+        // -----------------------------
+            String driverClass = prop.getProperty("db.driver");
+            if (driverClass != null) {
+                try {
+                    Class.forName(driverClass);
+                    config.setDriverClassName(driverClass);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException("Driver non trovato: " + driverClass, e);
+                }
+            }
+            // -----------------------------
         config.setJdbcUrl(prop.getProperty("db.url"));
         config.setUsername(prop.getProperty("db.username"));
         config.setPassword(prop.getProperty("db.password"));

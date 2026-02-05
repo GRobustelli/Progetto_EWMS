@@ -14,7 +14,7 @@ import java.util.List;
 public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     private final PersistenceService persistenceService;
-    private final String formPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$";
+    private final String formPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]{8,16}$";
     private final String formEmail = "^[a-zA-Z0-9]{1,50}\\.[a-zA-Z0-9]{1,50}@azienda\\.it$";
 
     public ProfileManagementServiceImpl() {
