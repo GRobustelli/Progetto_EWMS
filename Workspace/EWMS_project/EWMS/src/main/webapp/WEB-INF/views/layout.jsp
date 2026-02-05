@@ -19,7 +19,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
         <nav class="navbar">
 
             <div class="logo">
-                <img src="logo_EWMS_crop.jpg" alt="logo"> <!--qui poi verrà inserita l'img del logo (croppato) di EWMS-->
+                <img src="${pageContext.request.contextPath}/imgs/logo_EWMS_crop.jpg" alt="logo" class = "logo"> <!--qui poi verrà inserita l'img del logo (croppato) di EWMS-->
                 EWMS
             </div>
 
