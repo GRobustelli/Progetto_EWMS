@@ -8,12 +8,6 @@
         <link rel = "stylesheet" href = "style.css">
     </head>
     <body class="login_page">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="logo_EWMS_crop.jpg" alt="logo"> <!--qui poi verrà inserita l'img del logo (croppato) di EWMS-->
-                EWMS
-            </div>
-        </nav>
 
         <div class="login_form">
             <%String error = "Credenziali errate";%>

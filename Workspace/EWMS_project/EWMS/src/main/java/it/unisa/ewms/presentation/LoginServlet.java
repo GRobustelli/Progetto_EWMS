@@ -34,12 +34,14 @@ public class LoginServlet extends HttpServlet {
             }
             else{
                request.setAttribute("error", "Errore durante il login, prova più tardi");
-               request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+                request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
+               request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
             }
 
         }else{
             request.setAttribute("error", "Credenziali errate");
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
+            request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
         }
 
 
