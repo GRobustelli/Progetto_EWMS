@@ -23,27 +23,28 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 EWMS
             </div>
 
-            <div class="menu-links">
+            <c:if test="${viewPath != 'views/login.jsp'}">
+                <div class="menu-links">
 
-                <c:if test="${viewPath != 'views/homepage.jsp'}">
-                <a href="LoginControl?action=homepage.jsp&id=${sessionScope.utente.matricola}" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
-                    <i class="bi bi-house-door"></i>                                                              <!--non hanno senso logico definito, sono li giusto per aiutarti a capire cosa dovrebbe fare-->
-                </a>
-                </c:if>
-
-                <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
-                    <c:if test="${viewPath != 'views/creaTask.jsp'}">
-                        <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
-                            <i class="bi bi-plus-circle"></i>
+                    <c:if test="${viewPath != 'views/homepage.jsp'}">
+                        <a href="LoginControl?action=homepage.jsp&id=${sessionScope.utente.matricola}" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
+                            <i class="bi bi-house-door"></i>                                                              <!--non hanno senso logico definito, sono li giusto per aiutarti a capire cosa dovrebbe fare-->
                         </a>
                     </c:if>
-                </c:if>
 
-                <c:if test="${sessionScope.utente.ruolo != 'Gestore'}">
-                    <a href="NotificationControl?action=notifications" class="btn-create">
-                        <i class="bi bi-bell"></i>
-                    </a>
-                </c:if>
+                    <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
+                        <c:if test="${viewPath != 'views/creaTask.jsp'}">
+                            <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                        </c:if>
+                    </c:if>
+
+                    <c:if test="${sessionScope.utente.ruolo != 'Gestore'}">
+                        <a href="NotificationControl?action=notifications" class="btn-create">
+                            <i class="bi bi-bell"></i>
+                        </a>
+                    </c:if>
                 </div>
 
                 <c:if test="${sessionScope.utente.ruolo == 'Gestore'}">
@@ -59,9 +60,8 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                         <i class="bi bi-person-square"></i>
                     </a>
                 </c:if>
-            </div>
+            </c:if>
         </nav>
-
 
         <c:choose>
             <c:when test="${not empty viewPath}">

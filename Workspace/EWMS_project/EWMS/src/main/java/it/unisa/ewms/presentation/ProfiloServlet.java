@@ -1,5 +1,6 @@
 package it.unisa.ewms.presentation;
 
+import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.model.beans.Utente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,15 +23,13 @@ public class ProfiloServlet extends HttpServlet {
 
         if(session!=null){
             if(session.getAttribute("utente")!=null) {
-                Utente utente = (Utente) session.getAttribute("utente");
-                request.setAttribute("utente", utente);
+                request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
                 request.getRequestDispatcher("/WEB-INF/views/profilo.jsp").forward(request, response);
             }else{
                 request.setAttribute("error", "Utente non loggato");
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             }
         }else{
-            //response.sendRedirect(request.getContextPath() + "/LoginServlet"); qui non so se è più corretto come codice ma dovresti implementare il doGet() in loginservlet
             request.setAttribute("error", "Credenziali errate");
             request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }

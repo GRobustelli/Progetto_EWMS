@@ -10,10 +10,9 @@
     <body class="login_page">
 
         <div class="login_form">
-            <%String error = "Credenziali errate";%>
-            <c:if test="${not empty error}">
+            <c:if test="${error != null}">
                 <div class="error-banner">
-                    <p><%= error%></p>
+                    <p>${error}</p>
                 </div>
             </c:if>
             <form name="form1" action="LoginServlet" method="post"> <!--anche qui nel campo action intendo quale controller utilizzare-->
