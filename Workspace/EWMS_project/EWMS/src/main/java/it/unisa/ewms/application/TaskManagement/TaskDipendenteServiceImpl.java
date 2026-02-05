@@ -22,6 +22,11 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
         this.service = PersistenceServiceImpl.getInstance();
     }
 
+    public TaskDipendenteServiceImpl(PersistenceService service) {
+        if (service == null) {throw new IllegalArgumentException("Service cannot be null");}
+        this.service = service;
+    }
+
     @Override
     public boolean inizializzaTask(long taskId) throws SQLException {
         if(taskId < 0){
