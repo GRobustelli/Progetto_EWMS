@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!--Questi sono gli scheletri delle jsp, puoi ovviamente modificare qualsiasi cosa non ti permetta di procedere
 fluidamente con la programmazione, se hai dubbi chiedimi.
@@ -11,7 +11,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
     <head>
         <meta charset="UTF-8">
         <title>EWMS</title>
-        <link rel = "stylesheet" href = "style.css">
+        <!--<link rel = "stylesheet" href = "style.css">-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     </head>
     <body>
@@ -23,7 +23,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 EWMS
             </div>
 
-            <c:if class="menu-links">
+            <div class="menu-links">
 
                 <c:if test="${viewPath != 'views/homepage.jsp'}">
                 <a href="LoginControl?action=homepage.jsp&id=${sessionScope.utente.matricola}" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
@@ -32,17 +32,19 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 </c:if>
 
                 <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
-                    <c:if test="${viewPath != 'views/creaTask.jsp'}"></c:if>
-                    <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
-                        <i class="bi bi-plus-circle"></i>
-                    </a>
+                    <c:if test="${viewPath != 'views/creaTask.jsp'}">
+                        <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
+                            <i class="bi bi-plus-circle"></i>
+                        </a>
+                    </c:if>
                 </c:if>
 
-                <c:if test="${sessionScope.utente.ruolo != 'Gestore'}"></c:if>
+                <c:if test="${sessionScope.utente.ruolo != 'Gestore'}">
                     <a href="NotificationControl?action=notifications" class="btn-create">
                         <i class="bi bi-bell"></i>
                     </a>
                 </c:if>
+                </div>
 
                 <c:if test="${sessionScope.utente.ruolo == 'Gestore'}">
                     <c:if test="${viewPath != 'views/creaAccount.jsp'}">
@@ -57,7 +59,6 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                         <i class="bi bi-person-square"></i>
                     </a>
                 </c:if>
-
             </div>
         </nav>
 
