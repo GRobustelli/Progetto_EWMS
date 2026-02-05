@@ -3,11 +3,11 @@
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
 <div class="crea">
-    <form action="CreateTaskControl?action=validateData" id="formTask">
+    <form action="CreateTaskServlet?action=insertTask" id="formTask" method="post">
         <div>
             <div class="crea-2">
                 <h3>Titolo Task</h3>
-                <input type="text">
+                <input type="text" name="titolo">
             </div>
             <div class="crea-2">
                 <h3>Dipendente</h3>
@@ -21,7 +21,7 @@
         <div>
             <div class="crea-2">
                 <h3>Descrizione</h3>
-                <textarea minlength="10" maxlength="500" placeholder="inserisci qui la descrizione del task (max. 500 caratteri)..."></textarea>
+                <textarea minlength="10" maxlength="2000" placeholder="inserisci qui la descrizione del task (max. 2000 caratteri)..."></textarea>
             </div>
         </div>
         <div>
@@ -33,6 +33,7 @@
                 <h3>Priorità</h3>
                 <select>
                     <option value="Alta">ALTA</option>
+                    <option value="Media">MEDIA</option>
                     <option value="Bassa">BASSA</option>
                 </select>
             </div>

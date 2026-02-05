@@ -33,7 +33,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
 
                 <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
                     <c:if test="${viewPath != 'views/creaTask.jsp'}">
-                        <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
+                        <a href="CreaTaskServlet?action=creaTask" class="btn-create" >
                             <i class="bi bi-plus-circle"></i>
                         </a>
                     </c:if>
