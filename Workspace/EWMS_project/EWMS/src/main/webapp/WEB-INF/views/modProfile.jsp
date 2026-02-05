@@ -12,7 +12,6 @@
             <li>Data di nascita: ${utenteTrovato.dataNasc}</li>
             <li>E-mail: ${utenteTrovato.email}</li>
             <li>Ruolo: ${utenteTrovato.ruolo}</li>
-            <!--<li>Supervisore: ${utenteTrovato.supervisore}</li> chiedimelo di persona questo-->
         </ul>
     </div>
     <div class="profilo-utente3">

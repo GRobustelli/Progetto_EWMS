@@ -10,10 +10,10 @@
         </ul>
     </div>
     <div class="profilo-utente3">
-        <a href="ChangePwdControl?action=modPwd.jsp&id=${sessionScope.utente.matricola}">
+        <a href="" disabled>
             <button type="button" class="btn btn-info">Modifica password</button>
         </a>
-        <a href="LogoutServlet?action=login.jsp&logout=true"> <!--da vedere un attimo-->
+        <a href="LogoutServlet"> <!--da vedere un attimo-->
             <button type="button" class="btn btn-danger">Logout</button>
             <i class="bi bi-box-arrow-right"></i>
         </a>
