@@ -2,7 +2,7 @@
     <div class = "task1">
         <h1>${task.titolo}</h1>
         <span>ID: #${task.id}</span>
-        <c:if test="${sessionScope.utente.ruolo != 'Supervisore'}"}>
+        <c:if test="${sessionScope.utente.ruolo != 'SUPERVISORE'}">
             <h3>Supervisore: ${task.supervisore}</h3>
         </c:if>
     </div>
@@ -15,7 +15,7 @@
     </div>
     <div class = "task-btns"><!--rendere i button responsive rispetto al context del task-->
         <c:choose>
-            <c:when test="${sessionScope.utente.ruolo == 'Dipendente'}">
+            <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
 
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" <c:if test = "${task.stato != 'DA_COMPLETARE'}">disabled</c:if>>
@@ -46,11 +46,11 @@
             <c:otherwise>
                 <c:if test = "${task.stato != 'COMPLETATO'}">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" disabled><!--bottone gambizzato>
                         Comunica
                     </button>
 
-                    <!-- Modal -->
+                    <!-- Modal | non si apre-->
                     <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
@@ -150,7 +150,7 @@
         </div>
 
         <c:choose>
-            <c:when test="${sessionScope.utente.ruolo == 'Dipendente'}">
+            <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop6">
                     Completa Task
