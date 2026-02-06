@@ -1,8 +1,8 @@
 <c:choose> <!--qui faccio la distinzione tra homepage di supervisore e dipendente (pressocché simili) da quella del gestore-->
-    <c:when test="${sessionScope.utente.ruolo != 'Gestore'}">
+    <c:when test="${sessionScope.utente.ruolo != 'GESTORE'}">
         <div class="filtri_task">
             <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist"><!--qui faccio i vari check per decidere cosa inserire nella navbar in base al tipo di utente che accede-->
-                <c:if test="${sessionScope.utente.ruolo == SUPERVISORE}">
+                <c:if test="${sessionScope.utente.ruolo == 'SUPERVISORE'}">
                     <li class="nav-item" role="presentation">
                         <a href="FilterControl?action=fetchTasks(done)">
                             <button class="nav-link" id="pills-done-tab" data-bs-toggle="pill" data-bs-target="#pills-done" type="button" role="tab" aria-controls="pills-done" aria-selected="true">Task completati</button>

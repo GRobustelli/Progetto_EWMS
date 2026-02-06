@@ -1,9 +1,12 @@
-<c:if test="${sessionScope.utente.ruolo} != 'Supervisore'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %> <div class="crea-2">
+<c:if test="${sessionScope.utente.ruolo} != 'SUPERVISORE'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
     <h1 align="center">Errore 401 - accesso non autorizzato</h1>
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
 <div class="crea">
-    <form action="CreateTaskServlet?action=insertTask" id="formTask" method="post">
+    <form action="CreaTaskServlet" id="formTask" method="post">
+        <input type="hidden" name="action" value="insertTask">
         <div>
             <div class="crea-2">
                 <h3>Titolo Task</h3>
@@ -11,9 +14,9 @@
             </div>
             <div class="crea-2">
                 <h3>Dipendente</h3>
-                <select>
-                    <c:forEach var = "utente" items="${userList}">
-                        <option value="${utente.matricola}">${utente.nome} ${utente.cognome} - #${utente.matricola}</option>
+                <select name = "dipendente">
+                    <c:forEach var = "dipendente" items="${userList}">
+                        <option value="${dipendente.matricola}">${dipendente.nome} ${dipendente.cognome} - #${dipendente.matricolaFormattata}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -21,20 +24,20 @@
         <div>
             <div class="crea-2">
                 <h3>Descrizione</h3>
-                <textarea minlength="10" maxlength="2000" placeholder="inserisci qui la descrizione del task (max. 2000 caratteri)..."></textarea>
+                <textarea minlength="10" maxlength="2000" name = "istruzioni" placeholder="inserisci qui la descrizione del task (max. 2000 caratteri)..."></textarea>
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Data di Scadenza</h3>
-                <input type="date">
+                <input type="date" name = "dataScadenza">
             </div>
             <div class="crea-2">
                 <h3>Priorità</h3>
-                <select>
-                    <option value="Alta">ALTA</option>
-                    <option value="Media">MEDIA</option>
-                    <option value="Bassa">BASSA</option>
+                <select name = "priorita">
+                    <option value="ALTA">ALTA</option>
+                    <option value="MEDIA">MEDIA</option>
+                    <option value="BASSA">BASSA</option>
                 </select>
             </div>
         </div>

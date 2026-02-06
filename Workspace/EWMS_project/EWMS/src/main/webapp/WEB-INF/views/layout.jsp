@@ -13,6 +13,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
         <title>EWMS</title>
         <!--<link rel = "stylesheet" href = "style.css">-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
@@ -32,22 +33,22 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                         </a>
                     </c:if>
 
-                    <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
+                    <c:if test="${sessionScope.utente.ruolo == 'SUPERVISORE'}">
                         <c:if test="${viewPath != 'views/creaTask.jsp'}">
-                            <a href="CreaTaskControl?action=creaTask.jsp" class="btn-create" >
+                            <a href="crea-task?action=creaTask" class="btn-create" >
                                 <i class="bi bi-plus-circle"></i>
                             </a>
                         </c:if>
                     </c:if>
 
-                    <c:if test="${sessionScope.utente.ruolo != 'Gestore'}">
-                        <a href="NotificationControl?action=notifications" class="btn-create">
+                    <c:if test="${sessionScope.utente.ruolo != 'GESTORE'}">
+                        <a href="NotificationControl?action=notifications" class="btn-create" >
                             <i class="bi bi-bell"></i>
                         </a>
                     </c:if>
                 </div>
 
-                <c:if test="${sessionScope.utente.ruolo == 'Gestore'}">
+                <c:if test="${sessionScope.utente.ruolo == 'GESTORE'}">
                     <c:if test="${viewPath != 'views/creaAccount.jsp'}">
                         <a href="AddUtenteControl?action=addAccount" class="btn-create">
                             <i class="bi bi-plus-circle"></i>
