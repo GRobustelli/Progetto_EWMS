@@ -2,7 +2,7 @@
     <c:when test="${sessionScope.utente.ruolo != 'Gestore'}">
         <div class="filtri_task">
             <ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist"><!--qui faccio i vari check per decidere cosa inserire nella navbar in base al tipo di utente che accede-->
-                <c:if test="${sessionScope.utente.ruolo == 'Supervisore'}">
+                <c:if test="${sessionScope.utente.ruolo == SUPERVISORE}">
                     <li class="nav-item" role="presentation">
                         <a href="FilterControl?action=fetchTasks(done)">
                             <button class="nav-link" id="pills-done-tab" data-bs-toggle="pill" data-bs-target="#pills-done" type="button" role="tab" aria-controls="pills-done" aria-selected="true">Task completati</button>
@@ -32,6 +32,11 @@
                 </li>
             </ul>
         </div>
+        <c:if test="${error != null}">
+            <div class="error-banner">
+                <p>${error}</p>
+            </div>
+        </c:if>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade" id="pills-done" role="tabpanel" aria-labelledby="pills-done-tab" tabindex="0">
                 <ul class="list-group">

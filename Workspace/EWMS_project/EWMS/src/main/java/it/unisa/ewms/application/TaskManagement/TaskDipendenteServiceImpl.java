@@ -22,15 +22,26 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
         this.service = PersistenceServiceImpl.getInstance();
     }
 
+    public TaskDipendenteServiceImpl(PersistenceService service) {
+        if (service == null) {throw new IllegalArgumentException("Service cannot be null");}
+        this.service = service;
+    }
+
     @Override
     public boolean inizializzaTask(long taskId) throws SQLException {
         if(taskId < 0){
             throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
-        }else{
+        }
 
             ITaskDAO taskDAO = service.getTaskDAO();
+
+            Task task = null;
             try {
-                Task task=  taskDAO.findById(taskId);
+                task=  taskDAO.findById(taskId);
+            }catch (Exception e) {
+                throw new  SQLException(e.getMessage());
+            }
+
                 if(task != null){
                     if (task.getStato() == Tipi.stato.COMPLETATO) {
                         throw new IllegalStateException("Impossibile sospendere un task nello stato completato o da completare");
@@ -38,10 +49,6 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
                 } else{
                     return false;
                 }
-            } catch (Exception e) {
-                throw new  SQLException(e.getMessage());
-            }
-
 
             try{
                taskDAO.updateStatus(taskId, Tipi.stato.IN_ESECUZIONE);
@@ -51,7 +58,7 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
 
             }
         }
-    }
+
 
     @Override
     public boolean completeTask(long taskId) throws SQLException {
@@ -60,9 +67,12 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
         }else{
 
             ITaskDAO taskDAO = service.getTaskDAO();
+            Task task= null;
 
-            try {
-                Task task=  taskDAO.findById(taskId);
+                try {task = taskDAO.findById(taskId);
+                } catch (Exception e) {
+                    throw new  SQLException(e.getMessage());}
+
                 if(task != null){
                     if (task.getStato() !=  Tipi.stato.IN_ESECUZIONE ) {
                         throw new IllegalStateException("Impossibile completare un task nello stato completato o in sospensione");
@@ -70,9 +80,8 @@ public class TaskDipendenteServiceImpl implements TaskDipendenteService {
                 } else{
                     return false;
                 }
-            } catch (Exception e) {
-                throw new  SQLException(e.getMessage());
-            }
+
+
 
             try{
                 taskDAO.updateStatus(taskId, Tipi.stato.COMPLETATO);

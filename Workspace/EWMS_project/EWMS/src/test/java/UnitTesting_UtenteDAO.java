@@ -30,25 +30,22 @@ public class UnitTesting_UtenteDAO {
     @Nested
     @DisplayName("Test insertUtenteGenerico (via createUtente)")
     class Test_insertUtenteGenerico {
+
         private Utente baseUtente;
 
-        // Eseguito prima di OGNI test dentro questa Nested Class
         @BeforeEach
         void clearData() throws Exception {
             try (Connection conn = DataSourceFactory.getConnection();
                  Statement stmt = conn.createStatement()) {
 
-                // 1. IMPORTANTE: Sposta la connessione corrente sullo schema di default (PUBLIC).
-                // Se rimani dentro 'ewmsDB', H2 non ti permetterà mai di cancellarlo.
+                //Statements per ottenere uno schema pulito
+
                 stmt.execute("SET SCHEMA PUBLIC");
 
-                // 2. Cancella TUTTO (Tabelle, Viste, Vincoli)
                 stmt.execute("DROP ALL OBJECTS");
 
-                // 3. (Opzionale ma consigliato) Forza la cancellazione dello schema per evitare residui
                 stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
 
-                // 4. Ora puoi ricreare tutto da zero in sicurezza
                 stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
             }
         }
@@ -68,17 +65,18 @@ public class UnitTesting_UtenteDAO {
         void testInserimentoUtenteGenerico_successo() throws Exception {
             utenteDAO.createUtente(baseUtente, "goodPWd12!");
 
-            // Verifichiamo che l'effetto collaterale (scrittura su DB) sia avvenuto.
+
             try (Connection conn = DataSourceFactory.getConnection();
                  PreparedStatement ps = conn.prepareStatement("SELECT * FROM utente WHERE email = ?")) {
 
                 ps.setString(1, baseUtente.getEmail());
 
                 try (ResultSet rs = ps.executeQuery()) {
-                    // 1. Verifica che il record esista
+
+                    // Verifica che il record esista
                     assertTrue(rs.next(), "L'utente dovrebbe essere stato salvato nel database");
 
-                    // 2. Verifica che i dati siano corretti (corrispondenza input/output)
+                    // Verifica che i dati siano corretti
                     assertEquals(baseUtente.getNome(), rs.getString("nome"));
                     assertEquals(baseUtente.getCognome(), rs.getString("cognome"));
                     assertEquals(baseUtente.getRuolo().toString(), rs.getString("ruolo"));
@@ -97,7 +95,7 @@ public class UnitTesting_UtenteDAO {
 
 
         @Test
-        @DisplayName("TF_2: Inserimento Valido - email = null")
+        @DisplayName("TF_2: Inserimento non valido email = null")
         void testCreateUtente_EmailNull_ShouldThrowException() {
             baseUtente.setEmail(null);
 
@@ -123,9 +121,7 @@ public class UnitTesting_UtenteDAO {
         @DisplayName("TF_3: Email troppo lunga (> 255 caratteri)")
         void testCreateUtente_EmailTooLong_ShouldThrowException() {
             // --- ARRANGE ---
-            // Creiamo una stringa di 251 caratteri.
-            // Usiamo il metodo repeat (Java 11+) per comodità.
-            // 240 caratteri 'a' + 11 caratteri di dominio (@email.com) = 251 caratteri totali
+
             String emailTroppoLunga = "a".repeat(250) + "@email.com";
 
             baseUtente.setEmail(emailTroppoLunga);
@@ -148,13 +144,12 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_10: Email già presente (Violazione Unique)")
+        @DisplayName("TF_4: Email già presente (Violazione Unique)")
         void testCreateUtente_EmailDuplicata_ShouldThrowEmailGiaPresenteException() throws Exception {
             // --- ARRANGE ---
 
             utenteDAO.createUtente(baseUtente, "goodPWd12!");
 
-            // 2. Creiamo un secondo utente "intruso"
             Utente utenteDuplicato = new Utente();
             utenteDuplicato.setNome("Luigi");      // Nome diverso
             utenteDuplicato.setCognome("Verdi");   // Cognome diverso
@@ -179,10 +174,10 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_4: Nome Null")
+        @DisplayName("TF_5: Nome Null")
         void testCreateUtente_NomeNull_ShouldThrowException() {
             // --- ARRANGE ---
-            // Impostiamo il nome a null per violare la pre-condizione
+
             baseUtente.setNome(null);
 
             // --- ACT & ASSERT ---
@@ -202,10 +197,10 @@ public class UnitTesting_UtenteDAO {
 
 
         @Test
-        @DisplayName("TF_5: Nome troppo lungo (> 50 caratteri)")
+        @DisplayName("TF_6: Nome troppo lungo (> 50 caratteri)")
         void testCreateUtente_NomeTooLong_ShouldThrowException() {
             // --- ARRANGE ---
-            // Generiamo una stringa di 51 caratteri (il limite è 50)
+
             String nomeTroppoLungo = "a".repeat(51);
 
             baseUtente.setNome(nomeTroppoLungo);
@@ -225,7 +220,7 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_6: Cognome Null")
+        @DisplayName("TF_7: Cognome Null")
         void testCreateUtente_CognomeNull_ShouldThrowException() {
             // --- ARRANGE ---
             baseUtente.setCognome(null);
@@ -246,7 +241,7 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_7: Cognome troppo lungo (> 50 caratteri)")
+        @DisplayName("TF_8: Cognome troppo lungo (> 50 caratteri)")
         void testCreateUtente_CognomeTooLong_ShouldThrowException() {
             // --- ARRANGE ---
             String cognomeTroppoLungo = "a".repeat(51);
@@ -269,12 +264,11 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_8: Data di Nascita Null")
+        @DisplayName("TF_9: Data di Nascita Null")
         void testCreateUtente_DataNascitaNull_ShouldThrowException() {
             // --- ARRANGE ---
             baseUtente.setDataNasc(null);
 
-            // Definiamo una password valida per il secondo parametro
             String passwordValida = "goodPWd12!";
 
             // --- ACT & ASSERT ---
@@ -295,15 +289,11 @@ public class UnitTesting_UtenteDAO {
 
 
         @Test
-        @DisplayName("TF_9: Password troppo lunga (> 255 caratteri)")
+        @DisplayName("TF_10: Password troppo lunga (> 255 caratteri)")
         void testCreateUtente_PasswordTooLong_ShouldThrowException() {
             // --- ARRANGE ---
-            // Generiamo una password di 256 caratteri (il limite è 255).
-            // Usiamo "P" ripetuto 256 volte per semplicità.
-            String passwordTroppoLunga = "P".repeat(256);
 
-            // Nota: baseUtente è già inizializzato con dati validi nel @BeforeEach,
-            // quindi l'unico dato non valido sarà proprio la password passata qui sotto.
+            String passwordTroppoLunga = "P".repeat(256);
 
             // --- ACT & ASSERT ---
             assertThrows(IllegalArgumentException.class, () -> {
@@ -328,23 +318,20 @@ public class UnitTesting_UtenteDAO {
     class CreateUtente {
         private Utente baseUtente;
 
-        // Eseguito prima di OGNI test dentro questa Nested Class
+
         @BeforeEach
         void clearData() throws Exception {
             try (Connection conn = DataSourceFactory.getConnection();
                  Statement stmt = conn.createStatement()) {
 
-                // 1. IMPORTANTE: Sposta la connessione corrente sullo schema di default (PUBLIC).
-                // Se rimani dentro 'ewmsDB', H2 non ti permetterà mai di cancellarlo.
+
                 stmt.execute("SET SCHEMA PUBLIC");
 
-                // 2. Cancella TUTTO (Tabelle, Viste, Vincoli)
+
                 stmt.execute("DROP ALL OBJECTS");
 
-                // 3. (Opzionale ma consigliato) Forza la cancellazione dello schema per evitare residui
                 stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
 
-                // 4. Ora puoi ricreare tutto da zero in sicurezza
                 stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
             }
         }
@@ -363,16 +350,12 @@ public class UnitTesting_UtenteDAO {
         @DisplayName("TF_1: Utente Gestore con password valida -> Successo")
         void testCreateUtente_Successo() throws Exception {
             // --- ARRANGE ---
-            // L'oggetto 'baseUtente' è già istanziato e configurato come GESTORE nel @BeforeEach.
-            // Possiamo sovrascrivere o asserire valori specifici se necessario, ma qui va bene il default.
             String password = "GoodPwd12!";
 
             // --- ACT ---
             utenteDAO.createUtente(baseUtente, password);
 
-            // --- ASSERT (Black-box verification) ---
-            // Post-condizione: Utente.allIstances()->includes(utente)
-            // Verifichiamo direttamente sul database che la riga sia stata creata.
+            // --- ASSERT ---
 
             String checkQuery = "SELECT COUNT(*) FROM ewmsDB.Utente WHERE email = ? AND ruolo = 'GESTORE'";
 
@@ -401,13 +384,13 @@ public class UnitTesting_UtenteDAO {
             String password = "GoodPwd12!";
 
             // --- ACT & ASSERT ---
-            // Verifica che il DAO lanci IllegalArgumentException quando l'utente è null
+
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 utenteDAO.createUtente(utenteNull, password);
             }, "Dovrebbe lanciare IllegalArgumentException se l'oggetto utente è null");
 
             // --- ASSERT EXTRA (Database Integrity) ---
-            // Verifica che NON sia stato inserito nulla nel database (il DB deve rimanere vuoto/invariato)
+
             String countQuery = "SELECT COUNT(*) FROM ewmsDB.Utente";
 
             try (Connection conn = DataSourceFactory.getConnection();
@@ -428,19 +411,17 @@ public class UnitTesting_UtenteDAO {
         @DisplayName("TF_3: Ruolo Dipendente (Non Gestore) -> IllegalArgumentException")
         void testCreateUtente_RuoloDipendente() {
             // --- ARRANGE ---
-            // Impostiamo il ruolo a DIPENDENTE.
-            // Dato che la pre-condizione richiede GESTORE, ci aspettiamo un rifiuto.
+
             baseUtente.setRuolo(Tipi.ruolo.DIPENDENTE);
             String password = "GoodPwd12!";
 
             // --- ACT & ASSERT ---
-            // Verifica che venga lanciata IllegalArgumentException poiché il ruolo non è GESTORE
+
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 utenteDAO.createUtente(baseUtente, password);
             }, "Dovrebbe lanciare IllegalArgumentException se il ruolo è diverso da GESTORE");
 
-            // --- ASSERT EXTRA (Database Integrity) ---
-            // Verifica che il database sia ancora vuoto (nessun record inserito erroneamente)
+
             String countQuery = "SELECT COUNT(*) FROM ewmsDB.Utente";
 
             try (Connection conn = DataSourceFactory.getConnection();
@@ -462,18 +443,17 @@ public class UnitTesting_UtenteDAO {
         @DisplayName("TF_4: Ruolo null -> IllegalArgumentException")
         void testCreateUtente_RuoloNull() {
             // --- ARRANGE ---
-            // Impostiamo il ruolo a null per violare la pre-condizione o la constraint del DB
+
             baseUtente.setRuolo(null);
             String password = "GoodPwd12!";
 
             // --- ACT & ASSERT ---
-            // Verifica che venga lanciata l'eccezione appropriata
+
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 utenteDAO.createUtente(baseUtente, password);
             }, "Dovrebbe lanciare IllegalArgumentException se il ruolo dell'utente è null");
 
-            // --- ASSERT EXTRA (Database Integrity) ---
-            // Verifica che il database sia ancora vuoto (nessun "dirty write")
+
             String countQuery = "SELECT COUNT(*) FROM ewmsDB.Utente";
 
             try (Connection conn = DataSourceFactory.getConnection();
@@ -494,17 +474,16 @@ public class UnitTesting_UtenteDAO {
         @DisplayName("TF_5: Password null -> IllegalArgumentException")
         void testCreateUtente_PasswordNull() {
             // --- ARRANGE ---
-            // L'utente base è valido (Ruolo GESTORE), ma la password è null
+
             String password = null;
 
             // --- ACT & ASSERT ---
-            // Verifica che venga lanciata IllegalArgumentException
+
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 utenteDAO.createUtente(baseUtente, password);
             }, "Dovrebbe lanciare IllegalArgumentException se la password è null");
 
-            // --- ASSERT EXTRA (Database Integrity) ---
-            // Verifica che il database sia ancora vuoto
+
             String countQuery = "SELECT COUNT(*) FROM ewmsDB.Utente";
 
             try (Connection conn = DataSourceFactory.getConnection();
@@ -533,17 +512,13 @@ public class UnitTesting_UtenteDAO {
             try (Connection conn = DataSourceFactory.getConnection();
                  Statement stmt = conn.createStatement()) {
 
-                // 1. IMPORTANTE: Sposta la connessione corrente sullo schema di default (PUBLIC).
-                // Se rimani dentro 'ewmsDB', H2 non ti permetterà mai di cancellarlo.
+
                 stmt.execute("SET SCHEMA PUBLIC");
 
-                // 2. Cancella TUTTO (Tabelle, Viste, Vincoli)
                 stmt.execute("DROP ALL OBJECTS");
 
-                // 3. (Opzionale ma consigliato) Forza la cancellazione dello schema per evitare residui
                 stmt.execute("DROP SCHEMA IF EXISTS ewmsDB CASCADE");
 
-                // 4. Ora puoi ricreare tutto da zero in sicurezza
                 stmt.execute("RUNSCRIPT FROM 'classpath:ewmsDB.sql'");
             }
         }

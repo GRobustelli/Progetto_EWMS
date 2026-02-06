@@ -22,6 +22,13 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
         service =  PersistenceServiceImpl.getInstance();;
     }
 
+    //utilizzato per il testing
+    public TaskSupervisoreServiceImpl(PersistenceService persistenceService) {
+
+        if (persistenceService == null) {throw new IllegalArgumentException();}
+        this.service = persistenceService;
+    }
+
     @Override
     public void createTask(String titolo, Date dataCreazione, Date dataScadenza, String istruzioni, Tipi.stato stato, int supervisoreId, int dipendenteId, Tipi.priorita priorita, Allegato allegato) throws SQLException {
             if (titolo == null || dataCreazione == null || dataScadenza == null ||
@@ -39,6 +46,23 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
                 throw new IllegalArgumentException("Scadenza non può essere prima impostata prima della data di creazione");
             }
 
+        IUtenteDAO utenteDAO = service.getUtenteDAO();
+
+
+        Utente dipendente = utenteDAO.findByMatricola(dipendenteId);
+        if (dipendente == null) {
+            throw new IllegalArgumentException("Il dipendente con matricola " + dipendenteId + " non esiste.");
+        }
+
+        if (dipendente.getRuolo() != Tipi.ruolo.DIPENDENTE) {
+            throw new IllegalArgumentException("La matricola inserita non appartiene ad un dipendente.");
+        }
+
+
+        Utente supervisore = utenteDAO.findByMatricola(supervisoreId);
+        if (supervisore == null) {
+            throw new IllegalArgumentException("Il supervisore con matricola " + supervisoreId + " non esiste.");
+        }
 
             Task tmp = new Task(titolo, dataCreazione,dataScadenza, istruzioni, stato, supervisoreId, dipendenteId, priorita);
             tmp.setAllegato(allegato);
@@ -57,7 +81,6 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
         if(taskId < 0){
             throw new IllegalArgumentException("L'id non può essere null, vuoto o negativo");
         }else{
-            PersistenceService service = PersistenceServiceImpl.getInstance();
             ITaskDAO taskDAO = service.getTaskDAO();
 
 
@@ -75,6 +98,9 @@ public class TaskSupervisoreServiceImpl implements TaskSupervisoreService {
         }
         if (supervisore.getRuolo() != Tipi.ruolo.SUPERVISORE){
             throw new IllegalArgumentException("Accesso non autorizzato");
+        }
+        if (supervisore.getMatricola() <= 0){
+            throw new IllegalArgumentException("Matricola non valida");
         }
 
         ITaskDAO taskDAO = service.getTaskDAO();
