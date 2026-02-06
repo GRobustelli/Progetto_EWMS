@@ -35,7 +35,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                <a href="InizializzaControl?action=inizializzaTask&idTask=${task.id}">
+                                <a href="InitTaskServlet?id=${task.id}">
                                     <button type="button" class="btn btn-outline-success">Conferma</button>
                                 </a>
                             </div>
@@ -45,12 +45,15 @@
             </c:when>
             <c:otherwise>
                 <c:if test = "${task.stato != 'COMPLETATO'}">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" disabled><!--bottone gambizzato>
+                    <!-- Button trigger modal
+                    <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" disabled> --bottone gambizzato
                         Comunica
                     </button>
+                    +-------------------------------------------------------------------------------------+
+                    --qui sotto si trova il modal per l'invio dei warning, lo commento per ignorarlo
+                    +-------------------------------------------------------------------------------------+
 
-                    <!-- Modal | non si apre-->
+                    -- Modal | non si apre
                     <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
@@ -60,18 +63,18 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-floating">
-                                        <form action="" method="post" id="formWarning"> <!--levo l'action per sicurezza, perché essendo priorità media non lo implementiamo-->
+                                        <form action="" method="post" id="formWarning"> --levo l'action per sicurezza, perché essendo priorità media non lo implementiamo
                                             <textarea class="form-control" placeholder="Inserisci il corpo della comunicazione" id="floatingTextarea2" style="height: 200px"></textarea>
                                             <label for="floatingTextarea2">Descrizione</label>
                                         </form>
                                     </div>
 
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop4" disabled> <!--bottone gambizzato-->
+                                    -- Button trigger modal
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop4" disabled> --bottone gambizzato
                                         Invia comunicazione
                                     </button>
 
-                                    <!-- Modal | tanto non appare-->
+                                    -- Modal | tanto non appare
                                     <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
@@ -95,7 +98,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
+
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         Crea Task
@@ -141,7 +145,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                        <a href="HoldControl?action=holdTask&idTask=${task.id}">
+                        <a href="HoldTaskServlet?id=${task.id}">
                             <button type="submit" class="btn btn-outline-success" form="formTask">Conferma</button>
                         </a>
                     </div>
@@ -169,7 +173,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                <a href="CompleteTaskControl?action=completeTask&idTask=${task.id}" <c:if test = "${task.stato == 'COMPLETATO'}">hidden</c:if>>
+                                <a href="CompleteTaskServlet?id=${task.id}" <c:if test = "${task.stato == 'COMPLETATO'}">hidden</c:if>>
                                     <button type="button" class = "btn btn-outline-success">Conferma</button>
                                 </a>
                             </div>
