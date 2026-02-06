@@ -60,18 +60,18 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-floating">
-                                        <form action="WarningControl?action=sendWarning" method="post" id="formWarning">
+                                        <form action="" method="post" id="formWarning"> <!--levo l'action per sicurezza, perché essendo priorità media non lo implementiamo-->
                                             <textarea class="form-control" placeholder="Inserisci il corpo della comunicazione" id="floatingTextarea2" style="height: 200px"></textarea>
                                             <label for="floatingTextarea2">Descrizione</label>
                                         </form>
                                     </div>
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop4" disabled> <!--bottone gambizzato-->
                                         Invia comunicazione
                                     </button>
 
-                                    <!-- Modal -->
+                                    <!-- Modal | tanto non appare-->
                                     <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">

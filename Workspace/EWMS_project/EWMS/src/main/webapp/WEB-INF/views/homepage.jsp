@@ -39,7 +39,7 @@
                         <li class="list-group-item">
                             <div class="badge text-bg-secondary">Task #${task.id}</div>
                             <div class="task-description">${task.descrizione}</div>
-                            <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}">
+                            <a href="TaskDetailServlet?id=${task.id}">
                                 <div class="badge rounded-pill text-bg-primary">Dettagli</div>
                             </a>
                         </li>
