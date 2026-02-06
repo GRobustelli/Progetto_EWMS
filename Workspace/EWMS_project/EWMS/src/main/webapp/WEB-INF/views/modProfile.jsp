@@ -69,7 +69,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                        <a href="DeleteAccountControl?action=delete&delID=${utenteTrovato.matricola}">
+                        <a href="delete-account?action=delete&matricola=${utenteTrovato.matricola}">
                             <button type="button" class="btn btn-outline-success">Conferma</button>
                         </a>
                     </div>

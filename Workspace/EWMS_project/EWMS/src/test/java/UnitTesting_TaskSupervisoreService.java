@@ -57,12 +57,12 @@ public class UnitTesting_TaskSupervisoreService {
         @BeforeEach
         void setup() {
             // 1. SETUP DATI COMUNI
-            // Creiamo un supervisore che rispetta le pre-condizioni
-            supervisore = new Supervisore();
-            supervisore.setMatricola(10); // Matricola > 0
-            supervisore.setRuolo(Tipi.ruolo.SUPERVISORE); // Ruolo corretto
 
-            // Creiamo una lista di task simulata (non vuota)
+            supervisore = new Supervisore();
+            supervisore.setMatricola(10);
+            supervisore.setRuolo(Tipi.ruolo.SUPERVISORE);
+
+
             Task t1 = new Task();
             t1.setId(1);
             t1.setTitolo("Task Test");
@@ -488,7 +488,7 @@ public class UnitTesting_TaskSupervisoreService {
         @DisplayName("TF11: Priorità Null -> Lancia IllegalArgumentException")
         void testCreateTask_PrioritaNull() {
             // 1. ARRANGE
-            // Passiamo esplicitamente null per il parametro priorità
+
             Tipi.priorita prioritaNull = null;
 
             // 2. ACT & ASSERT
@@ -507,7 +507,7 @@ public class UnitTesting_TaskSupervisoreService {
             });
 
             // 3. VERIFY
-            // Il DB non deve essere interrogato
+
             verifyNoInteractions(persistenceServiceMock);
         }
 
@@ -523,7 +523,7 @@ public class UnitTesting_TaskSupervisoreService {
                         titolo,
                         dataCreazione,
                         dataScadenza,
-                        istruzioniNull, // Passiamo null
+                        istruzioniNull,
                         Tipi.stato.DA_COMPLETARE,
                         matricolaDip,
                         matricolaSup,
@@ -687,7 +687,7 @@ public class UnitTesting_TaskSupervisoreService {
         @DisplayName("TF3: TaskID non valido (<= 0) -> Lancia IllegalArgumentException")
         void testDeleteTask_IdNonValido() {
             // 1. SETUP
-            int taskIdInvalido = -1; // Oppure 0
+            int taskIdInvalido = -1;
 
             // 2. ESECUZIONE & ORACOLO
             Assertions.assertThrows(IllegalArgumentException.class, () -> {

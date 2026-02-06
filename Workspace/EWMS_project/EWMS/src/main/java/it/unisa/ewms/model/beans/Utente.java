@@ -24,6 +24,15 @@ public class Utente {
         this.newUtente = newUtente;
     }
 
+    public Utente(Tipi.ruolo ruolo, String email, String nome, String cognome, Date dataNasc, boolean newUtente) {
+        this.ruolo = ruolo;
+        this.email = email;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNasc = dataNasc;
+        this.newUtente = newUtente;
+    }
+
     public String getEmail() {
         return email;
     }

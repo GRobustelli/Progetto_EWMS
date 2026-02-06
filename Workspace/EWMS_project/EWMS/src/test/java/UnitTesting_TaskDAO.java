@@ -924,20 +924,7 @@ public class UnitTesting_TaskDAO {
         }
 
         @Test
-        @DisplayName("TestFrame6: Utente null -> IllegalArgumentException")
-        void testFindByUtente_UtenteNull() {
-            // --- ARRANGE ---
-            // --- ACT & ASSERT ---
-            // L'oracolo prevede il lancio di IllegalArgumentException
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                taskDAO.findByUtente(null);
-            }, "Dovrebbe lanciare IllegalArgumentException se l'oggetto utente è null");
-
-
-        }
-
-        @Test
-        @DisplayName("TestFrame7: Matricola dipendente non valida (0) -> IllegalArgumentException")
+        @DisplayName("TestFrame6: Matricola dipendente non valida (0) -> IllegalArgumentException")
         void testFindByUtente_MatricolaInvalida() {
             // --- ARRANGE ---
             // Utilizziamo l'oggetto dipendente1 creato nel setup
@@ -953,7 +940,18 @@ public class UnitTesting_TaskDAO {
 
         }
 
+        @Test
+        @DisplayName("TestFrame7: Utente null -> IllegalArgumentException")
+        void testFindByUtente_UtenteNull() {
+            // --- ARRANGE ---
+            // --- ACT & ASSERT ---
+            // L'oracolo prevede il lancio di IllegalArgumentException
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                taskDAO.findByUtente(null);
+            }, "Dovrebbe lanciare IllegalArgumentException se l'oggetto utente è null");
 
+
+        }
 
 
         }
@@ -1059,7 +1057,7 @@ public class UnitTesting_TaskDAO {
         }
 
         @Test
-        @DisplayName("TestFrame1: Aggiornamento stato a COMPLETATO -> Stato modificato correttamente")
+        @DisplayName("TestFrame1: Aggiornamento stato -> Stato modificato correttamente")
         void testUpdateStatus_Successo() throws Exception {
             // --- ARRANGE ---
             // L'id è valido (> 0) e la task è presente nel database grazie al setup
@@ -1156,7 +1154,7 @@ public class UnitTesting_TaskDAO {
         }
 
         @Test
-        @DisplayName("TestFrame4: Nuovo Stato null -> SQLException")
+        @DisplayName("TestFrame4: Task assente dal database -> SQLException")
         void testUpdateStatus_TaskNonPresente() {
             // --- ARRANGE ---
             // Id valido e presente (recuperato dal setup)
@@ -1172,8 +1170,6 @@ public class UnitTesting_TaskDAO {
             }, "Dovrebbe lanciare SQLException se l'id non è esistente");
 
         }
-
-
 
     }
 

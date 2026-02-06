@@ -18,6 +18,11 @@ public class Supervisore extends Utente{
 
     }
 
+    public Supervisore(Tipi.ruolo ruolo, String email, String nome, String cognome, Date dataNasc, boolean newUtente) {
+        super(ruolo,email,nome,cognome,dataNasc,newUtente);
+        dipendetiInfo = new ArrayList<>();
+    }
+
     public void addDipendetiInfo(List<Informazioni> dipendetiInfo) {
         this.dipendetiInfo = dipendetiInfo;
     }

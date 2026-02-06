@@ -3,29 +3,26 @@
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
 <div class = "crea">
-    <form action="AddUtenteControl?action=validateData" id="formAccount">
+    <form action="add-utente" id="formAccount" method="post">
+        <input type="hidden" name="action" value="insertUtente">
         <div>
             <div class="crea-2">
                 <h3>Nome</h3>
-                <input type="text">
+                <input type="text" name="nome">
             </div>
             <div class="crea-2">
                 <h3>Cognome</h3>
-                <input type="text">
-            </div>
-            <div class="crea-2">
-                <h3>Cognome</h3>
-                <input type="text">
+                <input type="text" name="cognome">
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Data di nascita</h3>
-                <input type="date">
+                <input type="date" name="data">
             </div>
             <div class="crea-2">
                 <h3>E-mail</h3>
-                <input type="text">
+                <input type="text" name="email">
             </div>
         </div>
         <div>
@@ -35,19 +32,27 @@
             </div>
             <div class="crea-2">
                 <h3>Ruolo</h3>
-                <select>
-                    <option value="Dipendente">Dipendente</option>
-                    <option value="Supervisore">Supervisore</option>
+                <select name="ruolo">
+                    <option value="DIPENDENTE">Dipendente</option>
+                    <option value="SUPERVISORE">Supervisore</option>
+                    <option value="GESTORE">Gestore</option>
+                </select>
+            </div>
+
+            <div class="crea-2">
+                <h3>Supervisore</h3>
+                <select name="supervisore">
+                    <c:forEach var = "sup" items="${informazioniSup}">
+                        <option value="${sup.matricola}">${sup.nome} ${sup.cognome} - #${sup.matricolaFormattata}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Password</h3>
-                <input type="text" disabled>
-                <a href = "AddUtenteControl?action=generatePwd">
+                <input type="text" disabled name="password">
                     <button type="button" class="btn btn-info">Genera</button>
-                </a>
             </div>
         </div>
         <div>

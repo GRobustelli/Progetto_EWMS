@@ -12,6 +12,11 @@ public class Dipendente extends  Utente {
         supervisoreInfo = null;
     }
 
+    public Dipendente(Tipi.ruolo ruolo, String email, String nome, String cognome, Date dataNasc, boolean newUtente){
+        super(ruolo,email,nome,cognome,dataNasc,newUtente);
+        supervisoreInfo = null;
+    }
+
     public void setSupervisoreInfo(Informazioni supervisoreInfo) {
         this.supervisoreInfo = supervisoreInfo;
     }
