@@ -15,9 +15,12 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.sql.*;
 import java.util.List;
 
-@WebServlet(name = "CreaTaskServlet", value = "/CreaTaskServlet")
+@WebServlet(name = "CreaTask", value = "/crea-task")
 public class CreaTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,6 +34,7 @@ public class CreaTaskServlet extends HttpServlet {
 
                 try {
                     List<Informazioni> informazioni = service.getAllDipendentiInfo(utente.getMatricola());
+                    System.out.println("Dimensione lista dipendenti: " + (informazioni != null ? informazioni.size() : "NULL"));
                     request.setAttribute("userList", informazioni);
                     request.setAttribute("viewPath", "/WEB-INF/views/creaTask.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
@@ -59,15 +63,45 @@ public class CreaTaskServlet extends HttpServlet {
 
         if (action.equals("insertTask")){
             HttpSession session = request.getSession();
-            Utente utente = (Utente) session.getAttribute("utente");
+            Supervisore utente = (Supervisore) session.getAttribute("utente");
             if (utente.getRuolo() == Tipi.ruolo.SUPERVISORE){
+                TaskSupervisoreService service = new TaskSupervisoreServiceImpl();
 
+                String titolo =  request.getParameter("titolo");
 
+                Date sqlDataCreazione = Date.valueOf(LocalDate.now());
+
+                String dataInput = request.getParameter("dataScadenza");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                Date sqlDataScadenza = Date.valueOf(LocalDate.parse(dataInput, formatter));
+
+                String istruzioni = request.getParameter("istruzioni");
+
+                Tipi.stato stato = Tipi.stato.DA_COMPLETARE;
+                int supervisore = utente.getMatricola();
+                int dipendente = Integer.parseInt(request.getParameter("dipendente"));
+
+                Tipi.priorita priorita = Tipi.priorita.valueOf(request.getParameter("priorita"));
+
+                try {
+                    service.createTask(titolo,sqlDataCreazione,sqlDataScadenza, istruzioni,stato,supervisore,dipendente,priorita,null);
+                } catch (Exception e) {
+                    request.setAttribute("error", e.getMessage());
+                    request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
+                    request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+                }
+                response.sendRedirect("/layout.jsp");
+                /*
+                request.setAttribute("result", "successo");
+                request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
+                request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+            */
 
             }else{
                 request.setAttribute("error", "Solo un utente con ruolo supervisore può aggiungere un task");
                 request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
                 request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+
             }
 
         }

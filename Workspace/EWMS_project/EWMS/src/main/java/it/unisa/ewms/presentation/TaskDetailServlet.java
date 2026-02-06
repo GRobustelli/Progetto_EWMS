@@ -29,7 +29,7 @@ public class TaskDetailServlet extends HttpServlet {
         if(session!=null){
             if(session.getAttribute("utente")!=null) {
                 Utente utente = (Utente) session.getAttribute("utente");
-                Long taskId = (Long) request.getParameter("id");
+                long taskId = Long.parseLong(request.getParameter("id"));
 
                 try {
                     Task tmp = taskService.getTask(taskId);

@@ -580,6 +580,7 @@ public class IntegratioTestSuite {
 
             }
         }
+
         @Nested
         @DisplayName("Metodi di TaskSupervisoreService integrazione con persistencemanagement")
         class TestInt_TaskSupervisoreService{
