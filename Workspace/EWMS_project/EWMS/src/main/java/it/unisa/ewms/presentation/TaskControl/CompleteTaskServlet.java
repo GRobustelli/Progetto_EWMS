@@ -1,8 +1,7 @@
-package it.unisa.ewms.presentation;
+package it.unisa.ewms.presentation.TaskControl;
 
 import it.unisa.ewms.application.TaskManagement.TaskDipendenteServiceImpl;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
-import it.unisa.ewms.model.beans.Task;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "InitTaskServlet", value = "/InitTaskServlet")
-public class InitTaskServlet extends HttpServlet {
+@WebServlet(name = "CompleteTaskServlet", value = "/CompleteTaskServlet")
+public class CompleteTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -28,10 +27,7 @@ public class InitTaskServlet extends HttpServlet {
                 long taskId = Long.parseLong(request.getParameter("id"));
 
                 try {
-                    taskService.inizializzaTask(taskId);
-
-                    /*qui dovrebbe esserci il codice per l'invio dei warning,
-                    non essendo arrivato all'implementazione non c'è*/
+                    taskService.completeTask(taskId);
 
                     request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);

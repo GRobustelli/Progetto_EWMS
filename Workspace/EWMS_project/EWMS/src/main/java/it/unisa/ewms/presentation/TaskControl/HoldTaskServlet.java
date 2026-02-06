@@ -1,7 +1,7 @@
-package it.unisa.ewms.presentation;
+package it.unisa.ewms.presentation.TaskControl;
 
-import it.unisa.ewms.application.TaskManagement.TaskDipendenteServiceImpl;
-import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
+import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
+import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "CompleteTaskServlet", value = "/CompleteTaskServlet")
-public class CompleteTaskServlet extends HttpServlet {
+@WebServlet(name = "HoldTaskServlet", value = "/HoldTaskServlet")
+public class HoldTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -20,14 +20,17 @@ public class CompleteTaskServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        TaskDipendenteService taskService = new TaskDipendenteServiceImpl();
+        TaskCommonService taskService = new TaskCommonServiceImpl();
 
         if(session!=null){
             if(session.getAttribute("utente")!=null) {
                 long taskId = Long.parseLong(request.getParameter("id"));
 
                 try {
-                    taskService.completeTask(taskId);
+                    taskService.holdTask(taskId);
+
+                    /*qui dovrebbe esserci il codice per l'invio dei warning,
+                    non essendo arrivato all'implementazione non c'è*/
 
                     request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);

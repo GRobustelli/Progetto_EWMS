@@ -1,7 +1,7 @@
-package it.unisa.ewms.presentation;
+package it.unisa.ewms.presentation.TaskControl;
 
-import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
-import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
+import it.unisa.ewms.application.TaskManagement.TaskDipendenteServiceImpl;
+import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "HoldTaskServlet", value = "/HoldTaskServlet")
-public class HoldTaskServlet extends HttpServlet {
+@WebServlet(name = "InitTaskServlet", value = "/InitTaskServlet")
+public class InitTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -20,14 +20,14 @@ public class HoldTaskServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        TaskCommonService taskService = new TaskCommonServiceImpl();
+        TaskDipendenteService taskService = new TaskDipendenteServiceImpl();
 
         if(session!=null){
             if(session.getAttribute("utente")!=null) {
                 long taskId = Long.parseLong(request.getParameter("id"));
 
                 try {
-                    taskService.holdTask(taskId);
+                    taskService.inizializzaTask(taskId);
 
                     /*qui dovrebbe esserci il codice per l'invio dei warning,
                     non essendo arrivato all'implementazione non c'è*/
