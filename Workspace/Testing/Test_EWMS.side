@@ -1,0 +1,21 @@
+{
+  "id": "129049e0-3489-4202-aea0-99c795724b08",
+  "version": "2.0",
+  "name": "Test_EWMS",
+  "url": "",
+  "tests": [{
+    "id": "037c0530-9a6d-4fd7-8225-25c4d9dd2f47",
+    "name": "Untitled",
+    "commands": []
+  }],
+  "suites": [{
+    "id": "cc04fc2c-6ded-42ee-8af0-0036b345939d",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["037c0530-9a6d-4fd7-8225-25c4d9dd2f47"]
+  }],
+  "urls": [],
+  "plugins": []
+}
