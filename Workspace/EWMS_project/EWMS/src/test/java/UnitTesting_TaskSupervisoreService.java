@@ -49,7 +49,7 @@ public class UnitTesting_TaskSupervisoreService {
     }
 
     @Nested
-    @DisplayName("Classe per il test del metodo")
+    @DisplayName("TSST_1: Classe per il test del metodo")
     class Test_getAllTaskSup{
         private Supervisore supervisore;
         private List<Task> listaTaskAttesa;
@@ -164,7 +164,7 @@ public class UnitTesting_TaskSupervisoreService {
     }
 
     @Nested
-    @DisplayName("")
+    @DisplayName("TSST_2: Classe per il test createTask")
     class Test_createTask{
 
         private String titolo;
@@ -566,7 +566,7 @@ public class UnitTesting_TaskSupervisoreService {
         }
 
     @Nested
-    @DisplayName("Classe per il testing del metodo getAllDipendenteInfo")
+    @DisplayName("TSST_3: Classe per il testing del metodo getAllDipendenteInfo")
     class Test_getAllDipendenteInfo {
 
         @Mock
@@ -639,7 +639,7 @@ public class UnitTesting_TaskSupervisoreService {
 
 
     @Nested
-    @DisplayName("Classe per il testing del metodo deleteTask")
+    @DisplayName("TSST_4: Classe per il testing del metodo deleteTask")
     class Test_deleteTask {
 
         @Test

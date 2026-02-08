@@ -24,6 +24,7 @@ public class ProfileManagementServiceImpl implements ProfileManagementService {
 
     //utilizzato per mockito
     public ProfileManagementServiceImpl(PersistenceService persistenceService) {
+        if (persistenceService == null) { throw new IllegalArgumentException("Il persistenceService non puo' essere null."); }
         this.persistenceService = persistenceService;
     }
 

@@ -37,7 +37,7 @@ class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("Classe per il test del metodo login")
+    @DisplayName("SST_1: Classe per il test del metodo login")
     class Test_login {
         @BeforeEach
         void setup() {
@@ -157,7 +157,7 @@ class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("Classe test per il metodo getUtente")
+    @DisplayName("SST_2: Classe test per il metodo getUtente")
     class Test_getUtente{
         @BeforeEach
         void setup() {

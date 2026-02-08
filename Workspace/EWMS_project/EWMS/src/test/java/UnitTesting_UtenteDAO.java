@@ -28,7 +28,7 @@ public class UnitTesting_UtenteDAO {
 
     //Utilizzeremo createUtente per accedere al metodo private insertUtenteGenerico
     @Nested
-    @DisplayName("Test insertUtenteGenerico (via createUtente)")
+    @DisplayName("UT_1: Test insertUtenteGenerico (via createUtente)")
     class Test_insertUtenteGenerico {
 
         private Utente baseUtente;
@@ -314,7 +314,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Test per il metodo createUtente")
+    @DisplayName("UT_2: Test per il metodo createUtente")
     class CreateUtente {
         private Utente baseUtente;
 
@@ -503,7 +503,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Test per il metodo createSupervisore")
+    @DisplayName("UT_4: Test per il metodo createSupervisore")
     class CreateSupervisore {
         private Supervisore baseSupervisore;
 
@@ -705,7 +705,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Test per il metodo createDipendente")
+    @DisplayName("UT_3: Test per il metodo createDipendente")
     class CreateDipendente {
 
         //Serve per testare la FK di dipendente
@@ -979,9 +979,23 @@ public class UnitTesting_UtenteDAO {
             }
         }
 
+        @Test
+        @DisplayName("TF_5: SupervisoreInfoNull -> IllegalArgumentException")
+        void testCreateDipendente_SupervisoreInfoNull() throws SQLException, EmailGiaPresenteException {
+            // --- ARRANGE ---
+            String passwordDipendente = "GoodPwd12!";
+
+            baseDipendente.setSupervisoreInfo(null);
+
+            // --- ACT & ASSERT ---
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                utenteDAO.createDipendente(baseDipendente, passwordDipendente);
+            }, "Dovrebbe lanciare IllegalArgumentException se supervisore info è null");
+
+        }
 
         @Test
-        @DisplayName("TF_5: Matricola Supervisore <= 0 -> IllegalArgumentException")
+        @DisplayName("TF_6: Matricola Supervisore <= 0 -> IllegalArgumentException")
         void testCreateDipendente_MatricolaSupervisoreInvalida() throws SQLException, EmailGiaPresenteException {
             // --- ARRANGE ---
             String passwordDipendente = "GoodPwd12!";
@@ -1029,7 +1043,7 @@ public class UnitTesting_UtenteDAO {
         }
 
         @Test
-        @DisplayName("TF_6: Supervisore Non Esistente nel DB -> SQLException")
+        @DisplayName("TF_7: Supervisore Non Esistente nel DB -> SQLException")
         void testCreateDipendente_SupervisoreNonEsistente() {
             // --- ARRANGE ---
             String passwordDipendente = "GoodPwd12!";
@@ -1085,7 +1099,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Classe per il test metodo findByMatricola")
+    @DisplayName("UT_5: Classe per il test metodo findByMatricola")
     class FindByMatricola {
         private int matricola;
         private Utente baseUtente;
@@ -1209,7 +1223,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Classe di test per metodo findByEmail")
+    @DisplayName("UT_6: Classe di test per metodo findByEmail")
     class FindByEmail{
 
         private Utente baseUtente;
@@ -1303,7 +1317,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Test per il metodo getAllDipendentiInfo")
+    @DisplayName("UT_7: Test per il metodo getAllDipendentiInfo")
     class GetAllDipendentiInfo {
 
         private int matricolaSupervisore;
@@ -1419,7 +1433,7 @@ public class UnitTesting_UtenteDAO {
     }
 
     @Nested
-    @DisplayName("Test per metodo getSupervisoreInfo")
+    @DisplayName("UT_8: Test per metodo getSupervisoreInfo")
     class GetSupervisoreInfo{
         private Informazioni SupervisoreInfo;
         private Dipendente dipendente1;
@@ -1523,7 +1537,7 @@ public class UnitTesting_UtenteDAO {
         }
 
     @Nested
-    @DisplayName("Test per metodo delete")
+    @DisplayName("UT_9: Test per metodo delete")
     class Delete{
             private Supervisore sup;
             private Dipendente dipendente1;
@@ -1692,7 +1706,7 @@ public class UnitTesting_UtenteDAO {
         }
 
     @Nested
-    @DisplayName("Test per metodo recuperaPassword")
+    @DisplayName("UT_10: Test per metodo recuperaPassword")
     class RecuperaPassword{
 
         private Utente baseUtente;

@@ -32,14 +32,18 @@ public class DeleteTaskServlet extends HttpServlet {
                 long id = Long.parseLong(request.getParameter("idTask"));
                 try {
                     if (service.deleteTask(id)){
-                        //Redirect alla homepage
+                        response.sendRedirect(request.getContextPath() + "/homepage");
                     }
                     else{
-                        //aggiungo messaggio di errore e torno alla scheda dettaglio task?
+                        request.setAttribute("error", "Impossibile eliminare il task");
+                        request.setAttribute("viewPath", "/WEB-INF/views/taskDetail.jsp");
+                        request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
                     }
 
                 } catch (SQLException e) {
-                    //Qui va il redirect alla pagina dobbiamo capire come farlo
+                    request.setAttribute("error", e.getMessage());
+                    request.setAttribute("viewPath", "/WEB-INF/views/taskDetail.jsp");
+                    request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
                 }
 
             }

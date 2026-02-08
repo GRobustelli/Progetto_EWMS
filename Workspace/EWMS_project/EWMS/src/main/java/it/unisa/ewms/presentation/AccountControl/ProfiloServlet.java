@@ -1,7 +1,5 @@
-package it.unisa.ewms.presentation;
+package it.unisa.ewms.presentation.AccountControl;
 
-import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.model.beans.Utente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "ProfiloServlet", value = "/ProfiloServlet")
+@WebServlet(name = "ProfiloServlet", value = "/profilo")
 public class ProfiloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

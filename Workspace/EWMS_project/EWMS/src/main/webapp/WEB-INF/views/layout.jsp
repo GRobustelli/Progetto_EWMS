@@ -27,7 +27,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 <div class="menu-links">
 
                     <c:if test="${viewPath != '/WEB-INF/views/homepage.jsp'}">
-                        <a href="LoginControl?action=homepage.jsp&id=${sessionScope.utente.matricola}" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
+                        <a href="${pageContext.request.contextPath}/homepage" class="btn-create"><!--nell'href ho scritto roba a caso per quando farai il backend-->
                             <i class="bi bi-house-door"></i>                                                              <!--non hanno senso logico definito, sono li giusto per aiutarti a capire cosa dovrebbe fare-->
                         </a>
                     </c:if>
@@ -56,7 +56,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
                 </c:if>
 
                 <c:if test="${viewPath != '/WEB-INF/views/profilo.jsp'}">
-                    <a href="ViewProfileControl?action=profilo.jsp&id=${sessionScope.utente.matricola}">
+                    <a href="${pageContext.request.contextPath}/profilo">
                         <i class="bi bi-person-square"></i>
                     </a>
                 </c:if>

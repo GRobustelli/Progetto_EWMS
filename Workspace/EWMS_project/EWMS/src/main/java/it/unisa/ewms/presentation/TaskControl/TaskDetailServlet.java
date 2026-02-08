@@ -1,9 +1,8 @@
-package it.unisa.ewms.presentation;
+package it.unisa.ewms.presentation.TaskControl;
 
 import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
 import it.unisa.ewms.model.beans.Task;
-import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.model.beans.Utente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "TaskDetailServlet", value = "/TaskDetailServlet")
+@WebServlet(name = "TaskDetailServlet", value = "/task-detail")
 public class TaskDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,7 +33,7 @@ public class TaskDetailServlet extends HttpServlet {
                 try {
                     Task tmp = taskService.getTask(taskId);
                     request.setAttribute("task", tmp);
-                    request.setAttribute("viewPath", "/WEB-INF/views/detailTask.jsp");
+                    request.setAttribute("viewPath", "/WEB-INF/views/taskDetail.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
                 } catch (SQLException e) {
                     request.setAttribute("error", "Errore durante il caricamento della pagina");

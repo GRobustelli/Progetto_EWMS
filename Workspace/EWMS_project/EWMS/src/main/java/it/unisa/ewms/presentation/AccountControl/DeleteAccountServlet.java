@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet(name = "DeleteAccountServlet", value = "/delete-account")
 public class DeleteAccountServlet extends HttpServlet {
@@ -38,8 +39,16 @@ public class DeleteAccountServlet extends HttpServlet {
                     }
 
                 } catch (SQLException e) {
-
-                    //Pagina di errore
+                    if (e instanceof SQLIntegrityConstraintViolationException){
+                        /*
+                        request.setAttribute("error", e.getMessage());
+                        request.setAttribute("viewPath", "/WEB-INF/views/modProfile.jsp");
+                        request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+                        probabilmente in questo caso va bene?
+                    */
+                    }else{
+                        //pagina di errore?
+                    }
 
                 }
 

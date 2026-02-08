@@ -1,3 +1,4 @@
+import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.model.beans.Dipendente;
 import it.unisa.ewms.model.beans.Tipi;
@@ -38,8 +39,13 @@ public class UnitTesting_ProfileManagementService {
         profileService = new ProfileManagementServiceImpl(persistenceServiceMock);
     }
 
+    @Test
+    void testCostruttore_ConNull_LanciaException() {
+        assertThrows(IllegalArgumentException.class, () -> new SessionServiceImpl(null));
+    }
+
     @Nested
-    @DisplayName("Classe test per metodo addAccount")
+    @DisplayName("PMST_1: Classe test per metodo addAccount")
     class Test_addAccount {
         private Utente nuovoUtente;
 
@@ -327,7 +333,7 @@ public class UnitTesting_ProfileManagementService {
     }
 
     @Nested
-    @DisplayName("Classe test per metodo getAccount")
+    @DisplayName("PMST_2: Classe test per metodo getAccount")
     class Test_getAccount {
         private Utente nuovoUtente;
 
@@ -417,7 +423,7 @@ public class UnitTesting_ProfileManagementService {
     }
 
     @Nested
-    @DisplayName("Classe test per metodo getAccount")
+    @DisplayName("PMST_3: Classe test per metodo getAccount")
     class Test_deleteAccount {
 
 

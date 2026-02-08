@@ -90,7 +90,7 @@ public class CreaTaskServlet extends HttpServlet {
                     request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
                 }
-                response.sendRedirect("/layout.jsp");
+                response.sendRedirect(request.getContextPath() + "/homepage");
                 /*
                 request.setAttribute("result", "successo");
                 request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");

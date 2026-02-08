@@ -5,7 +5,7 @@
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
 <div class="crea">
-    <form action="CreaTaskServlet" id="formTask" method="post">
+    <form action="crea-task" id="formTask" method="post">
         <input type="hidden" name="action" value="insertTask">
         <div>
             <div class="crea-2">
@@ -41,8 +41,8 @@
                 </select>
             </div>
         </div>
-        <a href="CreaTaskControl?action=homepage.jsp&id=${sessionScope.utente.matricola}">
-            <button type="button" class="btn btn-danger">Annulla</button>
+        <a href="${pageContext.request.contextPath}/homepage">
+            <button type="button"  class="btn btn-danger">Annulla</button>
         </a>
 
         <!-- Button trigger modal -->

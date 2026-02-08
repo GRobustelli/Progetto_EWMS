@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <div class = "task-detail">
     <div class = "task1">
         <h1>${task.titolo}</h1>
@@ -100,29 +102,6 @@
                         </div>
                     </div>-->
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Crea Task
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel3">Conferma</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Confermi di voler creare una nuova task?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                    <button type="submit" class="btn btn-outline-success" form="formTask">Conferma</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </c:if>
             </c:otherwise>
         </c:choose>
@@ -201,7 +180,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                    <a href="DeleteTaskControl?action=deleteTask&idTask=${task.id}">
+                                    <a href="delete-task?idTask=${task.id}">
                                         <button type="button" class="btn btn-outline-success">Elimina Task</button>
                                     </a>
                                 </div>

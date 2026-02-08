@@ -21,6 +21,7 @@ import java.sql.SQLException;
 
     //Utilizzato per testing
      public TaskCommonServiceImpl(PersistenceService persistenceService) {
+        if (persistenceService == null) { throw new  IllegalArgumentException("persistenceService == null"); }
         this.service = persistenceService;
      }
 
@@ -37,13 +38,6 @@ import java.sql.SQLException;
             }catch(Exception e){throw new SQLException(e);}
         }
     }
-
-    /*
-    @Override
-    public FileOutputStream downloadAllegato(long taskId) throws Exception {
-        return null;
-    }
-     */
 
     @Override
     public boolean holdTask(long taskId) throws Exception {
@@ -75,11 +69,11 @@ import java.sql.SQLException;
 
         }
 
+    /*
+         @Override
+        public Allegato downloadAllegato(long taskId) throws Exception {
 
-     @Override
-     public Allegato downloadAllegato(long taskId) throws Exception {
-
-         if (taskId <= 0) {
+          if (taskId <= 0) {
              throw new IllegalArgumentException("Id non valido");
          }
 
@@ -99,10 +93,9 @@ import java.sql.SQLException;
              }
 
              return allegato;
-         }
-     }
-
+         }*/
 
  }
+
 
 
