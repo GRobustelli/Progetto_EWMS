@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %> <div class="crea-2">
+
+    <script src="${pageContext.request.contextPath}/js/validazioneFormTask.js"></script>
+
 <c:if test="${sessionScope.utente.ruolo} != 'SUPERVISORE'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
     <h1 align="center">Errore 401 - accesso non autorizzato</h1>
     <h2 align="center">Niente da vedere qui</h2>
@@ -10,35 +13,41 @@
         <div>
             <div class="crea-2">
                 <h3>Titolo Task</h3>
-                <input type="text" name="titolo">
+                <input type="text" name="titolo" id="titoloTask">
+                <small id="errorTitolo" style="color: red;"></small>
             </div>
             <div class="crea-2">
                 <h3>Dipendente</h3>
-                <select name = "dipendente">
+                <select name = "dipendente" id="dipendenteSelect">
+
                     <c:forEach var = "dipendente" items="${userList}">
                         <option value="${dipendente.matricola}">${dipendente.nome} ${dipendente.cognome} - #${dipendente.matricolaFormattata}</option>
                     </c:forEach>
+                    <small id="errorDipendente" style="color: red;"></small>
                 </select>
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Descrizione</h3>
-                <textarea minlength="10" maxlength="2000" name = "istruzioni" placeholder="inserisci qui la descrizione del task (max. 2000 caratteri)..."></textarea>
+                <textarea minlength="10" maxlength="2000" name = "istruzioni" placeholder="inserisci qui la descrizione del task (max. 2000 caratteri)..." id="descrizioneTask"></textarea>
+                <small id="errorDescrizione" style="color: red;"></small>
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Data di Scadenza</h3>
-                <input type="date" name = "dataScadenza">
+                <input type="date" name = "dataScadenza" id="dataScadenza">
+                <small id="errorDataScadenza" style="color: red;"></small>
             </div>
             <div class="crea-2">
                 <h3>Priorità</h3>
-                <select name = "priorita">
+                <select name = "priorita" id="prioritaSelect">
                     <option value="ALTA">ALTA</option>
                     <option value="MEDIA">MEDIA</option>
                     <option value="BASSA">BASSA</option>
                 </select>
+                <small id="errorPriorita" style="color: red;"></small>
             </div>
         </div>
         <a href="${pageContext.request.contextPath}/homepage">

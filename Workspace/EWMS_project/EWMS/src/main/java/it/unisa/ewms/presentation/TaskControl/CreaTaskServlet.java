@@ -72,6 +72,14 @@ public class CreaTaskServlet extends HttpServlet {
                 Date sqlDataCreazione = Date.valueOf(LocalDate.now());
 
                 String dataInput = request.getParameter("dataScadenza");
+                if (dataInput.isEmpty())
+                {
+                    request.setAttribute("error", "Data vuota, riprova ad inserire il task");
+                    request.setAttribute("viewPath", "/WEB-INF/views/createTask.jsp");
+                    request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+                    return;
+                }
+
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 Date sqlDataScadenza = Date.valueOf(LocalDate.parse(dataInput, formatter));
 

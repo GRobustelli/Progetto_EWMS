@@ -1,6 +1,7 @@
 package it.unisa.ewms.presentation.AccountControl;
 
 
+import com.mysql.cj.log.ProfilerEventImpl;
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.AccountManagement.interfaces.ProfileManagementService;
 import it.unisa.ewms.model.beans.*;
@@ -26,8 +27,13 @@ public class addUtenteServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Utente utente = (Utente) session.getAttribute("utente");
 
+        String action = request.getParameter("action");
+
+
         if (utente != null) {
             if (utente.getRuolo() == Tipi.ruolo.GESTORE){
+                if (action.equals("openForm"))
+                {
                 ProfileManagementService service = new ProfileManagementServiceImpl();
 
                 try {
@@ -36,16 +42,28 @@ public class addUtenteServlet extends HttpServlet {
                     request.setAttribute("informazioniSup", informazioniSup);
                     request.setAttribute("viewPath", "/WEB-INF/views/creaAccount.jsp");
                     request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+                    return;
+
 
                 } catch (SQLException e) {
-                    //Inserisco errore e redirezione ad un altra pagina
-                    throw new RuntimeException(e);
+
+                    request.setAttribute("error", e.getMessage());
+                    request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
+                    request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
 
                 }
             }
         }
-
-        //Qui dovrei fare il redirect alla pagina creaAccount.jsp
+            else{
+                request.setAttribute("error", "Utente non autorizzato");
+                request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
+                request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+            }
+        }else{
+            request.setAttribute("error", "Utente non autenticato");
+            request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
+            request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+        }
     }
 
     @Override
@@ -83,13 +101,14 @@ public class addUtenteServlet extends HttpServlet {
 
             try {
                 service.addAccount(utente, password);
-            } catch (SQLException e) {
-
-                //Error con stampa dell'errore
-                throw new RuntimeException(e);
-
-            } catch (EmailGiaPresenteException e) {
+            }catch (EmailGiaPresenteException e) {
                 //Qui aggiungo la logica dell'email già presente all'interno del database
+
+            } catch (SQLException e) {
+                request.setAttribute("error", e.getMessage());
+                request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
+                request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+
             }
 
 

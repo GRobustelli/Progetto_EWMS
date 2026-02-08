@@ -49,7 +49,7 @@ in particolare, come avevamo discusso, ho creato layout.jsp per evitare di dover
 
                 <c:if test="${sessionScope.utente.ruolo == 'GESTORE'}">
                     <c:if test="${viewPath != '/WEB-INF/views/creaAccount.jsp'}">
-                        <a href="AddUtenteControl?action=addAccount" class="btn-create">
+                        <a href="add-utente?action=openForm" class="btn-create">
                             <i class="bi bi-plus-circle"></i>
                         </a>
                     </c:if>

@@ -1,4 +1,9 @@
-<c:if test="${sessionScope.utente.ruolo} != 'Gestore'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %> <div class="crea-2">
+
+    <script src="${pageContext.request.contextPath}/js/validazioneFormUtente.js"></script>
+
+<c:if test="${sessionScope.utente.ruolo} != 'GESTORE'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
     <h1 align="center">Errore 401 - accesso non autorizzato</h1>
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
@@ -8,56 +13,59 @@
         <div>
             <div class="crea-2">
                 <h3>Nome</h3>
-                <input type="text" name="nome">
+                <input type="text" name="nome" id="nome" placeholder="Nome">
+                <small id="errorNome" style="color: red;"></small>
             </div>
             <div class="crea-2">
                 <h3>Cognome</h3>
-                <input type="text" name="cognome">
+                <input type="text" name="cognome" id="cognome" placeholder="Cognome">
+                <small id="errorCognome" style="color: red;"></small>
             </div>
         </div>
         <div>
             <div class="crea-2">
                 <h3>Data di nascita</h3>
-                <input type="date" name="data">
+                <input type="date" name="data" id="data">
+                <small id="errorData" style="color: red;"></small>
             </div>
             <div class="crea-2">
                 <h3>E-mail</h3>
-                <input type="text" name="email">
+                <input type="text" name="email" id ="email" placeholder="nome.cognome@azienda.it">
+                <small id="errorEmail" style="color: red;"></small>
             </div>
         </div>
-        <div>
-            <div class="crea-2">
-                <h3>Matricola</h3>
-                <input type="text">
-            </div>
-            <div class="crea-2">
-                <h3>Ruolo</h3>
-                <select name="ruolo">
-                    <option value="DIPENDENTE">Dipendente</option>
-                    <option value="SUPERVISORE">Supervisore</option>
-                    <option value="GESTORE">Gestore</option>
-                </select>
-            </div>
 
-            <div class="crea-2">
-                <h3>Supervisore</h3>
-                <select name="supervisore">
-                    <c:forEach var = "sup" items="${informazioniSup}">
-                        <option value="${sup.matricola}">${sup.nome} ${sup.cognome} - #${sup.matricolaFormattata}</option>
-                    </c:forEach>
-                </select>
-            </div>
+        <div class="crea-2">
+            <h3>Ruolo</h3>
+            <select name="ruolo" id="ruoloSelect">
+                <option value="DIPENDENTE">Dipendente</option>
+                <option value="SUPERVISORE">Supervisore</option>
+                <option value="GESTORE">Gestore</option>
+            </select>
         </div>
+
+        <div class="crea-2" id="divSupervisore" style="display: none;">
+            <h3>Supervisore</h3>
+            <select name="supervisore" id="supervisoreSelect">
+                <option value="">-- Seleziona Supervisore --</option>
+                <c:forEach var="sup" items="${informazioniSup}">
+                    <option value="${sup.matricola}">${sup.nome} ${sup.cognome} - #${sup.matricolaFormattata}</option>
+                </c:forEach>
+            </select>
+            <small id="errorSupervisore" style="color: red;"></small>
+        </div>
+
         <div>
             <div class="crea-2">
                 <h3>Password</h3>
-                <input type="text" disabled name="password">
-                    <button type="button" class="btn btn-info">Genera</button>
+                <input type="text" readonly name="password" id="passwordField">
+                    <button type="button" class="btn btn-info" onclick="generaPassword()">Genera</button>
+                    <small id="errorPassword" style="color: red;"></small>
             </div>
         </div>
         <div>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="btn btn-success" id="btnOpenModal" data-bs-target="#staticBackdrop">
                 Conferma
             </button>
 
@@ -74,7 +82,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                            <button type="submit" class="btn btn-outline-success" form="formAccount">Conferma</button>
+                            <button type="button" class="btn btn-success" id="btnOpenModal" form="formAccount">Conferma</button>
                         </div>
                     </div>
                 </div>
