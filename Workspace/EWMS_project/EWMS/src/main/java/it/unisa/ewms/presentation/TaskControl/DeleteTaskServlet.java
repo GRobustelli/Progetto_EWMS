@@ -29,7 +29,7 @@ public class DeleteTaskServlet extends HttpServlet {
         if (utente != null) {
             if (utente.getRuolo() == Tipi.ruolo.SUPERVISORE) {
                 TaskSupervisoreService service = new TaskSupervisoreServiceImpl();
-                long id = Long.parseLong(request.getParameter("idTask"));
+                long id = Long.parseLong(request.getParameter("id"));
                 try {
                     if (service.deleteTask(id)){
                         response.sendRedirect(request.getContextPath() + "/homepage");
