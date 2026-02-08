@@ -11,8 +11,7 @@ function isNotEmpty(value) {
 }
 
 function isValidTitolo(value) {
-
-    const regex = /^[a-zA-Z0-9\s.,\-_!]{1,50}$/;
+    const regex = /^[a-zA-Z0-9\s.,\-_!#'?àèéìòùÀÈÉÌÒÙ]{1,50}$/;
     return regex.test(value);
 }
 
@@ -20,125 +19,118 @@ function isFutureOrToday(value) {
     if (!value) return false;
     const selectedDate = new Date(value);
     const today = new Date();
-
-    // Azzeriamo l'orario di "oggi" per fare un confronto solo sulla data (giorno/mese/anno)
     today.setHours(0, 0, 0, 0);
-
     return selectedDate >= today;
 }
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
-    const form = document.getElementById('formTask');
+    // 1. PRENDIAMO IL BOTTONE CHE APRE (Crea Task)
+    const btnOpenTaskModal = document.getElementById('btnOpenTaskModal');
 
-    if (form) {
-        form.addEventListener('submit', function(event) {
+    if (btnOpenTaskModal) {
+        btnOpenTaskModal.addEventListener('click', function() {
+
             let valid = true;
 
-            // --- 1. VALIDAZIONE TITOLO ---
+            // --- VALIDAZIONI (Copia-Incolla della tua logica) ---
+
+            // TITOLO
             const titoloInput = document.getElementById('titoloTask');
             const errorTitolo = document.getElementById('errorTitolo');
-            const titoloValue = titoloInput.value;
-
-            // Reset stile
             errorTitolo.innerText = "";
             titoloInput.style.borderColor = "";
 
-            if (!isNotEmpty(titoloValue)) {
+            if (!isNotEmpty(titoloInput.value)) {
                 errorTitolo.innerText = "Il titolo è obbligatorio.";
                 titoloInput.style.borderColor = "red";
                 valid = false;
-            }
-
-            if (!isValidTitolo(titoloValue)) {
-                errorTitolo.innerText = "Titolo non valido (Max 50 caratteri, solo lettere, numeri e .,-_!).";
+            } else if (!isValidTitolo(titoloInput.value)) {
+                errorTitolo.innerText = "Titolo non valido.";
                 titoloInput.style.borderColor = "red";
                 valid = false;
             }
 
-
+            // DIPENDENTE
             const dipendenteSelect = document.getElementById('dipendenteSelect');
             const errorDipendente = document.getElementById('errorDipendente');
-
-            // Reset Dipendente
             errorDipendente.innerText = "";
             dipendenteSelect.style.borderColor = "";
 
-            // Controlla se il valore è vuoto (cioè se è rimasto su "-- Seleziona --")
             if (dipendenteSelect.value === "" || dipendenteSelect.value === null) {
-                errorDipendente.innerText = "Devi selezionare un dipendente.";
+                errorDipendente.innerText = "Seleziona un dipendente.";
                 dipendenteSelect.style.borderColor = "red";
                 valid = false;
             }
 
-
+            // DATA
             const dataInput = document.getElementById('dataScadenza');
             const errorData = document.getElementById('errorDataScadenza');
-            const dataValue = dataInput.value;
-
-            // Reset stile
             errorData.innerText = "";
             dataInput.style.borderColor = "";
 
-            // Controllo 1: Obbligatorio
-            if (!dataValue) {
-                errorData.innerText = "La data di scadenza è obbligatoria.";
+            if (!dataInput.value) {
+                errorData.innerText = "Data obbligatoria.";
                 dataInput.style.borderColor = "red";
                 valid = false;
-            }
-            // Controllo 2: Non nel passato
-            else if (!isFutureOrToday(dataValue)) {
-                errorData.innerText = "La data non può essere nel passato.";
+            } else if (!isFutureOrToday(dataInput.value)) {
+                errorData.innerText = "Data non valida (passato).";
                 dataInput.style.borderColor = "red";
                 valid = false;
             }
 
-
-            // --- 4. VALIDAZIONE DESCRIZIONE ---
+            // DESCRIZIONE
             const descInput = document.getElementById('descrizioneTask');
             const errorDesc = document.getElementById('errorDescrizione');
-            const descValue = descInput.value.trim(); // Usiamo trim() per ignorare spazi vuoti iniziali/finali
-
-            // Reset dello stile e del messaggio
+            const descValue = descInput.value.trim();
             errorDesc.innerText = "";
             descInput.style.borderColor = "";
 
-            // Controllo 1: Obbligatorio
             if (descValue.length === 0) {
-                errorDesc.innerText = "La descrizione è obbligatoria.";
+                errorDesc.innerText = "Descrizione obbligatoria.";
                 descInput.style.borderColor = "red";
                 valid = false;
-            }
-            // Controllo 2: Lunghezza minima
-            else if (descValue.length < 10) {
-                errorDesc.innerText = "La descrizione deve contenere almeno 10 caratteri.";
+            } else if (descValue.length < 10) {
+                errorDesc.innerText = "Minimo 10 caratteri.";
                 descInput.style.borderColor = "red";
                 valid = false;
-            }
-            // Controllo 3: Lunghezza massima
-            else if (descValue.length > 2000) {
-                errorDesc.innerText = "La descrizione non può superare i 2000 caratteri.";
+            } else if (descValue.length > 2000) {
+                errorDesc.innerText = "Massimo 2000 caratteri.";
                 descInput.style.borderColor = "red";
                 valid = false;
             }
 
+            // PRIORITÀ
             const prioritaSelect = document.getElementById('prioritaSelect');
             const errorPriorita = document.getElementById('errorPriorita');
+            errorPriorita.innerText = "";
+            prioritaSelect.style.borderColor = "";
+
             if (!isNotEmpty(prioritaSelect.value)) {
-                errorPriorita.innerText = "Seleziona la priorità del task.";
+                errorPriorita.innerText = "Seleziona priorità.";
                 prioritaSelect.style.borderColor = "red";
                 valid = false;
-            } else {
-                errorPriorita.innerText = "";
-                prioritaSelect.style.borderColor = "";
             }
 
-            // Blocco invio se non valido
-            if (!valid) {
-                event.preventDefault();
+            // --- FINE VALIDAZIONI ---
+
+            // PUNTO CHIAVE: Se è valido, apriamo il modale MANUALMENTE
+            if (valid) {
+                const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                myModal.show();
+            } else {
+                console.log("Validazione fallita, il modale non si apre.");
             }
+        });
+    }
+
+    // 2. GESTIONE SUBMIT FINALE (Il bottone dentro il modal)
+    const btnSubmitTask = document.getElementById('btnSubmitTask');
+    const formTask = document.getElementById('formTask');
+
+    if (btnSubmitTask && formTask) {
+        btnSubmitTask.addEventListener('click', function() {
+            formTask.submit(); // Spedisce il form al server
         });
     }
 });

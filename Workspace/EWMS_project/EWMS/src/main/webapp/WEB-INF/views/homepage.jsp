@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<c:if test="${error != null}">
+    <div class="error-banner">
+        <p>${error}</p>
+    </div>
+</c:if>
+
 <c:choose>
 
     <c:when test="${sessionScope.utente.ruolo != 'GESTORE'}">
@@ -56,7 +62,7 @@
                                             <span class="badge bg-secondary">#${task.id}</span>
                                             <span class="fw-bold ms-2">${task.titolo}</span>
                                         </div>
-                                        <a href="TaskDetailServlet?id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
+                                        <a href="task-detail?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
                                     </div>
                                     <div class="mt-2 text-muted small">${task.istruzioni}</div>
                                 </li>
@@ -77,7 +83,7 @@
                                         <span class="badge bg-secondary">#${task.id}</span>
                                         <span class="fw-bold ms-2">${task.titolo}</span>
                                     </div>
-                                    <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
+                                    <a href="task-detail?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
                                 </div>
                                 <div class="mt-2">${task.istruzioni}</div>
                             </li>
@@ -97,7 +103,7 @@
                                         <span class="badge bg-secondary">#${task.id}</span>
                                         <span class="fw-bold ms-2">${task.titolo}</span>
                                     </div>
-                                    <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
+                                    <a href="task-detail?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
                                 </div>
                                 <div class="mt-2">${task.istruzioni}</div>
                             </li>
@@ -117,7 +123,7 @@
                                         <span class="badge bg-secondary">#${task.id}</span>
                                         <span class="fw-bold ms-2">${task.titolo}</span>
                                     </div>
-                                    <a href="ViewTaskControl?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
+                                    <a href="task-detail?action=taskDetail.jsp&id=${task.id}" class="btn btn-sm btn-primary rounded-pill">Dettagli</a>
                                 </div>
                                 <div class="mt-2 text-muted">${task.istruzioni}</div>
                             </li>
@@ -156,8 +162,8 @@
                 <c:otherwise>
                     <c:forEach var="user" items="${userList}">
                         <li class="list-group-item">
-                            <div class="badge text-bg-secondary">${user.nome} ${user.cognome} - #${user.matricola} - ${user.ruolo}</div>
-                            <a href="ModProfileControl?action=modProfile.jsp&id=${user.matricola}">
+                            <div class="badge text-bg-secondary">${user.nome} ${user.cognome} - #${user.matricolaFormattata} - ${user.ruolo}</div>
+                            <a href="${pageContext.request.contextPath}/mod-profilo?action=modProfile.jsp&id=${user.matricola}">
                                 <div class="badge rounded-pill text-bg-primary">Visualizza Profilo</div>
                             </a>
                         </li>

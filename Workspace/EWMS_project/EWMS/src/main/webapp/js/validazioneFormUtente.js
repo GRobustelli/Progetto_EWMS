@@ -22,10 +22,6 @@ function isValidEmail(value) {
     return regex.test(value);
 }
 
-/**
- * NUOVA FUNZIONE: Genera Password sicura secondo la Regex
- * ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$
- */
 function generaPassword() {
     const length = 12; // Lunghezza scelta (tra 8 e 16)
     const lowerChars = "abcdefghijklmnopqrstuvwxyz";
@@ -92,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // --- B. VALIDAZIONE AL CLICK DI "CONFERMA" (PRIMA DEL MODAL) ---
     // Usiamo questo listener invece del 'submit' classico per gestire il modale
     const btnOpenModal = document.getElementById('btnOpenModal');
 
@@ -191,13 +186,24 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            // --- APERTURA MODALE ---
-            // Se tutto è valido, apriamo il modale manualmente
+
             if (valid) {
                 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
                 myModal.show();
             } else {
             }
+
+            const btnSubmitFinal = document.getElementById('btnSubmitFinal');
+            const formAccount = document.getElementById('formAccount'); // Assicurati che questo ID esista nel tag <form>
+
+            if (btnSubmitFinal && formAccount) {
+                btnSubmitFinal.addEventListener('click', function() {
+                    // Forza l'invio del form
+                    formAccount.submit();
+                });
+            }
+
+
         });
     }
 });

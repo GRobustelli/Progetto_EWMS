@@ -1,12 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<c:if test="${error != null}">
+    <div class="error-banner">
+        <p>${error}</p>
+    </div>
+</c:if>
+
 <div class = "task-detail">
     <div class = "task1">
         <h1>${task.titolo}</h1>
         <span>ID: #${task.id}</span>
-        <c:if test="${sessionScope.utente.ruolo != 'SUPERVISORE'}">
-            <h3>Supervisore: ${task.supervisore}</h3>
-        </c:if>
+        <c:choose>
+        <c:when test="${sessionScope.utente.ruolo != 'SUPERVISORE'}">
+            <h3>Supervisore: #${task.supervisoreFormattato}</h3>
+        </c:when>
+            <c:otherwise>
+                <h3>Dipendente: #${task.dipendenteFormattato}</h3>
+            </c:otherwise>
+
+        </c:choose>
+
     </div>
     <hr>
     <div class = "task2">
@@ -14,13 +28,14 @@
         <div class = "task-descrizione">${task.istruzioni}</div>
         <h3>Data assegnazione: ${task.dataCreazione}</h3>
         <h3>Data scadenza: ${task.dataDiScadenza}</h3>
+        <h3>Stato: ${task.stato}</h3>
     </div>
     <div class = "task-btns"><!--rendere i button responsive rispetto al context del task-->
         <c:choose>
             <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" <c:if test = "${task.stato != 'DA_COMPLETARE'}">disabled</c:if>>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop5" <c:if test = "${task.stato == 'COMPLETATO'}">disabled</c:if>>
                     Avvia Task
                 </button>
 
@@ -37,7 +52,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                <a href="InitTaskServlet?id=${task.id}">
+                                <a href="init-task?id=${task.id}">
                                     <button type="button" class="btn btn-outline-success">Conferma</button>
                                 </a>
                             </div>
@@ -124,7 +139,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                        <a href="HoldTaskServlet?id=${task.id}">
+                        <a href="hold-task?id=${task.id}">
                             <button type="submit" class="btn btn-outline-success" form="formTask">Conferma</button>
                         </a>
                     </div>
@@ -135,7 +150,7 @@
         <c:choose>
             <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop6">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop6" <c:if test = "${task.stato == 'IN_SOSPENSIONE'}">disabled</c:if>>
                     Completa Task
                 </button>
 
@@ -152,7 +167,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                <a href="CompleteTaskServlet?id=${task.id}" <c:if test = "${task.stato == 'COMPLETATO'}">hidden</c:if>>
+                                <a href="complete-task?id=${task.id}" <c:if test = "${task.stato == 'COMPLETATO'}">hidden</c:if>>
                                     <button type="button" class = "btn btn-outline-success">Conferma</button>
                                 </a>
                             </div>
@@ -180,7 +195,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                                    <a href="delete-task?idTask=${task.id}">
+                                    <a href="delete-task?id=${task.id}">
                                         <button type="button" class="btn btn-outline-success">Elimina Task</button>
                                     </a>
                                 </div>

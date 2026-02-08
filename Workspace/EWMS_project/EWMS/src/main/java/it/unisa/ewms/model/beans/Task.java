@@ -121,4 +121,18 @@ public class Task {
     public void setPriorita(Tipi.priorita priorita) {
         this.priorita = priorita;
     }
+
+    public String getSupervisoreFormattato(){
+
+        // %08d assicura che la parte variabile sia sempre di 8 cifre
+        return "2002-" + String.format("%08d", this.supervisore);
+
+    }
+
+    public String getDipendenteFormattato(){
+
+        // %08d assicura che la parte variabile sia sempre di 8 cifre
+        return "2002-" + String.format("%08d", this.dipendente);
+
+    }
 }

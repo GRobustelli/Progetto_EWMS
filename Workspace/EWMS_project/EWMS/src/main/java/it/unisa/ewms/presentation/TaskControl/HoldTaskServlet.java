@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "HoldTaskServlet", value = "/HoldTaskServlet")
+@WebServlet(name = "HoldTaskServlet", value = "/hold-task")
 public class HoldTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,8 +32,7 @@ public class HoldTaskServlet extends HttpServlet {
                     /*qui dovrebbe esserci il codice per l'invio dei warning,
                     non essendo arrivato all'implementazione non c'è*/
 
-                    request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");
-                    request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
+                   response.sendRedirect(request.getContextPath() + "/task-detail?id="+taskId);
                 } catch (Exception e) {
                     request.setAttribute("error", "Errore durante la sospensione del task");
                     request.setAttribute("viewPath", "/WEB-INF/views/homepage.jsp");

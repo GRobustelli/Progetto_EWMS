@@ -3,6 +3,12 @@
 
     <script src="${pageContext.request.contextPath}/js/validazioneFormTask.js"></script>
 
+    <c:if test="${error != null}">
+    <div class="error-banner">
+        <p>${error}</p>
+    </div>
+    </c:if>
+
 <c:if test="${sessionScope.utente.ruolo} != 'SUPERVISORE'"> <!--nel caso qualcuno per qualche strano motivo riesce ad accedere alla pagina senza essere un gestore-->
     <h1 align="center">Errore 401 - accesso non autorizzato</h1>
     <h2 align="center">Niente da vedere qui</h2>
@@ -19,12 +25,13 @@
             <div class="crea-2">
                 <h3>Dipendente</h3>
                 <select name = "dipendente" id="dipendenteSelect">
-
+                    <option value="">-- Seleziona dipendente --</option>
                     <c:forEach var = "dipendente" items="${userList}">
                         <option value="${dipendente.matricola}">${dipendente.nome} ${dipendente.cognome} - #${dipendente.matricolaFormattata}</option>
                     </c:forEach>
-                    <small id="errorDipendente" style="color: red;"></small>
+
                 </select>
+                <small id="errorDipendente" style="color: red;"></small>
             </div>
         </div>
         <div>
@@ -43,6 +50,7 @@
             <div class="crea-2">
                 <h3>Priorità</h3>
                 <select name = "priorita" id="prioritaSelect">
+                    <option value="">-- Seleziona priorità --</option>
                     <option value="ALTA">ALTA</option>
                     <option value="MEDIA">MEDIA</option>
                     <option value="BASSA">BASSA</option>
@@ -55,7 +63,7 @@
         </a>
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-success"  id = "btnOpenTaskModal">
             Crea Task
         </button>
 
@@ -72,7 +80,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                        <button type="submit" class="btn btn-outline-success" form="formTask">Conferma</button>
+                        <button type="button" class="btn btn-outline-success" id = "btnSubmitTask">Conferma</button>
                     </div>
                 </div>
             </div>

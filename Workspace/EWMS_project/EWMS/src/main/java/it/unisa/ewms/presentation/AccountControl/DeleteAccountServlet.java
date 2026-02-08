@@ -31,38 +31,49 @@ public class DeleteAccountServlet extends HttpServlet {
                 try {
                     Utente utente1 = service.getAccount(matricola);
                     if (utente1!=null){
-                        service.deleteAccount(utente1);
-                    }else{
+                        if (utente.getMatricola() == matricola){
 
-                        //badrequest
+                            request.setAttribute("error", "Impossibile eliminare account in utilizzo");
+                            request.getRequestDispatcher("/homepage").forward(request, response);
+                            return;
+                        }
+                        service.deleteAccount(utente1);
+
+                        response.sendRedirect(request.getContextPath()+"/homepage");
+
+                    }else{
+                        request.setAttribute("error", "Utente inesistente");
+
+                        request.getRequestDispatcher("/homepage").forward(request, response);
 
                     }
 
                 } catch (SQLException e) {
                     if (e instanceof SQLIntegrityConstraintViolationException){
-                        /*
+
                         request.setAttribute("error", e.getMessage());
+
+                        request.getRequestDispatcher("/homepage").forward(request, response);
+
+                    }else{
+                        request.setAttribute("error", "Errore durante l'eliminazione dell'utente");
                         request.setAttribute("viewPath", "/WEB-INF/views/modProfile.jsp");
                         request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
-                        probabilmente in questo caso va bene?
-                    */
-                    }else{
-                        //pagina di errore?
+
                     }
 
                 }
 
-
             }else{
-                //redirect a pagina principale
+                response.sendRedirect(request.getContextPath()+ "/homepage");
             }
         }else{
-            //redirect a login page
+            response.sendRedirect("/StartServlet");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        doGet(request, response);
     }
 }

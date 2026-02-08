@@ -101,8 +101,12 @@ public class addUtenteServlet extends HttpServlet {
 
             try {
                 service.addAccount(utente, password);
+
+
             }catch (EmailGiaPresenteException e) {
-                //Qui aggiungo la logica dell'email già presente all'interno del database
+                request.setAttribute("error", e.getMessage());
+                request.setAttribute("viewPath", "/WEB-INF/views/creaAccount.jsp");
+                request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
 
             } catch (SQLException e) {
                 request.setAttribute("error", e.getMessage());
@@ -110,6 +114,8 @@ public class addUtenteServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
 
             }
+
+            response.sendRedirect(request.getContextPath() + "/homepage");
 
 
         }

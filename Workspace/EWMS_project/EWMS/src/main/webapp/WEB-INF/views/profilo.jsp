@@ -2,6 +2,11 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <div class="profilo-utente">
+    <c:if test="${error != null}">
+        <div class="error-banner">
+            <p>${error}</p>
+        </div>
+    </c:if>
     <div class="profilo-utente1">
         <h1>${sessionScope.utente.nome} ${sessionScope.utente.cognome}</h1>
         <span class="ms-4">Matricola: #${sessionScope.utente.matricolaFormattata}</span>

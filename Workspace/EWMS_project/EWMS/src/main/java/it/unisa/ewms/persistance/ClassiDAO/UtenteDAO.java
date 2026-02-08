@@ -54,7 +54,7 @@ public class UtenteDAO implements IUtenteDAO {
 
         } catch(SQLIntegrityConstraintViolationException icv){
             if (icv.getMessage().contains(utente.getEmail())){
-                throw new EmailGiaPresenteException("L'email inserita è già presente nel db");
+                throw new EmailGiaPresenteException("L'email " + utente.getEmail() +" è già presente nel db");
             }
             else {
                 throw new SQLException(icv.getMessage());
@@ -213,16 +213,23 @@ public class UtenteDAO implements IUtenteDAO {
             ps.setInt(1,matricola);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                utente = new Utente();
+                Tipi.ruolo ruolo = Tipi.ruolo.valueOf(rs.getString("ruolo"));
+                if (ruolo == Tipi.ruolo.SUPERVISORE) {
+                    utente = new Supervisore();
+                }else if (ruolo == Tipi.ruolo.DIPENDENTE) {
+                    utente = new Dipendente();
+                }
+                else{
+                    utente = new Utente();
+                }
+
                 utente.setMatricola(rs.getInt("matricola"));
                 utente.setEmail(rs.getString("email"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setDataNasc(rs.getDate("dataDiNascita"));
-                utente.setRuolo(Tipi.ruolo.valueOf(rs.getString("ruolo")));
+                utente.setRuolo(ruolo);
                 utente.setNewUtente(rs.getBoolean("newUtente"));
-
-
 
             }
         } catch (SQLException e) {
@@ -613,7 +620,7 @@ public class UtenteDAO implements IUtenteDAO {
                 throw new SQLException("Impossibile cancellare: nessun utente trovato con matricola " + utente.getMatricola());
             }
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new SQLIntegrityConstraintViolationException("Impossibile cancellare l'utente: è un Supervisore con dipendenti assegnati. Riassegna prima i dipendenti." + e);
+            throw new SQLIntegrityConstraintViolationException("Impossibile cancellare l'utente: è un Supervisore con dipendenti assegnati. Riassegna prima i dipendenti.");
         }
 
     }

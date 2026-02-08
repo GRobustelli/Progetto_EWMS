@@ -7,8 +7,14 @@
     <h1 align="center">Errore 401 - accesso non autorizzato</h1>
     <h2 align="center">Niente da vedere qui</h2>
 </c:if>
+
+    <c:if test="${error != null}">
+    <div class="error-banner">
+        <p>${error}</p>
+    </div>
+    </c:if>
 <div class = "crea">
-    <form action="add-utente" id="formAccount" method="post">
+    <form action="${pageContext.request.contextPath}/add-utente" id="formAccount" method="post">
         <input type="hidden" name="action" value="insertUtente">
         <div>
             <div class="crea-2">
@@ -82,12 +88,12 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Annulla</button>
-                            <button type="button" class="btn btn-success" id="btnOpenModal" form="formAccount">Conferma</button>
+                            <button type="button" class="btn btn-success" id="btnSubmitFinal" >Conferma</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <a href="AddUtenteControl?action=homepage.jsp&id=${sessionScope.utente.matricola}">
+            <a href="${pageContext.request.contextPath}/homepage">
                 <button type="button" class="btn btn-danger">Annulla</button>
             </a>
         </div>
