@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram name="Pagina-1" id="ipOQBeNFq6z0MoNlRvDN">
     <mxGraphModel dx="1042" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
@@ -35,13 +35,13 @@
           <mxGeometry x="470" y="280" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="qzIoYZi1g3b4XHvA30KT-10" value="Visualizza profilo personale" style="ellipse;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="390" y="600" width="110" height="50" as="geometry" />
+          <mxGeometry x="412.5" y="460" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="qzIoYZi1g3b4XHvA30KT-11" value="Modifica password" style="ellipse;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="390" y="710" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="qzIoYZi1g3b4XHvA30KT-12" value="Password attuale non corretta" style="ellipse;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="390" y="490" width="135" height="50" as="geometry" />
+          <mxGeometry x="400" y="575" width="135" height="50" as="geometry" />
         </mxCell>
         <mxCell id="qzIoYZi1g3b4XHvA30KT-13" value="Conferma password non coincide" style="ellipse;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="670" y="690" width="130" height="50" as="geometry" />
@@ -74,7 +74,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="qzIoYZi1g3b4XHvA30KT-21" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=none;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" parent="1" source="qzIoYZi1g3b4XHvA30KT-10" target="qzIoYZi1g3b4XHvA30KT-12" edge="1">
+        <mxCell id="qzIoYZi1g3b4XHvA30KT-21" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=none;startArrow=open;endArrow=none;startSize=12;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.429;exitY=0.024;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="qzIoYZi1g3b4XHvA30KT-11" target="qzIoYZi1g3b4XHvA30KT-12" edge="1">
           <mxGeometry x="-0.5097" y="-28" width="160" relative="1" as="geometry">
             <mxPoint x="530" y="462" as="sourcePoint" />
             <mxPoint x="626" y="410" as="targetPoint" />
