@@ -13,8 +13,10 @@ function hasMaxLength(value, max) {
 }
 
 function isValidDate(value) {
-    const date = new Date(value);
-    return !isNaN(date.getTime());
+    const inputDate = new Date(value);
+    const today = new Date();
+
+    return !isNaN(inputDate.getTime()) && (inputDate <= today);
 }
 
 function isValidEmail(value) {

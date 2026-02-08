@@ -17,22 +17,21 @@ public class ProvaDaCancellate {
         ProfileManagementService prof = new ProfileManagementServiceImpl();
 
 
-        Utente baseSupervisore = new Supervisore();
+        Utente baseSupervisore = new Utente();
         baseSupervisore.setNome("Supervisore");
         baseSupervisore.setCognome("Rossi");
         baseSupervisore.setEmail("gestore.rossi@azienda.it");
         baseSupervisore.setDataNasc(Date.valueOf("1985-05-22"));
-        baseSupervisore.setRuolo(Tipi.ruolo.SUPERVISORE);
-        baseSupervisore.setMatricola(4);
-//        prof.addAccount(baseSupervisore, "Goodpwd.12");
+        baseSupervisore.setRuolo(Tipi.ruolo.GESTORE);
+        prof.addAccount(baseSupervisore, "Goodpwd.12");
 
-
+/*
         TaskSupervisoreService service = new TaskSupervisoreServiceImpl();
 
         List<Task> tasks = service.getAllTaskSup((Supervisore)baseSupervisore);
 
         System.out.println(tasks.size());
-
+*/
 /*
         Dipendente baseDipendente = new Dipendente();
         baseDipendente.setNome("Luigi");
