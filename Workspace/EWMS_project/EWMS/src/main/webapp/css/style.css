@@ -62,3 +62,18 @@ td{
     margin-bottom: 0.5em;
     color: red;
 }
+
+.login_form .error-msg {
+    position: absolute;
+    left: 100%;
+    margin-left: 15px;
+    top: 28px;
+    width: 250px;
+    line-height: 1.2;
+    white-space: normal;
+}
+
+.login_form .form-group {
+    position: relative;
+    margin-bottom: 25px; /* Spazio extra per il messaggio che apparirà sotto */
+}

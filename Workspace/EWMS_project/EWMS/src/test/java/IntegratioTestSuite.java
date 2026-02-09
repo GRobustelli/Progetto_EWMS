@@ -9,12 +9,12 @@ import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
-import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
-import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
-import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
+import it.unisa.ewms.persistence.PersistenceManagement.TaskDAO;
+import it.unisa.ewms.persistence.PersistenceManagement.UtenteDAO;
+import it.unisa.ewms.persistence.DataSourceFactory;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.interfaces.ITaskDAO;
+import it.unisa.ewms.persistence.interfaces.IUtenteDAO;
 import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
 

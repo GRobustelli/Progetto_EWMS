@@ -1,6 +1,6 @@
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.AccountManagement.interfaces.ProfileManagementService;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
 
 import java.sql.SQLException;
 

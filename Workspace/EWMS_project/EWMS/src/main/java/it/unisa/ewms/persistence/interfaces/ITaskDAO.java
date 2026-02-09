@@ -1,4 +1,4 @@
-package it.unisa.ewms.PersistenceManagement.interfaces;
+package it.unisa.ewms.persistence.interfaces;
 
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;

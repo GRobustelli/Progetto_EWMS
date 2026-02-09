@@ -2,7 +2,7 @@ package it.unisa.ewms.application.AccountManagement.interfaces;
 
 import it.unisa.ewms.model.beans.Informazioni;
 import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
 
 import java.sql.SQLException;
 import java.util.List;

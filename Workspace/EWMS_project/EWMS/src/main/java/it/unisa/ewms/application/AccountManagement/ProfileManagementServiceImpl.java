@@ -2,10 +2,10 @@ package it.unisa.ewms.application.AccountManagement;
 
 import it.unisa.ewms.application.AccountManagement.interfaces.ProfileManagementService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
-import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
-import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
+import it.unisa.ewms.persistence.PersistenceServiceImpl;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.interfaces.IUtenteDAO;
+import it.unisa.ewms.persistence.interfaces.PersistenceService;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;

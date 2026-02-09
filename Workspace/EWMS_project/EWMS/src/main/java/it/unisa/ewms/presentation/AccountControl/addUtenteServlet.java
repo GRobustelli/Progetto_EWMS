@@ -4,7 +4,7 @@ package it.unisa.ewms.presentation.AccountControl;
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.AccountManagement.interfaces.ProfileManagementService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

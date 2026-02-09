@@ -1,21 +1,13 @@
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
-import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.persistence.PersistenceManagement.UtenteDAO;
+import it.unisa.ewms.persistence.DataSourceFactory;
+import it.unisa.ewms.persistence.eccezioni.EmailGiaPresenteException;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mindrot.jbcrypt.BCrypt;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class UnitTesting_UtenteDAO {
     private UtenteDAO utenteDAO = new UtenteDAO();

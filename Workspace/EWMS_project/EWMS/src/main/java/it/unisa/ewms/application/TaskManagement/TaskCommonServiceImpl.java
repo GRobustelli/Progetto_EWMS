@@ -3,9 +3,9 @@ package it.unisa.ewms.application.TaskManagement;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
-import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
-import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
+import it.unisa.ewms.persistence.PersistenceServiceImpl;
+import it.unisa.ewms.persistence.interfaces.ITaskDAO;
+import it.unisa.ewms.persistence.interfaces.PersistenceService;
 
 import java.sql.SQLException;
 

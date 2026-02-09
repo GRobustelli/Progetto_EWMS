@@ -1,7 +1,7 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
 import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
+import it.unisa.ewms.persistence.PersistenceManagement.UtenteDAO;
+import it.unisa.ewms.persistence.interfaces.PersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

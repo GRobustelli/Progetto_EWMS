@@ -1,10 +1,9 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
-import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
-import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
+import it.unisa.ewms.persistence.PersistenceManagement.TaskDAO;
+import it.unisa.ewms.persistence.interfaces.PersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

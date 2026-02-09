@@ -1,4 +1,4 @@
-package it.unisa.ewms.PersistenceManagement.eccezioni;
+package it.unisa.ewms.persistence.eccezioni;
 
 public class EmailGiaPresenteException extends Exception {
     public EmailGiaPresenteException(String message) {
