@@ -2238,7 +2238,7 @@
       "targets": [],
       "value": "label=Supervisore"
     }, {
-      "id": "f9d48b9e-d33a-41e1-ba16-46a9a626a9ed",
+      "id": "d20f6569-96e1-4743-be66-7a2ee05ddca0",
       "comment": "",
       "command": "click",
       "target": "css=.btn-info",
@@ -2251,7 +2251,7 @@
       ],
       "value": ""
     }, {
-      "id": "c3d6bf2f-364a-43a5-b512-d354377e4d2a",
+      "id": "5a800f10-3a27-4a79-8e2d-ce34f552dcc3",
       "comment": "",
       "command": "click",
       "target": "id=btnOpenModal",
@@ -2265,7 +2265,7 @@
       ],
       "value": ""
     }, {
-      "id": "df2c7bb2-e64f-407d-9083-71059c846b05",
+      "id": "eae7b7f3-c758-44e9-9d86-e46c3f7eee82",
       "comment": "",
       "command": "click",
       "target": "id=btnSubmitFinal",
@@ -2278,20 +2278,20 @@
       ],
       "value": ""
     }, {
-      "id": "9c9c638a-a769-4928-89ab-c1a1197a9a51",
+      "id": "08112566-9b74-46af-b9e8-9db5c5c00cd2",
       "comment": "",
-      "command": "waitForElementPresent",
-      "target": "css=.bi-plus-circle",
+      "command": "executeScript",
+      "target": "window.onunload = function() {};",
       "targets": [],
-      "value": "3000"
+      "value": ""
     }, {
-      "id": "3274b408-7807-4a3d-bd22-dcebd12e03b7",
+      "id": "b0ce4fdc-b31e-4dfc-b35f-12a4d8f1a485",
       "comment": "",
       "command": "assertElementPresent",
-      "target": "css=.bi-plus-circle",
+      "target": "css=.bi-person-square",
       "targets": [
-        ["css=.bi-plus-circle", "css:finder"],
-        ["xpath=//nav/a/i", "xpath:position"]
+        ["css=.bi-person-square", "css:finder"],
+        ["xpath=//a[3]/i", "xpath:position"]
       ],
       "value": ""
     }]
