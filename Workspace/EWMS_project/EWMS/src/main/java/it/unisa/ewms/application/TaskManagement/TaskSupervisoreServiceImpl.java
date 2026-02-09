@@ -2,10 +2,10 @@ package it.unisa.ewms.application.TaskManagement;
 
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.PersistenceServiceImpl;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
+import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FilenameUtils;
 

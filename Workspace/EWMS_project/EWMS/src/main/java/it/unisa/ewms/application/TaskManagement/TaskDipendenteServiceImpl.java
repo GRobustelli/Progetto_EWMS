@@ -4,14 +4,11 @@ import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService
 import it.unisa.ewms.model.beans.Dipendente;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.persistance.PersistenceServiceImpl;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
+import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 public class TaskDipendenteServiceImpl implements TaskDipendenteService {

@@ -1,3 +1,64 @@
-/*
-per ora non ho ancora inserito niente, ci lavorerò in questi giorni, qui va il css
-*/
+td{
+    margin-left: 2.5em;
+    margin-right: 2.5em;
+}
+
+#logo{
+    max-width:  3em;
+    max-height: 3em;
+}
+
+.navbar-brand #brand{
+    max-height: fit-content;
+    width: 20%;
+}
+
+.login_form{
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 3em;
+}
+
+.btn-login{
+    margin-left: 4em;
+}
+
+.form-group{
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.nav-color{
+    background: white;
+    border-bottom: #04042a;
+}
+
+#footerL{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #04042a;
+    text-align: center;
+    color: white;
+}
+
+#brand{
+    color: #04042a !important;
+    font-family: Forte, sans-serif;
+    font-weight: 1000;
+}
+
+.menu-links{
+    color: #04042a;
+    margin-left: 2em;
+    margin-right: 2em;
+    font-size: 1.75em;
+}
+
+.error-banner{
+    margin: 0 auto;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: red;
+}

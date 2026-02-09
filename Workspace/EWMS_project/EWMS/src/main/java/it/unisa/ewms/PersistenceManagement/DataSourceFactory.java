@@ -1,4 +1,4 @@
-package it.unisa.ewms.persistance;
+package it.unisa.ewms.PersistenceManagement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

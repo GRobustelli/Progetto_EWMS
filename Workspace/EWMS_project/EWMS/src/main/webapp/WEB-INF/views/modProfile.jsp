@@ -12,12 +12,12 @@
     </div>
     </c:if>
 
-<div class="profilo-utente">
-    <div class="profilo-utente1">
+<div class="mx-3">
+    <div>
         <h1>${utenteTrovato.nome} ${utenteTrovato.cognome}</h1><!--dopo che ti passo l'id dell'utente da homepage.jsp come gestore,-->
         <span class="ms-4">ID: #${utenteTrovato.matricola}</span> <!--poi da backend con il DAO mi fai la ricerca nel DB dell'utente e me lo passi come utenteTrovato-->
     </div>
-    <div class="profilo-utente2">
+    <div>
         <ul>
             <li>Data di nascita: ${utenteTrovato.dataNasc}</li>
             <li>E-mail: ${utenteTrovato.email}</li>
@@ -27,10 +27,7 @@
             </c:if>
         </ul>
     </div>
-    <div class="profilo-utente3">
-        <a href="" disabled="true">
-            <button type="button" class="btn-info">Genera password</button>
-        </a>
+    <div>
 
         <a href="" disabled="true">
         <!-- Button trigger modal -->

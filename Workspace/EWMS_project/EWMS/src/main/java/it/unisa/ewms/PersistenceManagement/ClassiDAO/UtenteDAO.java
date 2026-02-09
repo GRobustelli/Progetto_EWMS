@@ -1,9 +1,9 @@
-package it.unisa.ewms.persistance.ClassiDAO;
+package it.unisa.ewms.PersistenceManagement.ClassiDAO;
 
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
+import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
+import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

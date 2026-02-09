@@ -21,8 +21,8 @@ public class ProfiloServlet extends HttpServlet {
 
         if(session!=null){
             if(session.getAttribute("utente")!=null) {
-                request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
-                request.getRequestDispatcher("/WEB-INF/views/profilo.jsp").forward(request, response);
+                request.setAttribute("viewPath", "/WEB-INF/views/profilo.jsp");
+                request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
             }else{
                 request.setAttribute("error", "Utente non loggato");
                 request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");

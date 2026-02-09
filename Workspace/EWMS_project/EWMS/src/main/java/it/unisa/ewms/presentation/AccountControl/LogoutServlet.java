@@ -19,7 +19,9 @@ public class LogoutServlet extends HttpServlet {
             session.invalidate(); // invalida la sessione
         }
 
-        response.sendRedirect(request.getContextPath() + "/StartServlet");
+        request.setAttribute("error", "Logout effettuato");
+        request.setAttribute("viewPath", "/WEB-INF/views/login.jsp");
+        request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, response);
     }
 
     @Override

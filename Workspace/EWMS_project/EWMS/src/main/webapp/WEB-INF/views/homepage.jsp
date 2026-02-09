@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <c:if test="${error != null}">
-    <div class="error-banner">
+    <div class="error-banner mx-2">
         <p>${error}</p>
     </div>
 </c:if>

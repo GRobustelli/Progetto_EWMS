@@ -7,30 +7,31 @@
     </div>
 </c:if>
 
-<div class = "task-detail">
-    <div class = "task1">
-        <h1>${task.titolo}</h1>
-        <span>ID: #${task.id}</span>
+<div class = "task-detail mx-4">
+    <div class = "my-2">
+        <h1>Titolo: ${task.titolo}</h1>
+        <h3  style="color: grey;">ID: #${task.id}</h3>
         <c:choose>
         <c:when test="${sessionScope.utente.ruolo != 'SUPERVISORE'}">
-            <h3>Supervisore: #${task.supervisoreFormattato}</h3>
+            <h4>Supervisore: #${task.supervisoreFormattato}</h4>
         </c:when>
             <c:otherwise>
-                <h3>Dipendente: #${task.dipendenteFormattato}</h3>
+                <h4>Dipendente: #${task.dipendenteFormattato}</h4>
             </c:otherwise>
 
         </c:choose>
 
     </div>
     <hr>
-    <div class = "task2">
+    <div class = "my-1">
         <h2>Descrizione: </h2>
-        <div class = "task-descrizione">${task.istruzioni}</div>
-        <h3>Data assegnazione: ${task.dataCreazione}</h3>
-        <h3>Data scadenza: ${task.dataDiScadenza}</h3>
-        <h3>Stato: ${task.stato}</h3>
+        <div>${task.istruzioni}</div>
+        <hr>
+        <h5 class="mt-2">Data assegnazione: ${task.dataCreazione}</h5>
+        <h5>Data scadenza: ${task.dataDiScadenza}</h5>
+        <h4>Stato: ${task.stato}</h4>
     </div>
-    <div class = "task-btns"><!--rendere i button responsive rispetto al context del task-->
+    <div class = "my-1"><!--rendere i button responsive rispetto al context del task-->
         <c:choose>
             <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
 
@@ -122,7 +123,7 @@
         </c:choose>
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" <c:if test = "${task.stato != 'IN_ESECUZIONE'}">disabled</c:if>>
+        <button type="button" class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" <c:if test = "${task.stato != 'IN_ESECUZIONE'}">disabled</c:if>>
             Sospendi task
         </button>
 
@@ -150,7 +151,7 @@
         <c:choose>
             <c:when test="${sessionScope.utente.ruolo == 'DIPENDENTE'}">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop6" <c:if test = "${task.stato == 'IN_SOSPENSIONE'}">disabled</c:if>>
+                <button type="button" class="btn btn-info my-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop6" <c:if test = "${task.stato == 'IN_SOSPENSIONE'}">disabled</c:if>>
                     Completa Task
                 </button>
 
@@ -178,7 +179,7 @@
             <c:otherwise>
                 <c:if test = "${task.stato != 'COMPLETATO'}">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop7">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop7">
                         Elimina Task
                     </button>
 

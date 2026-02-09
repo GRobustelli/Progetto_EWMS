@@ -1,12 +1,8 @@
-import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
-import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
 import it.unisa.ewms.application.TaskManagement.TaskSupervisoreServiceImpl;
-import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.ClassiDAO.TaskDAO;
-import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
-import net.bytebuddy.implementation.bind.annotation.Super;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -15,9 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,9 +1,8 @@
-package it.unisa.ewms.persistance.interfaces;
+package it.unisa.ewms.PersistenceManagement.interfaces;
 
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 

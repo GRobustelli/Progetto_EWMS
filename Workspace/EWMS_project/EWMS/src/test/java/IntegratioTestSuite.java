@@ -9,28 +9,21 @@ import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.ClassiDAO.TaskDAO;
-import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
-import it.unisa.ewms.presentation.AccountControl.LoginServlet;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
+import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
+import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
+import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
 import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
-import org.mockito.ArgumentCaptor;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 
 public class IntegratioTestSuite {

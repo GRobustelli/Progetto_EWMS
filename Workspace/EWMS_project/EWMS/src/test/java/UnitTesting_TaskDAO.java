@@ -1,9 +1,8 @@
 import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.ClassiDAO.TaskDAO;
-import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.persistance.DataSourceFactory;
-import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
+import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
+import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
 import org.junit.jupiter.api.*;
 
 import java.sql.*;

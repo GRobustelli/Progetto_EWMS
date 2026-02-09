@@ -1,9 +1,9 @@
-package it.unisa.ewms.persistance;
+package it.unisa.ewms.PersistenceManagement;
 
-import it.unisa.ewms.persistance.ClassiDAO.NotificaDAO;
-import it.unisa.ewms.persistance.ClassiDAO.TaskDAO;
-import it.unisa.ewms.persistance.ClassiDAO.UtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.NotificaDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 
 public class PersistenceServiceImpl implements PersistenceService {
 
