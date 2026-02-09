@@ -1,4 +1,5 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
+import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.TaskManagement.TaskCommonServiceImpl;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;

@@ -1,5 +1,6 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
+import it.unisa.ewms.model.beans.Dipendente;
 import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.model.beans.Utente;
 import it.unisa.ewms.PersistenceManagement.ClassiDAO.UtenteDAO;

@@ -1,5 +1,6 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
 import it.unisa.ewms.application.TaskManagement.TaskDipendenteServiceImpl;
+import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
 import it.unisa.ewms.model.beans.Dipendente;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
