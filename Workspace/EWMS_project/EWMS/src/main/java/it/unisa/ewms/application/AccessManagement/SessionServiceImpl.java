@@ -1,13 +1,10 @@
 package it.unisa.ewms.application.AccessManagement;
 
 import it.unisa.ewms.application.AccessManagement.interfaces.SessionService;
-import it.unisa.ewms.model.beans.Dipendente;
-import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.persistance.PersistenceServiceImpl;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
-import it.unisa.ewms.model.beans.Utente;
+import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
+import it.unisa.ewms.PersistenceManagement.interfaces.IUtenteDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;

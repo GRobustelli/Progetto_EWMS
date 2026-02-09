@@ -1,15 +1,12 @@
 package it.unisa.ewms.application.TaskManagement;
 
 import it.unisa.ewms.application.TaskManagement.interfaces.TaskCommonService;
-import it.unisa.ewms.model.beans.Allegato;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.persistance.PersistenceServiceImpl;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import it.unisa.ewms.PersistenceManagement.PersistenceServiceImpl;
+import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
  public class TaskCommonServiceImpl implements TaskCommonService {

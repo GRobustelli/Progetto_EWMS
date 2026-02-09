@@ -1,12 +1,6 @@
 package it.unisa.ewms.application.AccountManagement;
 
 import it.unisa.ewms.application.AccountManagement.interfaces.PersonalProfileService;
-import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.persistance.PersistenceServiceImpl;
-import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
-
-import java.sql.SQLException;
 
 public class PersonalProfileServiceImpl implements PersonalProfileService {
 

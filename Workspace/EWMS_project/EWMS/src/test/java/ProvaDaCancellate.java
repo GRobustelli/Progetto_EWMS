@@ -1,16 +1,8 @@
-import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
-import it.unisa.ewms.application.AccessManagement.interfaces.SessionService;
 import it.unisa.ewms.application.AccountManagement.ProfileManagementServiceImpl;
 import it.unisa.ewms.application.AccountManagement.interfaces.ProfileManagementService;
-import it.unisa.ewms.application.TaskManagement.TaskSupervisoreServiceImpl;
-import it.unisa.ewms.application.TaskManagement.interfaces.TaskSupervisoreService;
-import it.unisa.ewms.model.beans.*;
-import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
-import net.bytebuddy.implementation.bind.annotation.Super;
+import it.unisa.ewms.PersistenceManagement.eccezioni.EmailGiaPresenteException;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ProvaDaCancellate {
     public static void main(String[] args) throws SQLException, EmailGiaPresenteException {

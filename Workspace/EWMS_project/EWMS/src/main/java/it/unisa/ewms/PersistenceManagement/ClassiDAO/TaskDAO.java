@@ -1,11 +1,11 @@
-package it.unisa.ewms.persistance.ClassiDAO;
+package it.unisa.ewms.PersistenceManagement.ClassiDAO;
 
-import it.unisa.ewms.persistance.DataSourceFactory;
+import it.unisa.ewms.PersistenceManagement.DataSourceFactory;
 import it.unisa.ewms.model.beans.Allegato;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
 import it.unisa.ewms.model.beans.Utente;
-import it.unisa.ewms.persistance.interfaces.ITaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.ITaskDAO;
 
 
 import java.sql.*;

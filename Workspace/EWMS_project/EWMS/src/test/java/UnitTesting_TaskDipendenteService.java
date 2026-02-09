@@ -1,11 +1,10 @@
 import it.unisa.ewms.application.AccessManagement.SessionServiceImpl;
 import it.unisa.ewms.application.TaskManagement.TaskDipendenteServiceImpl;
-import it.unisa.ewms.application.TaskManagement.interfaces.TaskDipendenteService;
 import it.unisa.ewms.model.beans.Dipendente;
 import it.unisa.ewms.model.beans.Task;
 import it.unisa.ewms.model.beans.Tipi;
-import it.unisa.ewms.persistance.ClassiDAO.TaskDAO;
-import it.unisa.ewms.persistance.interfaces.PersistenceService;
+import it.unisa.ewms.PersistenceManagement.ClassiDAO.TaskDAO;
+import it.unisa.ewms.PersistenceManagement.interfaces.PersistenceService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
