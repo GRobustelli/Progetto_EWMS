@@ -16,7 +16,15 @@ public class ProvaDaCancellate {
     public static void main(String[] args) throws SQLException, EmailGiaPresenteException {
         ProfileManagementService prof = new ProfileManagementServiceImpl();
 
-
+/*
+        Utente user = new Utente();
+        user.setNome("Gestore");
+        user.setCognome("Rossi");
+        user.setEmail("gestore.rossi@azienda.it");
+        user.setDataNasc(Date.valueOf("1985-05-22"));
+        user.setRuolo(Tipi.ruolo.GESTORE);
+        prof.addAccount(user, "Goodpwd.12");
+/*
         Utente baseSupervisore = new Supervisore();
         baseSupervisore.setNome("Supervisore");
         baseSupervisore.setCognome("Rossi");

@@ -13,35 +13,35 @@
         <p>${error}</p>
     </div>
     </c:if>
-<div class = "crea">
+<div class = "mx-3">
     <form action="${pageContext.request.contextPath}/add-utente" id="formAccount" method="post">
         <input type="hidden" name="action" value="insertUtente">
         <div>
-            <div class="crea-2">
+            <div class="my-1">
                 <h3>Nome</h3>
                 <input type="text" name="nome" id="nome" placeholder="Nome">
                 <small id="errorNome" style="color: red;"></small>
             </div>
-            <div class="crea-2">
+            <div class="my-1">
                 <h3>Cognome</h3>
                 <input type="text" name="cognome" id="cognome" placeholder="Cognome">
                 <small id="errorCognome" style="color: red;"></small>
             </div>
         </div>
         <div>
-            <div class="crea-2">
+            <div class="my-1">
                 <h3>Data di nascita</h3>
                 <input type="date" name="data" id="data">
                 <small id="errorData" style="color: red;"></small>
             </div>
-            <div class="crea-2">
+            <div class="my-1">
                 <h3>E-mail</h3>
                 <input type="text" name="email" id ="email" placeholder="nome.cognome@azienda.it">
                 <small id="errorEmail" style="color: red;"></small>
             </div>
         </div>
 
-        <div class="crea-2">
+        <div class="my-1">
             <h3>Ruolo</h3>
             <select name="ruolo" id="ruoloSelect">
                 <option value="DIPENDENTE">Dipendente</option>
@@ -50,7 +50,7 @@
             </select>
         </div>
 
-        <div class="crea-2" id="divSupervisore" style="display: none;">
+        <div class="my-1" id="divSupervisore" style="display: none;">
             <h3>Supervisore</h3>
             <select name="supervisore" id="supervisoreSelect">
                 <option value="">-- Seleziona Supervisore --</option>
@@ -62,7 +62,7 @@
         </div>
 
         <div>
-            <div class="crea-2">
+            <div class="my-1">
                 <h3>Password</h3>
                 <input type="text" readonly name="password" id="passwordField">
                     <button type="button" class="btn btn-info" onclick="generaPassword()">Genera</button>
