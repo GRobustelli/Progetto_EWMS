@@ -15,15 +15,22 @@ import it.unisa.ewms.persistance.DataSourceFactory;
 import it.unisa.ewms.persistance.eccezioni.EmailGiaPresenteException;
 import it.unisa.ewms.persistance.interfaces.ITaskDAO;
 import it.unisa.ewms.persistance.interfaces.IUtenteDAO;
+import it.unisa.ewms.presentation.AccountControl.LoginServlet;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
+import org.mockito.ArgumentCaptor;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 
 public class IntegratioTestSuite {
